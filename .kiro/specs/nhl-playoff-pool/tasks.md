@@ -4,7 +4,7 @@
 
 - [x] 1.1 Initialize Vue.js 3 project with Vite
 - [x] 1.2 Set up Pinia for state management
-- [x] 1.3 Install Axios for API calls
+- [x] 1.3 Install dependencies (removed Axios - no API calls needed)
 - [x] 1.4 Configure Vercel deployment
 - [x] 1.5 Set up Git repository
 
@@ -19,9 +19,9 @@
 ## Phase 3: Frontend Components
 
 - [x] 3.1 Create main app layout and routing
-- [x] 3.2 Create standings display component
-- [x] 3.3 Create player selector component
-- [x] 3.4 Create admin panel component
+- [x] 3.2 Create standings display component with dark mode styling
+- [x] 3.3 Create player selector component (text input only)
+- [x] 3.4 Create admin panel component (password protected)
 - [x] 3.5 Implement navigation between views
 
 ## Phase 4: Player Selection Logic
@@ -74,10 +74,16 @@
 - [x] 9.6 Write property-based tests for correctness properties
 - [x] 9.7 Write tests for scoring update parsing and validation
 
-## Phase 10: Deployment
+## Phase 10: Styling and Theme
 
-- [x] 10.1 Deploy to Vercel
-- [ ] 10.2 Test all features in production
-- [ ] 10.3 Create user documentation
-- [ ] 10.4 Set up monitoring and error logging
+- [x] 10.1 Apply dark mode theme (navy #0a0e27, ice blue #00d4ff, hockey red #c41e3a)
+- [x] 10.2 Update all views with professional hockey styling
+- [x] 10.3 Ensure responsive design across all screen sizes
+
+## Phase 11: Deployment
+
+- [x] 11.1 Deploy to Vercel
+- [x] 11.2 Test all features in production
+- [ ] 11.3 Create user documentation
+- [ ] 11.4 Set up monitoring and error logging
 

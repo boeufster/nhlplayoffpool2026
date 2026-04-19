@@ -2,21 +2,22 @@
 
 ## Overview
 
-Stevey's NHL Playoff Pool is a single-page application (SPA) that manages a fantasy hockey pool during the NHL playoffs. The system enables participants to select 15 players and earn points based on real-world NHL playoff performance. The application provides real-time score tracking, standings display, and administrative controls for pool management.
+Stevey's NHL Playoff Pool is a single-page application (SPA) that manages a fantasy hockey pool during the NHL playoffs. The system enables participants to select 15 players and earn points based on administrator-entered scoring data. The application provides score tracking, standings display, and administrative controls for pool management.
 
 **Key Characteristics:**
 - Single-page application with client-side rendering
-- Real-time score updates via external NHL API integration
+- Manual score entry via admin panel
 - Multi-entry support per participant
-- Admin console for pool management and manual scoring
-- Data persistence using browser storage and/or backend database
+- Admin console for pool management
+- Data persistence using browser localStorage
 - Public standings view accessible without authentication
+- Dark mode professional styling with hockey theme
 
 ## Architecture
 
 ### Simplified Architecture for Small Pool
 
-Given 6 participants, this is a lightweight single-page application with minimal backend needs:
+Given 6 participants, this is a lightweight single-page application with no backend needs:
 
 ```
 ┌──────────────────────────────────────────┐
@@ -25,6 +26,7 @@ Given 6 participants, this is a lightweight single-page application with minimal
 │  - Player Selection (text input)         │
 │  - Admin Panel (password protected)      │
 │  - State Management (Pinia)              │
+│  - Dark Mode Theme                       │
 └──────────────────────────────────────────┘
            ↓
 ┌──────────────────────────────────────────┐
@@ -34,31 +36,31 @@ Given 6 participants, this is a lightweight single-page application with minimal
 └──────────────────────────────────────────┘
 ```
 
-### Technology Stack (Simplified)
+### Technology Stack
 
 **Frontend Only:**
 - Framework: Vue.js 3 (SPA framework)
 - State Management: Pinia (Vue state management)
 - Storage: Browser LocalStorage (no backend needed)
 - Build Tool: Vite (fast build and dev server)
+- Styling: Dark mode with navy (#0a0e27), ice blue (#00d4ff), and hockey red (#c41e3a)
 
 **Hosting:**
-- **Vercel (Recommended)** - Deploy static Vue.js app for free
+- **Vercel** - Deploy static Vue.js app
   - Automatic Git deployments
-  - Canadian edge locations
   - No backend infrastructure needed
   - Perfect for 6-person pool
 
-**No External Integration:**
-- Manual data entry via text boxes
-- No API calls required
+**Data Source:**
+- Manual entry via admin text boxes
+- No external API calls
 
 ### Data Flow
 
 ```
 Admin enters player names (text box)
        ↓
-   Player Selection stored
+   Player Selection stored in localStorage
        ↓
 Admin enters scoring updates (text box)
        ↓
@@ -69,6 +71,8 @@ Admin enters scoring updates (text box)
    Standings Recalculation
        ↓
    UI Refresh
+       ↓
+   Data persisted to localStorage
 ```
 
 ## Components and Interfaces
@@ -159,7 +163,7 @@ StandingsDisplay
 - Parse scoring update format (player name, event type, points)
 - Validate scoring data
 - Process updates and apply to entries
-- Log all updates
+- Log all updates with timestamp
 
 **Interfaces:**
 ```
@@ -454,124 +458,90 @@ Property-based tests will verify universal correctness properties across all inp
 
 **Validates: Requirements 7.1, 7.2**
 
-### Property 23: API Unavailability Handling
+### Property 23: Manual Scoring Update Processing
 
-*For any* period when the external API is unavailable, the system SHALL log the error and continue to accept manual score updates without interruption.
+*For any* manual scoring update entered by an admin, the system SHALL parse the update, validate it, and apply the correct points to the affected entry.
 
-**Validates: Requirements 8.2**
+**Validates: Requirements 3.1, 3.2, 3.3**
 
-### Property 24: API Polling Interval
+### Property 24: Standings Reflect Current Scores
 
-*For any* running system, the API client SHALL poll the external API at regular intervals (approximately every 5 minutes) for new scoring events.
+*For any* set of entries with processed scoring updates, the standings display SHALL show all entries with their current total scores reflecting all processed updates.
 
-**Validates: Requirements 8.3**
+**Validates: Requirements 3.4, 3.5**
 
-### Property 25: API Response Caching
-
-*For any* identical API request made within the cache TTL, the system SHALL return the cached response instead of making a new API call.
-
-**Validates: Requirements 8.5**
-
-### Property 26: API Rate Limit Handling
-
-*For any* API rate limit response, the system SHALL implement exponential backoff and continue operation without crashing or losing data.
-
-**Validates: Requirements 8.6**
-
-### Property 27: Entry Fee Recording
+### Property 25: Entry Fee Recording
 
 *For any* created entry, the system SHALL record and persist the entry fee amount ($20).
 
 **Validates: Requirements 9.1**
 
-### Property 28: Total Fees Calculation
+### Property 26: Total Fees Calculation
 
 *For any* set of entries, the total entry fees displayed in the admin console SHALL equal the sum of all individual entry fees.
 
 **Validates: Requirements 9.2**
 
-### Property 29: Automatic Payout Calculation
+### Property 27: Automatic Payout Calculation
 
 *For any* number of entries, the system SHALL calculate payout amounts for 1st, 2nd, and 3rd place using the default percentages (50%, 30%, 20%) applied to total fees collected.
 
 **Validates: Requirements 9.3, 9.4**
 
-### Property 30: Data Persistence on Creation/Modification
+### Property 28: Data Persistence on Creation/Modification
 
-*For any* entry created or modified, the system SHALL persist the data to storage such that it survives application restart.
+*For any* entry created or modified, the system SHALL persist the data to localStorage such that it survives application restart.
 
-**Validates: Requirements 10.1**
+**Validates: Requirements 8.1**
 
-### Property 31: Data Loading on Application Startup
+### Property 29: Data Loading on Application Startup
 
-*For any* application restart, the system SHALL load all previously saved pool data (participants, entries, scores, events) into memory.
+*For any* application restart, the system SHALL load all previously saved pool data (participants, entries, scores, events) from localStorage into memory.
 
-**Validates: Requirements 10.2**
+**Validates: Requirements 8.2**
 
-### Property 32: Immediate Score Persistence
+### Property 30: Immediate Score Persistence
 
-*For any* score update, the system SHALL persist the change to storage immediately (within the same transaction/operation).
+*For any* score update, the system SHALL persist the change to localStorage immediately (within the same transaction/operation).
 
-**Validates: Requirements 10.3**
+**Validates: Requirements 8.3**
 
-### Property 33: Data Integrity Across Restarts
+### Property 31: Data Integrity Across Restarts
 
 *For any* data saved before application shutdown, the data SHALL be retrievable after application restart with no corruption or loss.
 
-**Validates: Requirements 10.4**
+**Validates: Requirements 8.4**
 
 
 
 ## Error Handling
 
-### API Integration Errors
-
-**Connection Failure:**
-- Log error with timestamp and error details
-- Display "API Unavailable" status in admin console
-- Continue operation with manual scoring capability
-- Retry connection at exponential backoff intervals
-
-**Rate Limiting (HTTP 429):**
-- Implement exponential backoff (start at 1 second, double each retry, max 5 minutes)
-- Queue pending requests
-- Notify admin of rate limit status
-- Continue processing cached data
-
-**Invalid Response (Malformed JSON, Missing Fields):**
-- Log error with response details
-- Skip the problematic event
-- Continue processing remaining events
-- Alert admin to investigate
-
-**Timeout:**
-- Set request timeout to 30 seconds
-- Log timeout error
-- Retry with exponential backoff
-- Fall back to manual scoring if persistent
-
 ### Data Validation Errors
 
-**Invalid Player Selection:**
-- Validate selection count before submission
-- Display specific error message (e.g., "Please select exactly 15 players")
-- Prevent submission
-- Highlight missing or excess selections
+**Invalid Player Names:**
+- Validate player names are non-empty strings
+- Display error if invalid
+- Prevent entry submission
 
-**Duplicate Player Selection:**
-- Prevent selection at UI level
+**Invalid Player Count:**
+- Validate exactly 15 players entered
+- Display error if count is wrong
+- Prevent entry submission
+
+**Duplicate Player Names:**
+- Prevent duplicate player names within an entry
 - Display warning message
 - Maintain current valid selection
 
-**Invalid Entry Fee:**
-- Validate fee is positive number
-- Display error if invalid
-- Prevent entry creation
+**Invalid Scoring Update:**
+- Validate scoring update format
+- Display error if format is invalid
+- Prevent update processing
 
 ### Authentication/Authorization Errors
 
 **Invalid Admin Password:**
-- Log failed attempt with timestamp and IP
+- Log failed attempt with timestamp
 - Display error message
 - Limit login attempts (max 5 per minute)
 - Implement account lockout after 10 failed attempts
@@ -584,7 +554,7 @@ Property-based tests will verify universal correctness properties across all inp
 
 **Storage Full:**
 - Log error
-- Attempt to clean up old cached API responses
+- Attempt to clean up old cached data
 - Notify admin
 - Prevent new data writes if cleanup fails
 
@@ -625,14 +595,20 @@ Unit tests verify specific examples, edge cases, and error conditions with concr
 **Data Model Tests:**
 - Participant creation: Create participant, verify email is unique identifier
 - Multiple entries: Create multiple entries for same participant, verify unique IDs
-- Entry persistence: Create entry, verify it's saved and retrievable
-- Score update: Update entry score, verify change is persisted
+- Entry persistence: Create entry, verify it's saved and retrievable from localStorage
+- Score update: Update entry score, verify change is persisted to localStorage
 
 **Admin Console Tests:**
 - Participant display: Create participants, verify all displayed with correct entry counts
 - Manual score update: Update score manually, verify logged with timestamp and admin ID
 - Export functionality: Export data, verify CSV contains all required fields
 - Scoring update parsing: Parse various scoring update formats, verify correct interpretation
+
+**Scoring Updates Tests:**
+- Parse player name and event type from text input
+- Validate scoring update format
+- Apply scoring updates to correct entries
+- Log scoring updates with timestamp
 
 ### Property-Based Testing
 
@@ -675,11 +651,11 @@ that standings are sorted by points descending, with ties broken by earliest
 creation timestamp first.
 ```
 
-**Property 30-33: Data Persistence**
+**Property 30-31: Data Persistence**
 ```
-Feature: nhl-playoff-pool, Property 30-33: Data Persistence
-For any data created or modified, verify that it persists across application 
-restart and is retrievable without corruption.
+Feature: nhl-playoff-pool, Property 28-31: Data Persistence
+For any data created or modified, verify that it persists to localStorage 
+across application restart and is retrievable without corruption.
 ```
 
 ### Integration Testing

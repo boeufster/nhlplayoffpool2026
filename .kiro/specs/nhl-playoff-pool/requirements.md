@@ -10,11 +10,11 @@ Stevey's NHL Playoff Pool is a single-page application that enables a small grou
 - **Participant**: A person who has entered the pool and made player selections
 - **Entry**: A single set of 15 player picks by a participant (participants may have multiple entries)
 - **Pick**: A single player selected by a participant for their entry
-- **Scoring Event**: A real-world NHL playoff event (goal, assist, win, shutout) that generates points
+- **Scoring Event**: A manual scoring update (goal, assist, win, shutout) that generates points
 - **Standings**: The ranked list of all entries sorted by total points
 - **Admin**: A user with permissions to manage the pool, including creating pools, managing participants, and updating scores
-- **External API**: A third-party service that provides NHL playoff statistics and scoring data
-- **Real-time Scoring**: Automatic or near-automatic updates to participant scores based on current NHL playoff results
+- **Manual Scoring**: Administrator-entered scoring updates that are processed to update participant scores
+- **LocalStorage**: Browser-based persistent storage for all pool data (participants, entries, scores)
 
 ## Requirements
 
@@ -45,17 +45,17 @@ Stevey's NHL Playoff Pool is a single-page application that enables a small grou
 6. WHEN a participant submits their selection, THE System SHALL save the entry with a timestamp
 7. THE System SHALL prevent duplicate player selections within a single entry
 
-### Requirement 3: Real-time Score Tracking
+### Requirement 3: Manual Score Tracking
 
-**User Story:** As a participant, I want to see my score update in real-time as NHL playoff games occur, so that I can track my performance throughout the playoffs.
+**User Story:** As a participant, I want to see my score update as the administrator enters scoring data, so that I can track my performance throughout the playoffs.
 
 #### Acceptance Criteria
 
-1. WHEN a scoring event occurs in the NHL playoffs, THE Scoring_Engine SHALL retrieve the event data from the External_API
-2. WHEN a scoring event matches a player in an entry, THE Scoring_Engine SHALL calculate points according to the scoring rules
+1. WHEN an administrator enters a scoring update via the admin panel, THE Scoring_Engine SHALL process the update
+2. WHEN a scoring update matches a player in an entry, THE Scoring_Engine SHALL calculate points according to the scoring rules
 3. WHEN points are calculated, THE System SHALL update the entry's total score immediately
 4. THE Standings_Display SHALL refresh to reflect updated scores
-5. WHEN a participant views the standings, THE System SHALL display current scores reflecting all processed scoring events
+5. WHEN a participant views the standings, THE System SHALL display current scores reflecting all processed scoring updates
 
 ### Requirement 4: Scoring Rules Implementation
 
@@ -84,16 +84,15 @@ Stevey's NHL Playoff Pool is a single-page application that enables a small grou
 
 ### Requirement 6: Admin Console Access and Controls
 
-**User Story:** As a pool administrator, I want a dedicated admin console, so that I can manage the pool and update scores.
+**User Story:** As a pool administrator, I want a dedicated admin console, so that I can manage the pool and update scores manually.
 
 #### Acceptance Criteria
 
 1. THE Admin_Console SHALL be accessible via a protected interface (password or simple authentication)
 2. THE Admin_Console SHALL display all participants, entries, and their current scores
-3. THE Admin_Console SHALL provide controls to manually update scores if External_API integration fails
+3. THE Admin_Console SHALL provide controls to manually update scores via text input
 4. WHEN the Admin updates a score manually, THE System SHALL log the change with timestamp and admin identifier
-5. THE Admin_Console SHALL display the External_API connection status
-6. THE Admin_Console SHALL allow export of standings data
+5. THE Admin_Console SHALL allow export of standings data
 
 ### Requirement 7: Data Export and Sharing
 
@@ -119,25 +118,13 @@ Stevey's NHL Playoff Pool is a single-page application that enables a small grou
 5. THE System SHALL cache API responses to minimize redundant requests
 6. THE System SHALL handle API rate limits gracefully
 
-### Requirement 9: Entry Fee and Payout Tracking
-
-**User Story:** As a pool administrator, I want to track entry fees and manage payouts, so that I can manage the pool's finances.
-
-#### Acceptance Criteria
-
-1. WHEN an entry is created, THE System SHALL record the entry fee amount ($20)
-2. THE Admin_Console SHALL display total entry fees collected
-3. THE Admin_Console SHALL display payout amounts for 1st, 2nd, and 3rd place based on number of entries
-4. THE Admin_Console SHALL calculate payouts automatically (e.g., 50% for 1st, 30% for 2nd, 20% for 3rd)
-5. THE System SHALL allow manual adjustment of payout percentages by the admin
-
-### Requirement 10: Data Persistence
+### Requirement 8: Data Persistence
 
 **User Story:** As a user, I want all pool data to be saved, so that I don't lose information if the application is closed or restarted.
 
 #### Acceptance Criteria
 
-1. WHEN an entry is created or modified, THE System SHALL persist the data to storage
-2. WHEN the application is restarted, THE System SHALL load all previously saved pool data
-3. WHEN a score is updated, THE System SHALL persist the change immediately
+1. WHEN an entry is created or modified, THE System SHALL persist the data to localStorage
+2. WHEN the application is restarted, THE System SHALL load all previously saved pool data from localStorage
+3. WHEN a score is updated, THE System SHALL persist the change to localStorage immediately
 4. THE System SHALL maintain data integrity across application restarts
