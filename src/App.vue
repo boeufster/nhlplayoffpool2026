@@ -3,6 +3,7 @@
     <header class="header">
       <div class="header-top">
         <h1>Stevey's NHL Playoff Pool</h1>
+        <span class="version">Built: {{ buildTime }}</span>
         <select v-model="currentTheme" @change="switchTheme" class="theme-select">
           <option v-for="(theme, key) in themes" :key="key" :value="key">{{ theme.name }}</option>
         </select>
@@ -49,7 +50,11 @@ export default {
       applyTheme(currentTheme.value)
     }
 
-    return { currentView, currentComponent, currentTheme, themes, switchTheme }
+    const buildTime = new Date(__BUILD_TIME__).toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
+    })
+
+    return { currentView, currentComponent, currentTheme, themes, switchTheme, buildTime }
   }
 }
 </script>
@@ -74,6 +79,13 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  gap: 12px;
+}
+
+.version {
+  color: var(--text-nav);
+  font-size: 0.75rem;
+  opacity: 0.7;
 }
 
 .header h1 {
