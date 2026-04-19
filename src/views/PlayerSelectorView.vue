@@ -315,6 +315,10 @@ export default {
 
 .player-selector-view h2 {
   margin-top: 0;
+  color: #00d4ff;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  margin-bottom: 30px;
 }
 
 .selector-container {
@@ -327,9 +331,24 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding: 20px;
-  background: #f5f5f5;
-  border-radius: 4px;
+  padding: 25px;
+  background: linear-gradient(135deg, #1a1f3a 0%, #252a45 100%);
+  border: 2px solid #00d4ff;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.controls::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+  animation: shimmer 3s infinite;
 }
 
 .participant-select {
@@ -339,14 +358,32 @@ export default {
 }
 
 .participant-select label {
-  font-weight: 600;
+  font-weight: 700;
+  color: #00d4ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
 }
 
 .participant-select select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px;
+  border: 2px solid #2a2f4a;
+  border-radius: 6px;
   font-size: 1rem;
+  background: #0a0e27;
+  color: #e0e0e0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.participant-select select:hover {
+  border-color: #00d4ff;
+}
+
+.participant-select select:focus {
+  border-color: #00d4ff;
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
 }
 
 .entry-select {
@@ -356,46 +393,96 @@ export default {
 }
 
 .entry-select label {
-  font-weight: 600;
+  font-weight: 700;
+  color: #00d4ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
 }
 
 .entry-select select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px;
+  border: 2px solid #2a2f4a;
+  border-radius: 6px;
   font-size: 1rem;
+  background: #0a0e27;
+  color: #e0e0e0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.entry-select select:hover {
+  border-color: #00d4ff;
+}
+
+.entry-select select:focus {
+  border-color: #00d4ff;
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
 }
 
 /* Text Input Section Styles */
 .text-input-section {
-  padding: 20px;
-  background: #f9f9f9;
-  border: 2px solid #e0e0e0;
-  border-radius: 4px;
+  padding: 25px;
+  background: linear-gradient(135deg, #1a1f3a 0%, #252a45 100%);
+  border: 3px solid #c41e3a;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(196, 30, 58, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.text-input-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #c41e3a 0px,
+    #c41e3a 10px,
+    #00d4ff 10px,
+    #00d4ff 20px
+  );
+  animation: slide-in 1s ease-out;
 }
 
 .text-input-section h3 {
   margin-top: 0;
   margin-bottom: 10px;
-  color: #333;
+  color: #00d4ff;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
 }
 
 .input-description {
   margin: 0 0 15px 0;
-  color: #666;
+  color: #a0a0a0;
   font-size: 0.95rem;
+  font-style: italic;
 }
 
 .player-names-textarea {
   width: 100%;
   min-height: 150px;
   padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: monospace;
+  border: 2px solid #2a2f4a;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
   font-size: 0.95rem;
   resize: vertical;
   box-sizing: border-box;
+  background: #0a0e27;
+  color: #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.player-names-textarea:focus {
+  border-color: #00d4ff;
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.3), inset 0 0 10px rgba(0, 212, 255, 0.05);
 }
 
 .player-names-textarea:focus {
@@ -413,15 +500,15 @@ export default {
 
 .input-stats p {
   margin: 0;
-  color: #666;
+  color: #a0a0a0;
 }
 
 .input-stats strong {
-  color: #333;
+  color: #00d4ff;
 }
 
 .character-count {
-  color: #999;
+  color: #888;
   font-size: 0.85rem;
 }
 
@@ -434,10 +521,10 @@ export default {
 .error-message {
   margin-top: 12px;
   padding: 10px;
-  background: #ffebee;
-  border: 1px solid #ef5350;
+  background: #3a1a1a;
+  border: 1px solid #c41e3a;
   border-radius: 4px;
-  color: #c62828;
+  color: #ff6b6b;
   font-size: 0.9rem;
 }
 
@@ -501,27 +588,29 @@ export default {
 
 .submit-btn {
   padding: 10px 20px;
-  background: #4caf50;
-  color: white;
+  background: #51cf66;
+  color: #0a0e27;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
   transition: background 0.2s;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #45a049;
+  background: #40c057;
 }
 
 .submit-btn:disabled {
-  background: #ccc;
+  background: #555;
+  color: #999;
   cursor: not-allowed;
 }
 
 .clear-btn {
   padding: 10px 20px;
-  background: #f44336;
+  background: #c41e3a;
   color: white;
   border: none;
   border-radius: 4px;
@@ -531,7 +620,7 @@ export default {
 }
 
 .clear-btn:hover {
-  background: #da190b;
+  background: #a01830;
 }
 
 .content {
@@ -602,49 +691,90 @@ export default {
 /* Selected Players Section */
 .selected-players-section {
   padding: 20px;
-  background: #f9f9f9;
-  border: 2px solid #e0e0e0;
-  border-radius: 4px;
+  background: linear-gradient(135deg, #1a1f3a 0%, #252a45 100%);
+  border: 3px solid #00d4ff;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.selected-players-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #00d4ff 0px,
+    #00d4ff 10px,
+    #c41e3a 10px,
+    #c41e3a 20px
+  );
+  animation: slide-in 1s ease-out;
 }
 
 .selected-players-section h3 {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #333;
+  color: #00d4ff;
+  position: relative;
+  z-index: 1;
 }
 
 .no-players {
   padding: 20px;
   text-align: center;
-  color: #999;
+  color: #888;
   font-style: italic;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
 }
 
 .players-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .player-item {
   display: flex;
   align-items: center;
-  padding: 10px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px;
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.1) 0%, rgba(196, 30, 58, 0.05) 100%);
+  border: 2px solid #2a2f4a;
+  border-left: 4px solid #00d4ff;
+  border-radius: 6px;
   gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.player-item:hover {
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.15) 0%, rgba(196, 30, 58, 0.1) 100%);
+  border-left-color: #c41e3a;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
 }
 
 .player-number {
-  font-weight: 600;
-  color: #666;
+  font-weight: 700;
+  color: #00d4ff;
   min-width: 30px;
+  text-align: center;
+  background: rgba(0, 212, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
 }
 
 .player-name {
   flex: 1;
-  color: #333;
+  color: #e0e0e0;
+  font-weight: 500;
 }
 
 @media (max-width: 1024px) {
