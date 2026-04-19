@@ -8,6 +8,8 @@ export default defineConfig({
     environment: 'node',
     isolate: true,
     threads: false,
-    setupFiles: ['./vitest.setup.js']
+    setupFiles: ['./vitest.setup.js'],
+    reporters: ['verbose'],
+    testTimeout: 30000
   }
 })

@@ -13,7 +13,45 @@
             </option>
           </select>
         </div>
+      </div>
 
+      <!-- Text Input Section -->
+      <div class="text-input-section">
+        <h3>Enter Player Names</h3>
+        <p class="input-description">Paste or enter 15 player names (one per line or comma-separated)</p>
+        
+        <textarea
+          v-model="playerNamesInput"
+          placeholder="Enter 15 player names (one per line or comma-separated)"
+          class="player-names-textarea"
+          @input="updatePlayerCount"
+        ></textarea>
+
+        <div class="input-stats">
+          <p>Player count: <strong>{{ detectedPlayerCount }}/{{ MAX_PLAYERS }}</strong></p>
+          <p class="character-count">Characters: {{ playerNamesInput.length }}</p>
+        </div>
+
+        <div class="text-input-actions">
+          <button
+            @click="submitTextInput"
+            :disabled="detectedPlayerCount !== MAX_PLAYERS || !selectedParticipantEmail"
+            class="submit-btn"
+          >
+            Submit Entry
+          </button>
+          <button @click="clearTextInput" class="clear-btn">Clear</button>
+        </div>
+
+        <div v-if="textInputError" class="error-message">
+          {{ textInputError }}
+        </div>
+      </div>
+
+      <!-- Grid-based Selection Section (Optional) -->
+      <div class="grid-selection-section">
+        <h3>Or Select from Grid</h3>
+        
         <div class="position-filters">
           <label>Filter by Position:</label>
           <button
@@ -25,52 +63,52 @@
             {{ positionLabels[pos] }}
           </button>
         </div>
-      </div>
 
-      <div class="selection-status">
-        <p>Selected: <strong>{{ selectedPlayers.length }}/{{ MAX_PLAYERS }}</strong></p>
-        <button
-          @click="submitSelection"
-          :disabled="!isSelectionComplete || !selectedParticipantEmail"
-          class="submit-btn"
-        >
-          Submit Selection
-        </button>
-        <button @click="clearSelection" class="clear-btn">Clear Selection</button>
-      </div>
+        <div class="selection-status">
+          <p>Selected: <strong>{{ selectedPlayers.length }}/{{ MAX_PLAYERS }}</strong></p>
+          <button
+            @click="submitSelection"
+            :disabled="!isSelectionComplete || !selectedParticipantEmail"
+            class="submit-btn"
+          >
+            Submit Selection
+          </button>
+          <button @click="clearSelection" class="clear-btn">Clear Selection</button>
+        </div>
 
-      <div class="content">
-        <div class="available-players">
-          <h3>Available Players</h3>
-          <div class="players-grid">
-            <div
-              v-for="player in filteredAvailablePlayers"
-              :key="player.id"
-              class="player-card available"
-              @click="selectPlayer(player)"
-            >
-              <div class="player-name">{{ player.name }}</div>
-              <div class="player-info">
-                {{ player.position }} - {{ player.team }}
+        <div class="content">
+          <div class="available-players">
+            <h4>Available Players</h4>
+            <div class="players-grid">
+              <div
+                v-for="player in filteredAvailablePlayers"
+                :key="player.id"
+                class="player-card available"
+                @click="selectPlayer(player)"
+              >
+                <div class="player-name">{{ player.name }}</div>
+                <div class="player-info">
+                  {{ player.position }} - {{ player.team }}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="selected-players">
-          <h3>Selected Players ({{ selectedPlayers.length }}/{{ MAX_PLAYERS }})</h3>
-          <div class="players-grid">
-            <div
-              v-for="player in selectedPlayers"
-              :key="player.id"
-              class="player-card selected"
-              @click="deselectPlayer(player.id)"
-            >
-              <div class="player-name">{{ player.name }}</div>
-              <div class="player-info">
-                {{ player.position }} - {{ player.team }}
+          <div class="selected-players">
+            <h4>Selected Players ({{ selectedPlayers.length }}/{{ MAX_PLAYERS }})</h4>
+            <div class="players-grid">
+              <div
+                v-for="player in selectedPlayers"
+                :key="player.id"
+                class="player-card selected"
+                @click="deselectPlayer(player.id)"
+              >
+                <div class="player-name">{{ player.name }}</div>
+                <div class="player-info">
+                  {{ player.position }} - {{ player.team }}
+                </div>
+                <div class="remove-hint">Click to remove</div>
               </div>
-              <div class="remove-hint">Click to remove</div>
             </div>
           </div>
         </div>
@@ -98,6 +136,11 @@ export default {
     const selectedPosition = ref(null)
     const isLoading = ref(false)
     const errorMessage = ref('')
+    
+    // Text input state
+    const playerNamesInput = ref('')
+    const detectedPlayerCount = ref(0)
+    const textInputError = ref('')
 
     const MAX_PLAYERS = 15
     const positions = ['F', 'D', 'G']
@@ -195,6 +238,66 @@ export default {
       }
     }
 
+    const updatePlayerCount = () => {
+      // Count players from text input (one per line or comma-separated)
+      if (!playerNamesInput.value.trim()) {
+        detectedPlayerCount.value = 0
+        return
+      }
+
+      // Split by newlines and commas, filter out empty strings
+      const players = playerNamesInput.value
+        .split(/[\n,]+/)
+        .map(name => name.trim())
+        .filter(name => name.length > 0)
+
+      detectedPlayerCount.value = players.length
+    }
+
+    const clearTextInput = () => {
+      playerNamesInput.value = ''
+      detectedPlayerCount.value = 0
+      textInputError.value = ''
+    }
+
+    const submitTextInput = () => {
+      if (!selectedParticipantEmail.value) {
+        textInputError.value = 'Please select a participant'
+        return
+      }
+
+      if (detectedPlayerCount.value !== MAX_PLAYERS) {
+        textInputError.value = `Please enter exactly ${MAX_PLAYERS} players`
+        return
+      }
+
+      try {
+        const participant = participantsStore.getParticipant(selectedParticipantEmail.value)
+        const entry = entriesStore.createEntry(
+          selectedParticipantEmail.value,
+          participant.name
+        )
+
+        // Parse player names from input
+        const playerNames = playerNamesInput.value
+          .split(/[\n,]+/)
+          .map(name => name.trim())
+          .filter(name => name.length > 0)
+
+        // Store the player names (parsing logic will be handled in next task)
+        entriesStore.setEntryPlayerNames(entry.id, playerNames)
+
+        // Clear input for next entry
+        clearTextInput()
+        selectedParticipantEmail.value = ''
+
+        alert('Entry submitted successfully!')
+      } catch (error) {
+        textInputError.value = 'Failed to submit entry: ' + error.message
+        console.error('Error submitting entry:', error)
+      }
+    }
+
     const selectPlayer = (player) => {
       try {
         playerSelectionStore.selectPlayer(player)
@@ -263,7 +366,14 @@ export default {
       selectPlayer,
       deselectPlayer,
       clearSelection,
-      submitSelection
+      submitSelection,
+      // Text input methods and state
+      playerNamesInput,
+      detectedPlayerCount,
+      textInputError,
+      updatePlayerCount,
+      clearTextInput,
+      submitTextInput
     }
   }
 }
@@ -310,14 +420,91 @@ export default {
   font-size: 1rem;
 }
 
-.position-filters {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* Text Input Section Styles */
+.text-input-section {
+  padding: 20px;
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
 }
 
-.position-filters label {
-  font-weight: 600;
+.text-input-section h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.input-description {
+  margin: 0 0 15px 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.player-names-textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.95rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.player-names-textarea:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.input-stats {
+  display: flex;
+  gap: 20px;
+  margin: 12px 0;
+  font-size: 0.95rem;
+}
+
+.input-stats p {
+  margin: 0;
+  color: #666;
+}
+
+.input-stats strong {
+  color: #333;
+}
+
+.character-count {
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.text-input-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.error-message {
+  margin-top: 12px;
+  padding: 10px;
+  background: #ffebee;
+  border: 1px solid #ef5350;
+  border-radius: 4px;
+  color: #c62828;
+  font-size: 0.9rem;
+}
+
+/* Grid Selection Section */
+.grid-selection-section {
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.grid-selection-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 
 .position-filters {
@@ -325,6 +512,11 @@ export default {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+  margin-bottom: 15px;
+}
+
+.position-filters label {
+  font-weight: 600;
 }
 
 .position-filters button {
@@ -353,6 +545,7 @@ export default {
   padding: 15px;
   background: #e3f2fd;
   border-radius: 4px;
+  margin-bottom: 15px;
 }
 
 .selection-status p {
@@ -408,8 +601,8 @@ export default {
   border-radius: 4px;
 }
 
-.available-players h3,
-.selected-players h3 {
+.available-players h4,
+.selected-players h4 {
   margin-top: 0;
   margin-bottom: 15px;
 }

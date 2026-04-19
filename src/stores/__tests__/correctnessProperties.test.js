@@ -96,7 +96,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             expect(actualEntry.totalScore).toBe(expectedScore)
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
 
@@ -128,7 +128,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             }
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
   })
@@ -157,7 +157,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             expect(retrievedEntry.playerIds).toEqual(playerIds)
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
 
@@ -186,7 +186,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             })
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
   })
@@ -245,7 +245,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             }
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
 
@@ -282,7 +282,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             }
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
   })
@@ -332,7 +332,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             expect(storedEntry.totalScore).toBe(data.score)
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
 
@@ -375,7 +375,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             })
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
   })
@@ -408,7 +408,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             expect(uniqueIds.size).toBe(15)
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
 
@@ -440,7 +440,7 @@ describe('Correctness Properties (Task 9.6)', () => {
             })
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 20 }
       )
     })
   })

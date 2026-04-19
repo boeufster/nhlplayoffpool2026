@@ -26,10 +26,10 @@
 
 ## Phase 4: Player Selection Logic
 
-- [x] 4.1 Load NHL players from API
-- [x] 4.2 Implement position filtering (F, D, G)
-- [x] 4.3 Implement player selection (exactly 15)
-- [x] 4.4 Prevent duplicate selections
+- [x] 4.1 Create text input component for player names
+- [x] 4.2 Implement player name parsing (one per line or comma-separated)
+- [x] 4.3 Implement player count validation (exactly 15)
+- [x] 4.4 Prevent duplicate player names
 - [x] 4.5 Implement entry submission with timestamp
 
 ## Phase 5: Scoring Engine
@@ -40,13 +40,13 @@
 - [x] 5.4 Update entry scores
 - [x] 5.5 Log scoring events
 
-## Phase 6: NHL API Integration
+## Phase 6: Manual Scoring Input
 
-- [x] 6.1 Create NHL API client
-- [x] 6.2 Implement polling (every 5 minutes)
-- [x] 6.3 Implement response caching
-- [x] 6.4 Handle API errors gracefully
-- [x] 6.5 Log API interactions
+- [x] 6.1 Create text input component for scoring updates
+- [x] 6.2 Implement scoring update parsing (player name, event type, points)
+- [x] 6.3 Implement scoring update validation
+- [x] 6.4 Process scoring updates and apply to entries
+- [x] 6.5 Log scoring updates with timestamp
 
 ## Phase 7: Admin Panel
 
@@ -72,19 +72,12 @@
 - [x] 9.4 Write tests for standings sorting
 - [x] 9.5 Write tests for data persistence
 - [x] 9.6 Write property-based tests for correctness properties
-
-## Phase 9.5: NHL API Verification
-
-- [x] 9.5.1 Test NHL API endpoints with real data
-- [x] 9.5.2 Verify player data structure and availability
-- [x] 9.5.3 Verify game/score data endpoints
-- [x] 9.5.4 Document API response formats
-- [x] 9.5.5 Create integration test for live API calls
+- [x] 9.7 Write tests for scoring update parsing and validation
 
 ## Phase 10: Deployment
 
 - [x] 10.1 Deploy to Vercel
-- [x] 10.2 Test all features in production
-- [x] 10.3 Create user documentation
-- [x] 10.4 Set up monitoring and error logging
+- [ ] 10.2 Test all features in production
+- [ ] 10.3 Create user documentation
+- [ ] 10.4 Set up monitoring and error logging
 

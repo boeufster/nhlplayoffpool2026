@@ -25,144 +25,149 @@ describe('Player Selection Store (Tasks 4.1-4.5)', () => {
     }
   })
 
-  describe('Task 4.1: Load NHL players from API', () => {
-    it('should load available players with required properties', () => {
+  describe('Task 4.1: Create text input component for player names', () => {
+    it('should parse player names from text input (one per line)', () => {
       const playerSelectionStore = usePlayerSelectionStore()
-      const mockPlayers = [
-        { id: 1, name: 'Connor McDavid', position: 'F', team: 'Edmonton Oilers' },
-        { id: 2, name: 'Cale Makar', position: 'D', team: 'Colorado Avalanche' },
-        { id: 3, name: 'Andrei Vasilevskiy', position: 'G', team: 'Tampa Bay Lightning' }
-      ]
-      playerSelectionStore.setAvailablePlayers(mockPlayers)
-      expect(playerSelectionStore.availablePlayers).toHaveLength(3)
-      expect(playerSelectionStore.availablePlayers[0]).toHaveProperty('id')
-      expect(playerSelectionStore.availablePlayers[0]).toHaveProperty('position')
+      const textInput = 'Connor McDavid\nCale Makar\nAndrei Vasilevskiy'
+      const players = playerSelectionStore.parsePlayerInput(textInput)
+      expect(players).toHaveLength(3)
+      expect(players[0]).toBe('Connor McDavid')
+      expect(players[1]).toBe('Cale Makar')
+      expect(players[2]).toBe('Andrei Vasilevskiy')
+    })
+
+    it('should parse player names from comma-separated input', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const textInput = 'Connor McDavid, Cale Makar, Andrei Vasilevskiy'
+      const players = playerSelectionStore.parsePlayerInput(textInput)
+      expect(players).toHaveLength(3)
+      expect(players[0]).toBe('Connor McDavid')
+      expect(players[1]).toBe('Cale Makar')
+      expect(players[2]).toBe('Andrei Vasilevskiy')
     })
   })
 
-  describe('Task 4.2: Implement position filtering (F, D, G)', () => {
-    beforeEach(() => {
+  describe('Task 4.2: Implement player name parsing (one per line or comma-separated)', () => {
+    it('should trim whitespace from player names', () => {
       const playerSelectionStore = usePlayerSelectionStore()
-      const players = [
-        { id: 1, name: 'Player F1', position: 'F', team: 'Team A' },
-        { id: 2, name: 'Player F2', position: 'F', team: 'Team A' },
-        { id: 3, name: 'Player D1', position: 'D', team: 'Team B' },
-        { id: 4, name: 'Player G1', position: 'G', team: 'Team C' }
-      ]
-      playerSelectionStore.setAvailablePlayers(players)
+      const textInput = '  Connor McDavid  \n  Cale Makar  '
+      const players = playerSelectionStore.parsePlayerInput(textInput)
+      expect(players[0]).toBe('Connor McDavid')
+      expect(players[1]).toBe('Cale Makar')
     })
 
-    it('should filter players by position', () => {
+    it('should handle mixed line endings', () => {
       const playerSelectionStore = usePlayerSelectionStore()
-      expect(playerSelectionStore.getPlayersByPosition('F')).toHaveLength(2)
-      expect(playerSelectionStore.getPlayersByPosition('D')).toHaveLength(1)
-      expect(playerSelectionStore.getPlayersByPosition('G')).toHaveLength(1)
-      expect(playerSelectionStore.getPlayersByPosition('X')).toHaveLength(0)
-    })
-  })
-
-  describe('Task 4.3: Implement player selection (exactly 15)', () => {
-    beforeEach(() => {
-      const playerSelectionStore = usePlayerSelectionStore()
-      const players = Array.from({ length: 20 }, (_, i) => ({
-        id: i + 1,
-        name: `Player ${i + 1}`,
-        position: ['F', 'D', 'G'][i % 3],
-        team: 'Team A'
-      }))
-      playerSelectionStore.setAvailablePlayers(players)
+      const textInput = 'Player 1\r\nPlayer 2\nPlayer 3'
+      const players = playerSelectionStore.parsePlayerInput(textInput)
+      expect(players).toHaveLength(3)
     })
 
-    it('should enforce exactly 15 player selection limit', () => {
+    it('should filter out empty lines', () => {
       const playerSelectionStore = usePlayerSelectionStore()
-      for (let i = 0; i < 15; i++) {
-        playerSelectionStore.selectPlayer(playerSelectionStore.availablePlayers[i])
-      }
-      expect(playerSelectionStore.selectedPlayers).toHaveLength(15)
-      expect(playerSelectionStore.isSelectionComplete).toBe(true)
-      expect(() => {
-        playerSelectionStore.selectPlayer(playerSelectionStore.availablePlayers[15])
-      }).toThrow('Cannot select more than 15 players')
-    })
-
-    it('should allow deselecting to modify selection', () => {
-      const playerSelectionStore = usePlayerSelectionStore()
-      for (let i = 0; i < 15; i++) {
-        playerSelectionStore.selectPlayer(playerSelectionStore.availablePlayers[i])
-      }
-      playerSelectionStore.deselectPlayer(1)
-      expect(playerSelectionStore.selectedPlayers).toHaveLength(14)
-      expect(playerSelectionStore.canSelectMore).toBe(true)
+      const textInput = 'Player 1\n\nPlayer 2\n\n\nPlayer 3'
+      const players = playerSelectionStore.parsePlayerInput(textInput)
+      expect(players).toHaveLength(3)
     })
   })
 
-  describe('Task 4.4: Prevent duplicate selections', () => {
-    beforeEach(() => {
+  describe('Task 4.3: Implement player count validation (exactly 15)', () => {
+    it('should enforce exactly 15 player count', () => {
       const playerSelectionStore = usePlayerSelectionStore()
-      const players = Array.from({ length: 20 }, (_, i) => ({
-        id: i + 1,
-        name: `Player ${i + 1}`,
-        position: ['F', 'D', 'G'][i % 3],
-        team: 'Team A'
-      }))
-      playerSelectionStore.setAvailablePlayers(players)
+      const players14 = Array.from({ length: 14 }, (_, i) => `Player ${i + 1}`)
+      const players15 = Array.from({ length: 15 }, (_, i) => `Player ${i + 1}`)
+      const players16 = Array.from({ length: 16 }, (_, i) => `Player ${i + 1}`)
+
+      expect(playerSelectionStore.validatePlayerCount(players14)).toBe(false)
+      expect(playerSelectionStore.validatePlayerCount(players15)).toBe(true)
+      expect(playerSelectionStore.validatePlayerCount(players16)).toBe(false)
     })
 
-    it('should prevent duplicate selections by player ID', () => {
+    it('should allow submission with exactly 15 players', () => {
       const playerSelectionStore = usePlayerSelectionStore()
-      const player = playerSelectionStore.availablePlayers[0]
-      playerSelectionStore.selectPlayer(player)
-      expect(() => {
-        playerSelectionStore.selectPlayer(player)
-      }).toThrow('Player already selected')
-      const duplicatePlayer = { ...player, name: 'Different Name' }
-      expect(() => {
-        playerSelectionStore.selectPlayer(duplicatePlayer)
-      }).toThrow('Player already selected')
-    })
-
-    it('should allow reselecting after deselection', () => {
-      const playerSelectionStore = usePlayerSelectionStore()
-      const player = playerSelectionStore.availablePlayers[0]
-      playerSelectionStore.selectPlayer(player)
-      playerSelectionStore.deselectPlayer(player.id)
-      playerSelectionStore.selectPlayer(player)
-      expect(playerSelectionStore.selectedPlayers).toHaveLength(1)
-    })
-  })
-
-  describe('Task 4.5: Implement entry submission with timestamp', () => {
-    beforeEach(() => {
-      const playerSelectionStore = usePlayerSelectionStore()
-      const players = Array.from({ length: 20 }, (_, i) => ({
-        id: i + 1,
-        name: `Player ${i + 1}`,
-        position: ['F', 'D', 'G'][i % 3],
-        team: 'Team A'
-      }))
-      playerSelectionStore.setAvailablePlayers(players)
-    })
-
-    it('should submit entry with exactly 15 players and timestamp', () => {
-      const playerSelectionStore = usePlayerSelectionStore()
-      const entriesStore = useEntriesStore()
-      for (let i = 0; i < 15; i++) {
-        playerSelectionStore.selectPlayer(playerSelectionStore.availablePlayers[i])
-      }
-      const entry = entriesStore.createEntry('john@example.com', 'John Doe')
-      const submission = playerSelectionStore.submitEntry(entry.id)
-      expect(submission.playerIds).toHaveLength(15)
-      expect(submission.submittedAt).toBeDefined()
+      const players = Array.from({ length: 15 }, (_, i) => `Player ${i + 1}`)
+      expect(playerSelectionStore.validatePlayerCount(players)).toBe(true)
     })
 
     it('should prevent submission with fewer than 15 players', () => {
       const playerSelectionStore = usePlayerSelectionStore()
-      for (let i = 0; i < 14; i++) {
-        playerSelectionStore.selectPlayer(playerSelectionStore.availablePlayers[i])
-      }
+      const players = Array.from({ length: 14 }, (_, i) => `Player ${i + 1}`)
+      expect(playerSelectionStore.validatePlayerCount(players)).toBe(false)
+    })
+
+    it('should prevent submission with more than 15 players', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const players = Array.from({ length: 16 }, (_, i) => `Player ${i + 1}`)
+      expect(playerSelectionStore.validatePlayerCount(players)).toBe(false)
+    })
+  })
+
+  describe('Task 4.4: Prevent duplicate player names', () => {
+    it('should detect duplicate player names', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const players = ['Connor McDavid', 'Cale Makar', 'Connor McDavid', 'Andrei Vasilevskiy']
+      expect(playerSelectionStore.hasDuplicates(players)).toBe(true)
+    })
+
+    it('should allow unique player names', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const players = ['Connor McDavid', 'Cale Makar', 'Andrei Vasilevskiy']
+      expect(playerSelectionStore.hasDuplicates(players)).toBe(false)
+    })
+
+    it('should be case-sensitive for duplicates', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const players = ['Connor McDavid', 'connor mcdavid']
+      expect(playerSelectionStore.hasDuplicates(players)).toBe(false)
+    })
+
+    it('should validate player names are non-empty', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const players = ['Connor McDavid', '', 'Cale Makar']
+      expect(playerSelectionStore.validatePlayerNames(players)).toBe(false)
+    })
+  })
+
+  describe('Task 4.5: Implement entry submission with timestamp', () => {
+    it('should submit entry with exactly 15 players and timestamp', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const entriesStore = useEntriesStore()
+      const players = Array.from({ length: 15 }, (_, i) => `Player ${i + 1}`)
+      
+      const entry = entriesStore.createEntry('john@example.com', 'John Doe')
+      const submission = playerSelectionStore.submitEntry(entry.id, players)
+      
+      expect(submission.playerIds).toHaveLength(15)
+      expect(submission.submittedAt).toBeDefined()
+      expect(new Date(submission.submittedAt)).toBeInstanceOf(Date)
+    })
+
+    it('should prevent submission with fewer than 15 players', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const players = Array.from({ length: 14 }, (_, i) => `Player ${i + 1}`)
+      
       expect(() => {
-        playerSelectionStore.submitEntry('entry-123')
+        playerSelectionStore.submitEntry('entry-123', players)
       }).toThrow('Must select exactly 15 players')
+    })
+
+    it('should prevent submission with more than 15 players', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const players = Array.from({ length: 16 }, (_, i) => `Player ${i + 1}`)
+      
+      expect(() => {
+        playerSelectionStore.submitEntry('entry-123', players)
+      }).toThrow('Must select exactly 15 players')
+    })
+
+    it('should prevent submission with duplicate player names', () => {
+      const playerSelectionStore = usePlayerSelectionStore()
+      const players = Array.from({ length: 14 }, (_, i) => `Player ${i + 1}`)
+      players.push('Player 1') // Duplicate
+      
+      expect(() => {
+        playerSelectionStore.submitEntry('entry-123', players)
+      }).toThrow('Duplicate player names not allowed')
     })
   })
 })

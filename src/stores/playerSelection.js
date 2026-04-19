@@ -57,14 +57,62 @@ export const usePlayerSelectionStore = defineStore('playerSelection', () => {
     return selectedPlayers.value.filter(p => p.position === position)
   }
 
-  const submitEntry = (entryId) => {
-    if (!isSelectionComplete.value) {
+  const parsePlayerInput = (textInput) => {
+    if (!textInput) return []
+    
+    // Try comma-separated first
+    if (textInput.includes(',')) {
+      return textInput
+        .split(',')
+        .map(name => name.trim())
+        .filter(name => name.length > 0)
+    }
+    
+    // Otherwise split by lines
+    return textInput
+      .split(/\r?\n/)
+      .map(name => name.trim())
+      .filter(name => name.length > 0)
+  }
+
+  const validatePlayerCount = (players) => {
+    return Array.isArray(players) && players.length === MAX_PLAYERS
+  }
+
+  const validatePlayerNames = (players) => {
+    if (!Array.isArray(players)) return false
+    return players.every(name => typeof name === 'string' && name.trim().length > 0)
+  }
+
+  const hasDuplicates = (players) => {
+    if (!Array.isArray(players)) return false
+    const seen = new Set()
+    for (const player of players) {
+      if (seen.has(player)) return true
+      seen.add(player)
+    }
+    return false
+  }
+
+  const submitEntry = (entryId, players) => {
+    // Validate count
+    if (!validatePlayerCount(players)) {
       throw new Error(`Must select exactly ${MAX_PLAYERS} players`)
+    }
+
+    // Validate names
+    if (!validatePlayerNames(players)) {
+      throw new Error('Invalid player names')
+    }
+
+    // Check for duplicates
+    if (hasDuplicates(players)) {
+      throw new Error('Duplicate player names not allowed')
     }
 
     return {
       entryId,
-      playerIds: getSelectedPlayerIds(),
+      playerIds: players,
       submittedAt: new Date().toISOString()
     }
   }
@@ -83,6 +131,10 @@ export const usePlayerSelectionStore = defineStore('playerSelection', () => {
     isSelectionComplete,
     getPlayersByPosition,
     getSelectedPlayersByPosition,
+    parsePlayerInput,
+    validatePlayerCount,
+    validatePlayerNames,
+    hasDuplicates,
     submitEntry
   }
 })

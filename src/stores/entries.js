@@ -45,6 +45,15 @@ export const useEntriesStore = defineStore('entries', () => {
     }
   }
 
+  const setEntryPlayerNames = (entryId, playerNames) => {
+    const entry = getEntry(entryId)
+    if (entry) {
+      entry.playerNames = playerNames
+      entry.submittedAt = new Date().toISOString()
+      saveToStorage()
+    }
+  }
+
   const saveToStorage = () => {
     try {
       if (typeof localStorage !== 'undefined' && localStorage) {
@@ -82,6 +91,7 @@ export const useEntriesStore = defineStore('entries', () => {
     getEntry,
     updateEntryScore,
     setEntryPlayers,
+    setEntryPlayerNames,
     loadFromStorage
   }
 })

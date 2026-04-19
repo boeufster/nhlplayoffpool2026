@@ -22,7 +22,7 @@ Given 6 participants, this is a lightweight single-page application with minimal
 ┌──────────────────────────────────────────┐
 │         Vue.js 3 SPA (Frontend)          │
 │  - Standings Display                     │
-│  - Player Selection                      │
+│  - Player Selection (text input)         │
 │  - Admin Panel (password protected)      │
 │  - State Management (Pinia)              │
 └──────────────────────────────────────────┘
@@ -32,12 +32,6 @@ Given 6 participants, this is a lightweight single-page application with minimal
 │  - Participants, Entries, Scores         │
 │  - Scoring Events Log                    │
 └──────────────────────────────────────────┘
-           ↓
-┌──────────────────────────────────────────┐
-│   NHL.com API (Read-Only)                │
-│  - Poll every 5 minutes for scores       │
-│  - No authentication required            │
-└──────────────────────────────────────────┘
 ```
 
 ### Technology Stack (Simplified)
@@ -45,7 +39,6 @@ Given 6 participants, this is a lightweight single-page application with minimal
 **Frontend Only:**
 - Framework: Vue.js 3 (SPA framework)
 - State Management: Pinia (Vue state management)
-- HTTP Client: Axios (for NHL API calls)
 - Storage: Browser LocalStorage (no backend needed)
 - Build Tool: Vite (fast build and dev server)
 
@@ -56,23 +49,26 @@ Given 6 participants, this is a lightweight single-page application with minimal
   - No backend infrastructure needed
   - Perfect for 6-person pool
 
-**External Integration:**
-- NHL.com Official API (statsapi.web.nhl.com): Free, no authentication required
+**No External Integration:**
+- Manual data entry via text boxes
+- No API calls required
 
 ### Data Flow
 
 ```
-External NHL API
+Admin enters player names (text box)
        ↓
-   API Client (polls every 5 minutes)
+   Player Selection stored
        ↓
-   Scoring Engine (processes events)
+Admin enters scoring updates (text box)
+       ↓
+   Scoring Engine processes updates
        ↓
    Entry Score Updates
        ↓
    Standings Recalculation
        ↓
-   UI Refresh (real-time display)
+   UI Refresh
 ```
 
 ## Components and Interfaces
@@ -101,24 +97,22 @@ AdminPanel
 ```
 
 #### 2. Player Selector
-**Responsibility:** Allow participants to select exactly 15 players
+**Responsibility:** Allow participants to enter 15 player names via text input
 
 **Key Features:**
-- Display all eligible NHL players
-- Filter by position (F, D, G)
-- Select/deselect players
-- Validate exactly 15 selected
+- Text input box for entering player names (one per line or comma-separated)
+- Parse and validate player names
+- Validate exactly 15 players entered
 - Submit entry with timestamp
 
 **Interfaces:**
 ```
 PlayerSelector
-├── loadPlayers()
-├── filterByPosition(position)
-├── selectPlayer(playerId)
-├── deselectPlayer(playerId)
-├── validateSelection()
-└── submitEntry()
+├── parsePlayerInput(text)
+├── validatePlayerCount(players)
+├── validatePlayerNames(players)
+├── submitEntry()
+└── getSelectedPlayers()
 ```
 
 #### 3. Scoring Engine
@@ -157,22 +151,24 @@ StandingsDisplay
 └── formatForDisplay()
 ```
 
-#### 5. NHL API Client
-**Responsibility:** Fetch scoring data
+#### 5. Scoring Updates Handler
+**Responsibility:** Accept manual scoring updates from admin
 
 **Key Features:**
-- Poll NHL API every 5 minutes
-- Cache responses
-- Handle errors gracefully
-- Log API interactions
+- Text input box for entering scoring updates
+- Parse scoring update format (player name, event type, points)
+- Validate scoring data
+- Process updates and apply to entries
+- Log all updates
 
 **Interfaces:**
 ```
-APIClient
-├── pollScoringEvents()
-├── getScoringEvent(eventId)
-├── cacheResponse(key, data)
-└── handleError(error)
+ScoringUpdatesHandler
+├── parseScoringInput(text)
+├── validateScoringData(updates)
+├── processScoringUpdates(updates)
+├── logUpdate(update)
+└── getScoringHistory()
 ```
 
 ## Data Models (Simplified)
@@ -201,10 +197,9 @@ APIClient
 ### Player
 ```
 {
-  id: string (NHL API ID),
+  id: string (unique identifier, generated locally),
   name: string,
-  position: string (F, D, G),
-  team: string
+  entryId: string (which entry this player belongs to)
 }
 ```
 
@@ -231,23 +226,59 @@ APIClient
 
 ## Error Handling
 
-### API Integration Errors
-- **Connection Failure:** Log error, continue with manual scoring capability, display status in admin console
-- **Rate Limiting:** Implement exponential backoff, queue requests, notify admin
-- **Invalid Response:** Log error, skip event, continue processing
-
 ### Data Validation Errors
-- **Invalid Player Selection:** Display error message, prevent submission
-- **Duplicate Selection:** Prevent selection, display warning
-- **Score Update Failure:** Log error, retry with exponential backoff
+
+**Invalid Player Names:**
+- Validate player names are non-empty strings
+- Display error if invalid
+- Prevent entry submission
+
+**Invalid Player Count:**
+- Validate exactly 15 players entered
+- Display error if count is wrong
+- Prevent entry submission
+
+**Duplicate Player Names:**
+- Prevent duplicate player names within an entry
+- Display warning message
+- Maintain current valid selection
+
+**Invalid Scoring Update:**
+- Validate scoring update format
+- Display error if format is invalid
+- Prevent update processing
 
 ### Authentication/Authorization Errors
-- **Invalid Admin Password:** Log attempt, display error message
-- **Unauthorized Access:** Redirect to public standings view
+
+**Invalid Admin Password:**
+- Log failed attempt with timestamp and IP
+- Display error message
+- Limit login attempts (max 5 per minute)
+- Implement account lockout after 10 failed attempts
+
+**Unauthorized Access to Admin Console:**
+- Redirect to public standings view
+- Log unauthorized access attempt
 
 ### Data Persistence Errors
-- **Storage Full:** Log error, attempt cleanup, notify admin
-- **Corrupted Data:** Log error, attempt recovery from backup
+
+**Storage Full:**
+- Log error
+- Attempt to clean up old cached data
+- Notify admin
+- Prevent new data writes if cleanup fails
+
+**Corrupted Data on Load:**
+- Log corruption details
+- Attempt recovery from backup if available
+- Display error to user
+- Provide manual recovery options
+
+**Transaction Failure:**
+- Rollback transaction
+- Log error with details
+- Retry operation
+- Notify admin if persistent
 
 ## Testing Strategy
 
@@ -576,10 +607,10 @@ Property-based tests will verify universal correctness properties across all inp
 Unit tests verify specific examples, edge cases, and error conditions with concrete test data.
 
 **Scoring Engine Tests:**
-- Goal scoring: Create entry with player, process goal event, verify 1 point awarded
-- Assist scoring: Create entry with player, process assist event, verify 1 point awarded
-- Win scoring: Create entry with goalie, process win event, verify 1 point awarded
-- Shutout scoring: Create entry with goalie, process shutout event, verify 3 points total (1 for win + 2 for shutout)
+- Goal scoring: Create entry with player, process goal update, verify 1 point awarded
+- Assist scoring: Create entry with player, process assist update, verify 1 point awarded
+- Win scoring: Create entry with goalie, process win update, verify 1 point awarded
+- Shutout scoring: Create entry with goalie, process shutout update, verify 3 points total (1 for win + 2 for shutout)
 - Duplicate event prevention: Process same event twice, verify points awarded only once
 - Event logging: Process event, verify log entry created with timestamp and affected entries
 
@@ -587,8 +618,9 @@ Unit tests verify specific examples, edge cases, and error conditions with concr
 - Selection with 14 players: Verify submission is prevented
 - Selection with 15 players: Verify submission is enabled
 - Selection with 16 players: Verify selection is prevented with error message
-- Duplicate player selection: Verify duplicate is prevented
+- Duplicate player names: Verify duplicate is prevented
 - Empty entry: Verify new entry has empty player list and zero score
+- Invalid player names: Verify empty or invalid names are rejected
 
 **Data Model Tests:**
 - Participant creation: Create participant, verify email is unique identifier
@@ -600,11 +632,7 @@ Unit tests verify specific examples, edge cases, and error conditions with concr
 - Participant display: Create participants, verify all displayed with correct entry counts
 - Manual score update: Update score manually, verify logged with timestamp and admin ID
 - Export functionality: Export data, verify CSV contains all required fields
-
-**API Integration Tests:**
-- Connection failure: Simulate API unavailability, verify system continues with manual scoring
-- Rate limiting: Simulate HTTP 429, verify exponential backoff is implemented
-- Caching: Make duplicate requests, verify second request returns cached response
+- Scoring update parsing: Parse various scoring update formats, verify correct interpretation
 
 ### Property-Based Testing
 
@@ -657,8 +685,7 @@ restart and is retrievable without corruption.
 ### Integration Testing
 
 Integration tests verify that components work together correctly:
-- Admin creates participant → Entry created → Player selection → Score update → Standings updated
-- API polling → Event processing → Score update → Standings refresh
+- Admin creates participant → Entry created → Player names entered → Score update → Standings updated
 - Manual score update → Logging → Standings update
 - Export → CSV generation with all required data
 
@@ -667,6 +694,6 @@ Integration tests verify that components work together correctly:
 - Scoring Engine: 100% coverage of all scoring rules
 - Validation Logic: 100% coverage of all validation rules
 - Data Persistence: 100% coverage of save/load operations
-- API Integration: 95% coverage (excluding external API failures)
+- Input Parsing: 95% coverage (player names and scoring updates)
 - Overall: Minimum 85% code coverage
 
