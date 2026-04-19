@@ -51,11 +51,11 @@
       <!-- Selected Players Display Section -->
       <div class="selected-players-section">
         <h3>Selected Players</h3>
-        <div v-if="selectedPlayers.length === 0" class="no-players">
+        <div v-if="submittedPlayers.length === 0" class="no-players">
           No players selected yet
         </div>
         <div v-else class="players-list">
-          <div v-for="(player, idx) in selectedPlayers" :key="player.id" class="player-item">
+          <div v-for="(player, idx) in submittedPlayers" :key="player.id" class="player-item">
             <span class="player-number">{{ idx + 1 }}.</span>
             <span class="player-name">{{ player.name }}</span>
           </div>
@@ -89,6 +89,7 @@ export default {
     const playerNamesInput = ref('')
     const detectedPlayerCount = ref(0)
     const textInputError = ref('')
+    const submittedPlayers = ref([])
 
     const MAX_PLAYERS = 15
     const positions = ['F', 'D', 'G']
@@ -232,8 +233,14 @@ export default {
           .map(name => name.trim())
           .filter(name => name.length > 0)
 
-        // Store the player names (parsing logic will be handled in next task)
+        // Store the player names
         entriesStore.setEntryPlayerNames(entry.id, playerNames)
+        
+        // Update submitted players list for display
+        submittedPlayers.value = playerNames.map((name, idx) => ({
+          id: idx,
+          name: name
+        }))
 
         // Clear input for next entry
         clearTextInput()
@@ -319,6 +326,7 @@ export default {
       playerNamesInput,
       detectedPlayerCount,
       textInputError,
+      submittedPlayers,
       updatePlayerCount,
       clearTextInput,
       submitTextInput
