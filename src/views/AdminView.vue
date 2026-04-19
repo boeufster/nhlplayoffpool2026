@@ -93,13 +93,13 @@
       <!-- Scoring Updates from Player Events Section -->
       <section class="admin-section">
         <h3>Scoring Updates from Player Stats</h3>
-        <p class="section-description">Paste player stats in table format (RK, NAME, POS, GP, G, A, PTS)</p>
-        <p class="section-description">Format: RK | NAME (with team code) | POS | GP | G | A | PTS</p>
-        <p class="section-description">Example: 1 | Mats Zuccarello MIN | RW | 1 | 0 | 3 | 3</p>
+        <p class="section-description">Paste player stats in table format (NAME, PTS)</p>
+        <p class="section-description">Format: NAME  PTS</p>
+        <p class="section-description">Example: Mats Zuccarello  3</p>
         <div class="form-group">
           <textarea 
             v-model="playerStatsInput" 
-            placeholder="RK  NAME                    POS  GP  G   A   PTS&#10;1   Mats Zuccarello MIN     RW   1   0   3   3&#10;2   Kirill Kaprizov MIN     LW   1   1   2   3"
+            placeholder="Mats Zuccarello  3&#10;Kirill Kaprizov  3&#10;Matt Boldy  3"
             class="player-stats-input"
           ></textarea>
           <button @click="processPlayerStats" class="btn-primary">Process Stats</button>
@@ -109,8 +109,8 @@
         <div class="player-stats-results" v-if="playerStatsResults.length > 0">
           <h4>Processing Results</h4>
           <div v-for="(result, idx) in playerStatsResults" :key="idx" class="result-entry" :class="{ success: result.success, failure: !result.success }">
-            <p><strong>{{ result.playerName }}</strong> ({{ result.team }}) - {{ result.position }}</p>
-            <p class="result-detail">Goals: {{ result.goals }} | Assists: {{ result.assists }} | Points: {{ result.points }}</p>
+            <p><strong>{{ result.playerName }}</strong></p>
+            <p class="result-detail">Points: {{ result.points }}</p>
             <p v-if="!result.success" class="result-detail error-detail">{{ result.reason }}</p>
           </div>
         </div>
@@ -118,7 +118,7 @@
           <h4>Stats Update History</h4>
           <p v-if="playerStatsUpdateLogs.length === 0">No stats updates yet</p>
           <div v-for="(log, idx) in playerStatsUpdateLogs" :key="idx" class="log-entry" :class="{ success: log.success, failure: !log.success }">
-            <p><strong>{{ log.playerName }}</strong> ({{ log.team }}) - G: {{ log.goals }} | A: {{ log.assists }} | PTS: {{ log.points }}</p>
+            <p><strong>{{ log.playerName }}</strong> - PTS: {{ log.points }}</p>
             <p class="timestamp">{{ formatTime(log.timestamp) }}</p>
             <p v-if="!log.success" class="error-detail">{{ log.reason }}</p>
           </div>
@@ -656,7 +656,7 @@ export default {
         return
       }
 
-      // Parse player stats table format
+      // Parse player stats table format: NAME  PTS
       const lines = playerStatsInput.value.trim().split('\n')
       const results = []
       let successCount = 0
@@ -665,64 +665,39 @@ export default {
       for (const line of lines) {
         if (!line.trim()) continue
 
-        // Parse line: RK | NAME | POS | GP | G | A | PTS
-        // Support both pipe-separated and whitespace-separated formats
-        const parts = line.includes('|') 
-          ? line.split('|').map(p => p.trim())
-          : line.split(/\s+/)
+        // Parse line: NAME  PTS (whitespace-separated)
+        const parts = line.trim().split(/\s+/)
 
-        if (parts.length < 7) {
+        if (parts.length < 2) {
           results.push({
             success: false,
-            reason: 'Invalid format. Expected: RK | NAME | POS | GP | G | A | PTS'
+            reason: 'Invalid format. Expected: NAME  PTS'
           })
           failureCount++
           continue
         }
 
         try {
-          const rk = parseInt(parts[0])
-          const nameWithTeam = parts[1]
-          const pos = parts[2]
-          const gp = parseInt(parts[3])
-          const g = parseInt(parts[4])
-          const a = parseInt(parts[5])
-          const pts = parseInt(parts[6])
+          // Last part is PTS, everything before is NAME
+          const pts = parseInt(parts[parts.length - 1])
+          const playerName = parts.slice(0, -1).join(' ')
 
           // Validate
-          if (isNaN(rk) || isNaN(gp) || isNaN(g) || isNaN(a) || isNaN(pts)) {
-            results.push({
-              success: false,
-              playerName: nameWithTeam,
-              reason: 'Invalid numeric values'
-            })
-            failureCount++
-            continue
-          }
-
-          if (pts !== g + a) {
-            results.push({
-              success: false,
-              playerName: nameWithTeam,
-              reason: `Points mismatch: ${pts} !== ${g} + ${a}`
-            })
-            failureCount++
-            continue
-          }
-
-          // Extract name and team
-          const nameParts = nameWithTeam.trim().split(/\s+/)
-          const team = nameParts[nameParts.length - 1]
-          const playerName = nameParts.slice(0, -1).join(' ')
-
-          // Validate position
-          const validPositions = ['RW', 'LW', 'C', 'D']
-          if (!validPositions.includes(pos)) {
+          if (isNaN(pts)) {
             results.push({
               success: false,
               playerName,
-              team,
-              reason: `Invalid position: ${pos}`
+              reason: 'Invalid points value'
+            })
+            failureCount++
+            continue
+          }
+
+          if (pts < 0) {
+            results.push({
+              success: false,
+              playerName,
+              reason: 'Points cannot be negative'
             })
             failureCount++
             continue
@@ -731,11 +706,6 @@ export default {
           // Log the stats update
           const log = {
             playerName,
-            team,
-            position: pos,
-            gamesPlayed: gp,
-            goals: g,
-            assists: a,
             points: pts,
             timestamp: new Date().toISOString(),
             success: true
@@ -745,11 +715,6 @@ export default {
           results.push({
             success: true,
             playerName,
-            team,
-            position: pos,
-            gamesPlayed: gp,
-            goals: g,
-            assists: a,
             points: pts
           })
           successCount++
