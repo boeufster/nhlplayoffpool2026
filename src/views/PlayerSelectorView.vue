@@ -48,68 +48,16 @@
         </div>
       </div>
 
-      <!-- Grid-based Selection Section (Optional) -->
-      <div class="grid-selection-section">
-        <h3>Or Select from Grid</h3>
-        
-        <div class="position-filters">
-          <label>Filter by Position:</label>
-          <button
-            v-for="pos in positions"
-            :key="pos"
-            @click="selectedPosition = selectedPosition === pos ? null : pos"
-            :class="{ active: selectedPosition === pos }"
-          >
-            {{ positionLabels[pos] }}
-          </button>
+      <!-- Selected Players Display Section -->
+      <div class="selected-players-section">
+        <h3>Selected Players</h3>
+        <div v-if="selectedPlayers.length === 0" class="no-players">
+          No players selected yet
         </div>
-
-        <div class="selection-status">
-          <p>Selected: <strong>{{ selectedPlayers.length }}/{{ MAX_PLAYERS }}</strong></p>
-          <button
-            @click="submitSelection"
-            :disabled="!isSelectionComplete || !selectedParticipantEmail"
-            class="submit-btn"
-          >
-            Submit Selection
-          </button>
-          <button @click="clearSelection" class="clear-btn">Clear Selection</button>
-        </div>
-
-        <div class="content">
-          <div class="available-players">
-            <h4>Available Players</h4>
-            <div class="players-grid">
-              <div
-                v-for="player in filteredAvailablePlayers"
-                :key="player.id"
-                class="player-card available"
-                @click="selectPlayer(player)"
-              >
-                <div class="player-name">{{ player.name }}</div>
-                <div class="player-info">
-                  {{ player.position }} - {{ player.team }}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="selected-players">
-            <h4>Selected Players ({{ selectedPlayers.length }}/{{ MAX_PLAYERS }})</h4>
-            <div class="players-grid">
-              <div
-                v-for="player in selectedPlayers"
-                :key="player.id"
-                class="player-card selected"
-                @click="deselectPlayer(player.id)"
-              >
-                <div class="player-name">{{ player.name }}</div>
-                <div class="player-info">
-                  {{ player.position }} - {{ player.team }}
-                </div>
-                <div class="remove-hint">Click to remove</div>
-              </div>
-            </div>
+        <div v-else class="players-list">
+          <div v-for="(player, idx) in selectedPlayers" :key="player.id" class="player-item">
+            <span class="player-number">{{ idx + 1 }}.</span>
+            <span class="player-name">{{ player.name }}</span>
           </div>
         </div>
       </div>
@@ -651,6 +599,54 @@ export default {
   color: #666;
   margin-top: 5px;
   font-style: italic;
+}
+
+/* Selected Players Section */
+.selected-players-section {
+  padding: 20px;
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.selected-players-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.no-players {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  gap: 12px;
+}
+
+.player-number {
+  font-weight: 600;
+  color: #666;
+  min-width: 30px;
+}
+
+.player-name {
+  flex: 1;
+  color: #333;
 }
 
 @media (max-width: 1024px) {
