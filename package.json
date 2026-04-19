@@ -1,0 +1,25 @@
+{
+  "name": "nhl-playoff-pool",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:run": "vitest --run"
+  },
+  "dependencies": {
+    "axios": "^1.5.0",
+    "pinia": "^2.1.6",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.3.4",
+    "fast-check": "^3.13.0",
+    "jsdom": "^29.0.2",
+    "terser": "^5.46.1",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.6"
+  }
+}
