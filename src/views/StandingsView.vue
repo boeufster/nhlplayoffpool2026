@@ -1,6 +1,7 @@
 <template>
   <div class="standings-view">
     <h2>Standings</h2>
+    <p v-if="lastUpdated" class="last-updated">Stats updated: {{ lastUpdated }}</p>
     <div v-if="entries.length === 0" class="empty-state">
       <p>No entries yet</p>
     </div>
@@ -97,10 +98,22 @@ export default {
       })
     })
 
+    const lastUpdated = computed(() => {
+      if (scoresStore.scoringEvents.length === 0) return null
+      const dates = scoresStore.scoringEvents
+        .map(e => e.createdAt)
+        .filter(Boolean)
+        .map(d => new Date(d))
+      if (dates.length === 0) return null
+      const latest = new Date(Math.max(...dates))
+      return latest.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
+    })
+
     return {
       entries,
       sortedEntries,
-      latestPlayerStats
+      latestPlayerStats,
+      lastUpdated
     }
   }
 }
@@ -108,7 +121,8 @@ export default {
 
 <style scoped>
 .standings-view { padding: 0; }
-.standings-view h2 { margin: 0 0 20px 0; color: var(--text-heading); font-size: 1.8rem; font-weight: 700; }
+.standings-view h2 { margin: 0 0 4px 0; color: var(--text-heading); font-size: 1.8rem; font-weight: 700; }
+.last-updated { color: var(--text-secondary); font-size: 0.8rem; margin: 0 0 16px 0; }
 .empty-state { text-align: center; padding: 60px 40px; color: var(--text-secondary); border: 1px dashed var(--border-color); border-radius: 4px; }
 .standings-table { width: 100%; border-collapse: collapse; background: var(--bg-card); }
 .standings-table th { background: var(--bg-card) !important; color: var(--text-secondary) !important; padding: 10px 12px; text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border-color) !important; font-size: 0.75rem; }
