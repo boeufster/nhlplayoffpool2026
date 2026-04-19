@@ -15,6 +15,9 @@
     <div v-else class="admin-content">
       <button @click="logout" class="logout-btn">Logout</button>
 
+      <!-- Global API Error -->
+      <p v-if="apiError" class="error api-error">{{ apiError }}</p>
+
       <!-- Participants Section -->
       <section class="admin-section">
         <h3>Participants Management</h3>
@@ -23,8 +26,8 @@
           <input v-model="newParticipant.email" placeholder="Email" type="email" />
           <input v-model.number="newParticipant.entryFee" placeholder="Entry Fee ($)" type="number" />
           <button @click="addParticipant" class="btn-primary">Add Participant</button>
-          <p v-if="participantError" class="error">{{ participantError }}</p>
         </div>
+        <p v-if="participantError" class="error">{{ participantError }}</p>
         <div class="participant-list">
           <p v-if="participants.length === 0">No participants yet</p>
           <div v-for="participant in participants" :key="participant.email" class="participant-item">
@@ -32,7 +35,7 @@
               <strong>{{ participant.name }}</strong>
               <p class="email">{{ participant.email }}</p>
               <p class="fee">${{ participant.entryFee }} entry fee</p>
-              <p class="entry-count">{{ participant.entryCount }} entries</p>
+              <p class="entry-count">{{ getEntryCount(participant.email) }} entries</p>
             </div>
             <button @click="removeParticipant(participant.email)" class="btn-danger">Remove</button>
           </div>
@@ -50,15 +53,15 @@
             </option>
           </select>
           <button @click="createEntry" class="btn-primary">Create Entry</button>
-          <p v-if="entryError" class="error">{{ entryError }}</p>
         </div>
+        <p v-if="entryError" class="error">{{ entryError }}</p>
         <div class="entries-list">
           <p v-if="entries.length === 0">No entries yet</p>
           <div v-for="entry in entries" :key="entry.id" class="entry-item">
             <div>
               <strong>{{ entry.participantName }}</strong>
               <p class="entry-id">ID: {{ entry.id }}</p>
-              <p class="players">Players: {{ entry.playerIds.length }}/15</p>
+              <p class="players">Players: {{ (entry.playerNames || entry.playerIds || []).length }}/15</p>
               <p class="score">Score: {{ entry.totalScore }} pts</p>
             </div>
             <button @click="removeEntry(entry.id)" class="btn-danger">Remove</button>
@@ -66,22 +69,52 @@
         </div>
       </section>
 
-      <!-- Scoring Updates from Player Events Section -->
+      <!-- Assign Players to Entry Section -->
+      <section class="admin-section">
+        <h3>Assign Players to Entry</h3>
+        <div class="form-group">
+          <select v-model="assignForm.email" @change="onAssignParticipantChange">
+            <option value="">Select Participant</option>
+            <option v-for="p in participants" :key="p.email" :value="p.email">
+              {{ p.name }}
+            </option>
+          </select>
+          <select v-model="assignForm.entryId">
+            <option value="">Select Entry</option>
+            <option v-for="entry in assignParticipantEntries" :key="entry.id" :value="entry.id">
+              {{ entry.id }} ({{ (entry.playerNames || entry.playerIds || []).length }} players)
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea
+            v-model="assignForm.playerNamesText"
+            placeholder="Enter 15 player names (one per line)"
+            class="player-names-textarea"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <button @click="assignPlayers" class="btn-primary">Assign Players</button>
+        </div>
+        <p v-if="assignError" class="error">{{ assignError }}</p>
+        <p v-if="assignSuccess" class="success">{{ assignSuccess }}</p>
+      </section>
+
+      <!-- Scoring Updates from Player Stats Section -->
       <section class="admin-section">
         <h3>Scoring Updates from Player Stats</h3>
-        <p class="section-description">Paste player stats in table format (NAME, PTS)</p>
-        <p class="section-description">Format: NAME  PTS</p>
+        <p class="section-description">Paste player stats (NAME  PTS, one per line)</p>
         <p class="section-description">Example: Mats Zuccarello  3</p>
         <div class="form-group">
-          <textarea 
-            v-model="playerStatsInput" 
+          <textarea
+            v-model="playerStatsInput"
             placeholder="Mats Zuccarello  3&#10;Kirill Kaprizov  3&#10;Matt Boldy  3"
             class="player-stats-input"
           ></textarea>
           <button @click="processPlayerStats" class="btn-primary">Process Stats</button>
-          <p v-if="playerStatsError" class="error">{{ playerStatsError }}</p>
-          <p v-if="playerStatsSuccess" class="success">{{ playerStatsSuccess }}</p>
         </div>
+        <p v-if="playerStatsError" class="error">{{ playerStatsError }}</p>
+        <p v-if="playerStatsSuccess" class="success">{{ playerStatsSuccess }}</p>
         <div class="player-stats-results" v-if="playerStatsResults.length > 0">
           <h4>Processing Results</h4>
           <div v-for="(result, idx) in playerStatsResults" :key="idx" class="result-entry" :class="{ success: result.success, failure: !result.success }">
@@ -90,15 +123,30 @@
             <p v-if="!result.success" class="result-detail error-detail">{{ result.reason }}</p>
           </div>
         </div>
-        <div class="player-stats-update-log">
-          <h4>Stats Update History</h4>
-          <p v-if="playerStatsUpdateLogs.length === 0">No stats updates yet</p>
-          <div v-else class="compact-stats-list">
-            <div v-for="(log, idx) in playerStatsUpdateLogs.slice().reverse()" :key="idx" class="compact-stat-line">
-              <span class="player-name">{{ log.playerName }}</span>
-              <span class="player-pts">{{ log.points }} pts</span>
-              <span class="player-time">{{ formatTime(log.timestamp) }}</span>
-            </div>
+      </section>
+
+      <!-- Goalie Stats Section -->
+      <section class="admin-section">
+        <h3>Goalie Stats</h3>
+        <p class="section-description">Paste goalie stats (NAME  WINS  SHUTOUTS, one per line)</p>
+        <p class="section-description">Scoring: 1 pt per win + 2 extra pts per shutout</p>
+        <p class="section-description">Example: Frederik Andersen  1  1  (= 3 pts)</p>
+        <div class="form-group">
+          <textarea
+            v-model="goalieStatsInput"
+            placeholder="Frederik Andersen  1  1&#10;Jesper Wallstedt  1  0&#10;Dan Vladar  1  0"
+            class="player-stats-input"
+          ></textarea>
+          <button @click="processGoalieStats" class="btn-primary">Process Goalie Stats</button>
+        </div>
+        <p v-if="goalieStatsError" class="error">{{ goalieStatsError }}</p>
+        <p v-if="goalieStatsSuccess" class="success">{{ goalieStatsSuccess }}</p>
+        <div class="player-stats-results" v-if="goalieStatsResults.length > 0">
+          <h4>Goalie Processing Results</h4>
+          <div v-for="(result, idx) in goalieStatsResults" :key="idx" class="result-entry" :class="{ success: result.success, failure: !result.success }">
+            <p><strong>{{ result.playerName }}</strong></p>
+            <p class="result-detail">Wins: {{ result.wins }}, Shutouts: {{ result.shutouts }} → {{ result.points }} pts</p>
+            <p v-if="!result.success" class="result-detail error-detail">{{ result.reason }}</p>
           </div>
         </div>
       </section>
@@ -108,32 +156,6 @@
         <h3>Export Data</h3>
         <button @click="exportToCSV" class="btn-primary">Export Standings to CSV</button>
         <p v-if="exportMessage" class="success">{{ exportMessage }}</p>
-      </section>
-
-      <!-- Latest Player Stats Section -->
-      <section class="admin-section">
-        <h3>Latest Player Stats</h3>
-        <div v-if="playerStatsUpdateLogs.length === 0" class="no-data">
-          No player stats recorded yet
-        </div>
-        <div v-else class="player-stats-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Player Name</th>
-                <th>Points</th>
-                <th>Updated</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(log, idx) in playerStatsUpdateLogs.slice().reverse()" :key="idx">
-                <td>{{ log.playerName }}</td>
-                <td>{{ log.points }}</td>
-                <td>{{ formatTime(log.timestamp) }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </section>
 
       <!-- Summary Section -->
@@ -167,8 +189,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useParticipantsStore } from '../stores/participants'
 import { useEntriesStore } from '../stores/entries'
 import { useScoresStore } from '../stores/scores'
-import { useScoringUpdatesStore } from '../stores/scoringUpdates'
-import { usePlayerRegistryStore } from '../stores/playerRegistry'
+import { apiService } from '../services/apiService'
 
 export default {
   name: 'AdminView',
@@ -176,106 +197,90 @@ export default {
     const participantsStore = useParticipantsStore()
     const entriesStore = useEntriesStore()
     const scoresStore = useScoresStore()
-    const scoringUpdatesStore = useScoringUpdatesStore()
-    const playerRegistryStore = usePlayerRegistryStore()
 
     const isAuthenticated = ref(false)
     const password = ref('')
     const authError = ref('')
+    const apiError = ref('')
     const adminPassword = 'admin123'
-    const adminId = 'admin'
 
     // Participant form
-    const newParticipant = ref({
-      name: '',
-      email: '',
-      entryFee: 20
-    })
+    const newParticipant = ref({ name: '', email: '', entryFee: 20 })
     const participantError = ref('')
 
     // Entry form
-    const newEntry = ref({
-      email: ''
-    })
+    const newEntry = ref({ email: '' })
     const entryError = ref('')
     const exportMessage = ref('')
 
-    // Manual score update logs
-    const scoreLogs = ref([])
-
-    // Scoring updates form
-    const scoringUpdateInput = ref('')
-    const scoringUpdateError = ref('')
-    const scoringUpdateSuccess = ref('')
-    const scoringUpdateResults = ref([])
-    const scoringUpdateLogs = computed(() => scoringUpdatesStore.getScoringUpdateLogs())
+    // Assign players form
+    const assignForm = ref({ email: '', entryId: '', playerNamesText: '' })
+    const assignError = ref('')
+    const assignSuccess = ref('')
 
     // Player stats form
     const playerStatsInput = ref('')
     const playerStatsError = ref('')
     const playerStatsSuccess = ref('')
     const playerStatsResults = ref([])
-    const playerStatsUpdateLogs = ref([])
 
-    const savePlayerStatsToStorage = () => {
-      try {
-        if (typeof localStorage !== 'undefined' && localStorage) {
-          localStorage.setItem('playerStats', JSON.stringify(playerStatsUpdateLogs.value))
-        }
-      } catch (error) {
-        console.error('Error saving player stats to storage:', error)
-      }
+    // Goalie stats form
+    const goalieStatsInput = ref('')
+    const goalieStatsError = ref('')
+    const goalieStatsSuccess = ref('')
+    const goalieStatsResults = ref([])
+
+    const participants = computed(() => participantsStore.participants)
+    const entries = computed(() => entriesStore.entries)
+
+    const getEntryCount = (email) => {
+      return entries.value.filter(e => e.email === email).length
     }
 
-    const loadPlayerStatsFromStorage = () => {
-      try {
-        const stored = localStorage.getItem('playerStats')
-        if (stored && typeof stored === 'string' && stored.length > 0) {
-          const parsed = JSON.parse(stored)
-          if (Array.isArray(parsed)) {
-            playerStatsUpdateLogs.value = parsed
-          }
-        }
-      } catch (error) {
-        console.error('Error loading player stats from storage:', error)
-        playerStatsUpdateLogs.value = []
-      }
-    }
-
-    const participants = computed(() => {
-      return participantsStore.participants.map(p => ({
-        ...p,
-        entryCount: entriesStore.entries.filter(e => e.email === p.email).length
-      }))
-    })
-
-    const entries = computed(() => {
-      return entriesStore.entries.map(e => ({
-        ...e,
-        participantName: participantsStore.getParticipant(e.email)?.name || 'Unknown'
-      }))
+    const assignParticipantEntries = computed(() => {
+      if (!assignForm.value.email) return []
+      return entries.value.filter(e => e.email === assignForm.value.email)
     })
 
     const totalFees = computed(() => {
-      return participants.value.reduce((sum, p) => sum + (p.entryFee * p.entryCount), 0)
+      return participants.value.reduce((sum, p) => {
+        const count = getEntryCount(p.email)
+        return sum + (p.entryFee * count)
+      }, 0)
     })
 
     const entriesWithPlayers = computed(() => {
-      return entries.value.filter(e => e.playerIds.length > 0).length
+      return entries.value.filter(e => (e.playerNames || e.playerIds || []).length > 0).length
     })
 
-    // Load player stats on component mount
+    // Helper: refresh all pool data from API
+    const refreshPoolData = async () => {
+      try {
+        const data = await apiService.fetchPoolData()
+        participantsStore.hydrateFromData(data.participants)
+        entriesStore.hydrateFromData(data.entries)
+        scoresStore.hydrateFromData(data.scoringEvents)
+      } catch (err) {
+        apiError.value = 'Failed to refresh data: ' + err.message
+      }
+    }
+
+    // Restore auth state from localStorage
     onMounted(() => {
-      loadPlayerStatsFromStorage()
-    });
+      try {
+        const stored = localStorage.getItem('adminAuthenticated')
+        if (stored === 'true') {
+          isAuthenticated.value = true
+        }
+      } catch (e) { /* ignore */ }
+    })
 
     const authenticate = () => {
       if (password.value === adminPassword) {
         isAuthenticated.value = true
         authError.value = ''
         password.value = ''
-        loadPlayerStatsFromStorage()
-        scoringUpdatesStore.loadLogsFromStorage()
+        try { localStorage.setItem('adminAuthenticated', 'true') } catch (e) { /* ignore */ }
       } else {
         authError.value = 'Invalid password'
       }
@@ -284,304 +289,238 @@ export default {
     const logout = () => {
       isAuthenticated.value = false
       password.value = ''
+      try { localStorage.removeItem('adminAuthenticated') } catch (e) { /* ignore */ }
     }
 
-    const addParticipant = () => {
+    const addParticipant = async () => {
       participantError.value = ''
-      if (!newParticipant.value.name.trim()) {
-        participantError.value = 'Name is required'
-        return
-      }
-      if (!newParticipant.value.email.trim()) {
-        participantError.value = 'Email is required'
-        return
-      }
-      if (newParticipant.value.entryFee <= 0) {
-        participantError.value = 'Entry fee must be greater than 0'
-        return
-      }
+      apiError.value = ''
+      if (!newParticipant.value.name.trim()) { participantError.value = 'Name is required'; return }
+      if (!newParticipant.value.email.trim()) { participantError.value = 'Email is required'; return }
+      if (newParticipant.value.entryFee <= 0) { participantError.value = 'Entry fee must be greater than 0'; return }
       try {
-        participantsStore.addParticipant(
+        await apiService.createParticipant(
           newParticipant.value.email,
           newParticipant.value.name,
           newParticipant.value.entryFee
         )
+        await refreshPoolData()
         newParticipant.value = { name: '', email: '', entryFee: 20 }
       } catch (error) {
         participantError.value = error.message
       }
     }
 
-    const removeParticipant = (email) => {
-      if (confirm(`Remove participant ${email}? This will also remove all their entries.`)) {
-        // Remove all entries for this participant
-        entriesStore.entries
-          .filter(e => e.email === email)
-          .forEach(e => entriesStore.removeEntry(e.id))
-        participantsStore.removeParticipant(email)
-      }
-    }
-
-    const createEntry = () => {
-      entryError.value = ''
-      if (!newEntry.value.email) {
-        entryError.value = 'Please select a participant'
-        return
-      }
-      const participant = participantsStore.getParticipant(newEntry.value.email)
-      if (!participant) {
-        entryError.value = 'Participant not found'
-        return
-      }
-      entriesStore.createEntry(newEntry.value.email, participant.name)
-      newEntry.value.email = ''
-    }
-
-    const removeEntry = (entryId) => {
-      if (confirm(`Remove entry ${entryId}?`)) {
-        entriesStore.removeEntry(entryId)
-      }
-    }
-
-    const formatTime = (timestamp) => {
-      return new Date(timestamp).toLocaleString()
-    }
-
-    const exportToCSV = () => {
-      exportMessage.value = ''
+    const removeParticipant = async (email) => {
+      if (!confirm(`Remove participant ${email}? This will also remove all their entries.`)) return
+      apiError.value = ''
       try {
-        // Sort entries by score (descending), then by creation time (ascending)
-        const sortedEntries = [...entries.value].sort((a, b) => {
-          if (b.totalScore !== a.totalScore) {
-            return b.totalScore - a.totalScore
-          }
-          return new Date(a.createdAt) - new Date(b.createdAt)
-        })
-
-        // Build CSV content
-        let csv = 'Rank,Participant Name,Entry ID,Players Selected,Total Points\n'
-        sortedEntries.forEach((entry, idx) => {
-          const playerCount = entry.playerIds.length
-          const row = [
-            idx + 1,
-            `"${entry.participantName}"`,
-            entry.id,
-            playerCount,
-            entry.totalScore
-          ]
-          csv += row.join(',') + '\n'
-        })
-
-        // Create blob and download
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-        const link = document.createElement('a')
-        const url = URL.createObjectURL(blob)
-        link.setAttribute('href', url)
-        link.setAttribute('download', `nhl-pool-standings-${new Date().toISOString().split('T')[0]}.csv`)
-        link.style.visibility = 'hidden'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        
-        exportMessage.value = 'CSV exported successfully!'
-        setTimeout(() => {
-          exportMessage.value = ''
-        }, 3000)
+        await apiService.deleteParticipant(email)
+        await refreshPoolData()
       } catch (error) {
-        exportMessage.value = `Export failed: ${error.message}`
+        apiError.value = 'Failed to remove participant: ' + error.message
       }
     }
 
-    const processScoringUpdates = () => {
-      scoringUpdateError.value = ''
-      scoringUpdateSuccess.value = ''
-      scoringUpdateResults.value = []
-
-      if (!scoringUpdateInput.value.trim()) {
-        scoringUpdateError.value = 'Please enter scoring updates'
-        return
+    const createEntry = async () => {
+      entryError.value = ''
+      apiError.value = ''
+      if (!newEntry.value.email) { entryError.value = 'Please select a participant'; return }
+      const participant = participantsStore.getParticipant(newEntry.value.email)
+      if (!participant) { entryError.value = 'Participant not found'; return }
+      try {
+        await apiService.createEntry(newEntry.value.email, participant.name)
+        await refreshPoolData()
+        newEntry.value.email = ''
+      } catch (error) {
+        entryError.value = error.message
       }
-
-      // Parse input
-      const parsed = scoringUpdatesStore.parseScoringInput(scoringUpdateInput.value)
-      if (parsed.length === 0) {
-        scoringUpdateError.value = 'No valid scoring updates found. Use format: "Player Name: event_type"'
-        return
-      }
-
-      // Validate
-      const errors = scoringUpdatesStore.validateScoringData(parsed)
-      if (errors.length > 0) {
-        scoringUpdateError.value = errors.join('; ')
-        return
-      }
-
-      // Process
-      const results = scoringUpdatesStore.processScoringUpdates(parsed)
-      scoringUpdateResults.value = results
-
-      // Log each result
-      results.forEach(result => {
-        scoringUpdatesStore.logScoringUpdate(result)
-      })
-
-      // Count successes
-      const successCount = results.filter(r => r.success).length
-      const failureCount = results.filter(r => !r.success).length
-
-      if (successCount > 0) {
-        scoringUpdateSuccess.value = `Successfully processed ${successCount} scoring update(s)`
-        if (failureCount > 0) {
-          scoringUpdateSuccess.value += ` (${failureCount} failed)`
-        }
-      } else if (failureCount > 0) {
-        scoringUpdateError.value = `Failed to process ${failureCount} scoring update(s)`
-      }
-
-      // Clear input
-      scoringUpdateInput.value = ''
-
-      // Clear results after 5 seconds
-      setTimeout(() => {
-        scoringUpdateResults.value = []
-      }, 5000)
     }
-    const processPlayerStats = () => {
+
+    const removeEntry = async (entryId) => {
+      if (!confirm(`Remove entry ${entryId}?`)) return
+      apiError.value = ''
+      try {
+        await apiService.deleteEntry(entryId)
+        await refreshPoolData()
+      } catch (error) {
+        apiError.value = 'Failed to remove entry: ' + error.message
+      }
+    }
+
+    const onAssignParticipantChange = () => {
+      assignForm.value.entryId = ''
+    }
+
+    const assignPlayers = async () => {
+      assignError.value = ''
+      assignSuccess.value = ''
+      apiError.value = ''
+      if (!assignForm.value.entryId) { assignError.value = 'Please select an entry'; return }
+      const playerNames = assignForm.value.playerNamesText
+        .split(/\n/)
+        .map(n => n.trim())
+        .filter(n => n.length > 0)
+      if (playerNames.length !== 15) {
+        assignError.value = `Must provide exactly 15 player names (got ${playerNames.length})`
+        return
+      }
+      try {
+        await apiService.assignPlayers(assignForm.value.entryId, playerNames)
+        await refreshPoolData()
+        assignSuccess.value = 'Players assigned successfully!'
+        assignForm.value.playerNamesText = ''
+        setTimeout(() => { assignSuccess.value = '' }, 3000)
+      } catch (error) {
+        assignError.value = error.message
+      }
+    }
+
+    const processPlayerStats = async () => {
       playerStatsError.value = ''
       playerStatsSuccess.value = ''
       playerStatsResults.value = []
+      apiError.value = ''
 
       if (!playerStatsInput.value.trim()) {
         playerStatsError.value = 'Please enter player stats'
         return
       }
 
-      // Parse player stats table format: NAME  PTS
       const lines = playerStatsInput.value.trim().split('\n')
-      const results = []
-      let successCount = 0
-      let failureCount = 0
-
+      const players = []
       for (const line of lines) {
         if (!line.trim()) continue
-
-        // Parse line: NAME  PTS (whitespace-separated)
         const parts = line.trim().split(/\s+/)
-
-        if (parts.length < 2) {
-          results.push({
-            success: false,
-            reason: 'Invalid format. Expected: NAME  PTS'
-          })
-          failureCount++
-          continue
-        }
-
-        try {
-          // Last part is PTS, everything before is NAME
-          const pts = parseInt(parts[parts.length - 1])
-          const playerName = parts.slice(0, -1).join(' ')
-
-          // Validate
-          if (isNaN(pts)) {
-            results.push({
-              success: false,
-              playerName,
-              reason: 'Invalid points value'
-            })
-            failureCount++
-            continue
-          }
-
-          if (pts < 0) {
-            results.push({
-              success: false,
-              playerName,
-              reason: 'Points cannot be negative'
-            })
-            failureCount++
-            continue
-          }
-
-          // Log the stats update
-          const log = {
-            playerName,
-            points: pts,
-            timestamp: new Date().toISOString(),
-            success: true
-          }
-          playerStatsUpdateLogs.value.push(log)
-
-          results.push({
-            success: true,
-            playerName,
-            points: pts
-          })
-          successCount++
-        } catch (error) {
-          results.push({
-            success: false,
-            reason: error.message
-          })
-          failureCount++
+        if (parts.length < 2) continue
+        const pts = parseInt(parts[parts.length - 1])
+        const playerName = parts.slice(0, -1).join(' ')
+        if (!isNaN(pts) && pts >= 0) {
+          players.push({ playerName, points: pts })
         }
       }
 
-      playerStatsResults.value = results
-
-      if (successCount > 0) {
-        playerStatsSuccess.value = `Successfully processed ${successCount} player stat(s)`
-        if (failureCount > 0) {
-          playerStatsSuccess.value += ` (${failureCount} failed)`
-        }
-        // Save to storage after successful processing
-        savePlayerStatsToStorage()
-      } else if (failureCount > 0) {
-        playerStatsError.value = `Failed to process ${failureCount} player stat(s)`
+      if (players.length === 0) {
+        playerStatsError.value = 'No valid player stats found'
+        return
       }
 
-      // Clear input
-      playerStatsInput.value = ''
+      try {
+        const response = await apiService.updateScores(players)
+        playerStatsResults.value = response.results || []
+        const successCount = playerStatsResults.value.filter(r => r.success).length
+        const failureCount = playerStatsResults.value.filter(r => !r.success).length
+        if (successCount > 0) {
+          playerStatsSuccess.value = `Processed ${successCount} player stat(s)`
+          if (failureCount > 0) playerStatsSuccess.value += ` (${failureCount} failed)`
+        } else {
+          playerStatsError.value = `Failed to process ${failureCount} player stat(s)`
+        }
+        await refreshPoolData()
+        playerStatsInput.value = ''
+        setTimeout(() => { playerStatsResults.value = [] }, 5000)
+      } catch (error) {
+        playerStatsError.value = error.message
+      }
+    }
 
-      // Clear results after 5 seconds
-      setTimeout(() => {
-        playerStatsResults.value = []
-      }, 5000)
+    const processGoalieStats = async () => {
+      goalieStatsError.value = ''
+      goalieStatsSuccess.value = ''
+      goalieStatsResults.value = []
+      apiError.value = ''
+
+      if (!goalieStatsInput.value.trim()) {
+        goalieStatsError.value = 'Please enter goalie stats'
+        return
+      }
+
+      const lines = goalieStatsInput.value.trim().split('\n')
+      const players = []
+      for (const line of lines) {
+        if (!line.trim()) continue
+        const parts = line.trim().split(/\s+/)
+        if (parts.length < 3) continue
+        const shutouts = parseInt(parts[parts.length - 1])
+        const wins = parseInt(parts[parts.length - 2])
+        const playerName = parts.slice(0, -2).join(' ')
+        if (!isNaN(wins) && !isNaN(shutouts) && wins >= 0 && shutouts >= 0) {
+          const points = wins + (shutouts * 2)
+          players.push({ playerName, points, wins, shutouts })
+        }
+      }
+
+      if (players.length === 0) {
+        goalieStatsError.value = 'No valid goalie stats found. Format: NAME  WINS  SHUTOUTS'
+        return
+      }
+
+      try {
+        const response = await apiService.updateScores(
+          players.map(p => ({ playerName: p.playerName, points: p.points }))
+        )
+        goalieStatsResults.value = (response.results || []).map((r, i) => ({
+          ...r,
+          wins: players[i]?.wins ?? 0,
+          shutouts: players[i]?.shutouts ?? 0
+        }))
+        const successCount = goalieStatsResults.value.filter(r => r.success).length
+        const failureCount = goalieStatsResults.value.filter(r => !r.success).length
+        if (successCount > 0) {
+          goalieStatsSuccess.value = `Processed ${successCount} goalie stat(s)`
+          if (failureCount > 0) goalieStatsSuccess.value += ` (${failureCount} failed)`
+        } else {
+          goalieStatsError.value = `Failed to process ${failureCount} goalie stat(s)`
+        }
+        await refreshPoolData()
+        goalieStatsInput.value = ''
+        setTimeout(() => { goalieStatsResults.value = [] }, 5000)
+      } catch (error) {
+        goalieStatsError.value = error.message
+      }
+    }
+
+    const exportToCSV = () => {
+      exportMessage.value = ''
+      try {
+        const sortedEntries = [...entries.value].sort((a, b) => {
+          if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore
+          return new Date(a.createdAt) - new Date(b.createdAt)
+        })
+        let csv = 'Rank,Participant Name,Entry ID,Players Selected,Total Points\n'
+        sortedEntries.forEach((entry, idx) => {
+          const playerCount = (entry.playerNames || entry.playerIds || []).length
+          csv += [idx + 1, `"${entry.participantName}"`, entry.id, playerCount, entry.totalScore].join(',') + '\n'
+        })
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+        const link = document.createElement('a')
+        link.setAttribute('href', URL.createObjectURL(blob))
+        link.setAttribute('download', `nhl-pool-standings-${new Date().toISOString().split('T')[0]}.csv`)
+        link.style.visibility = 'hidden'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        exportMessage.value = 'CSV exported successfully!'
+        setTimeout(() => { exportMessage.value = '' }, 3000)
+      } catch (error) {
+        exportMessage.value = `Export failed: ${error.message}`
+      }
     }
 
     return {
-      isAuthenticated,
-      password,
-      authError,
-      newParticipant,
-      participantError,
-      newEntry,
-      entryError,
-      exportMessage,
-      participants,
-      entries,
-      totalFees,
-      entriesWithPlayers,
-      scoringUpdateInput,
-      scoringUpdateError,
-      scoringUpdateSuccess,
-      scoringUpdateResults,
-      scoringUpdateLogs,
-      playerStatsInput,
-      playerStatsError,
-      playerStatsSuccess,
-      playerStatsResults,
-      playerStatsUpdateLogs,
-      authenticate,
-      logout,
-      addParticipant,
-      removeParticipant,
-      createEntry,
-      removeEntry,
-      exportToCSV,
-      processScoringUpdates,
-      processPlayerStats,
-      formatTime
+      isAuthenticated, password, authError, apiError,
+      newParticipant, participantError,
+      newEntry, entryError, exportMessage,
+      assignForm, assignError, assignSuccess, assignParticipantEntries,
+      playerStatsInput, playerStatsError, playerStatsSuccess, playerStatsResults,
+      goalieStatsInput, goalieStatsError, goalieStatsSuccess, goalieStatsResults,
+      participants, entries, totalFees, entriesWithPlayers,
+      getEntryCount, onAssignParticipantChange,
+      authenticate, logout,
+      addParticipant, removeParticipant,
+      createEntry, removeEntry,
+      assignPlayers, processPlayerStats, processGoalieStats,
+      exportToCSV
     }
   }
 }
@@ -596,54 +535,75 @@ export default {
 
 .admin-view h2 {
   margin-top: 0;
+  color: #00d4ff;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  margin-bottom: 30px;
 }
 
 .auth-section {
   max-width: 400px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 25px;
+  background: linear-gradient(135deg, #1a1f3a 0%, #252a45 100%);
+  border: 2px solid #00d4ff;
+  border-radius: 8px;
 }
 
 .auth-section h3 {
   margin-top: 0;
+  color: #00d4ff;
 }
 
 .auth-section input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 10px;
-  border: 2px solid #1976d2;
-  border-radius: 4px;
+  border: 2px solid #2a2f4a;
+  border-radius: 6px;
   font-size: 1rem;
   box-sizing: border-box;
-  background: white;
-  color: #333;
+  background: #0a0e27;
+  color: #e0e0e0;
+}
+
+.auth-section input:focus {
+  border-color: #00d4ff;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
 }
 
 .auth-section button {
   width: 100%;
-  padding: 10px;
-  background: #333;
+  padding: 12px;
+  background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
 }
 
 .auth-section button:hover {
-  background: #555;
+  box-shadow: 0 0 15px rgba(196, 30, 58, 0.5);
 }
 
 .error {
-  color: #d32f2f;
+  color: #ff6b6b;
   margin-top: 10px;
 }
 
 .success {
-  color: #388e3c;
+  color: #51cf66;
   margin-top: 10px;
+}
+
+.api-error {
+  padding: 12px;
+  background: rgba(196, 30, 58, 0.15);
+  border: 1px solid #c41e3a;
+  border-radius: 6px;
+  margin-bottom: 20px;
 }
 
 .admin-content {
@@ -655,36 +615,41 @@ export default {
   top: 0;
   right: 0;
   padding: 8px 16px;
-  background: #d32f2f;
+  background: #c41e3a;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .logout-btn:hover {
-  background: #b71c1c;
+  background: #a01830;
 }
 
 .admin-section {
-  margin-top: 40px;
+  margin-top: 30px;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background: linear-gradient(135deg, #1a1f3a 0%, #252a45 100%);
+  border: 2px solid #2a2f4a;
+  border-radius: 8px;
 }
 
 .admin-section h3 {
   margin-top: 0;
+  color: #00d4ff;
+  font-size: 1.3rem;
 }
 
 .admin-section h4 {
   margin: 15px 0 10px 0;
+  color: #00d4ff;
 }
 
 .form-group {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
@@ -693,9 +658,11 @@ export default {
   flex: 1;
   min-width: 150px;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 2px solid #2a2f4a;
+  border-radius: 6px;
   font-size: 1rem;
+  background: #0a0e27;
+  color: #e0e0e0;
 }
 
 .form-group select {
@@ -704,38 +671,41 @@ export default {
 
 .btn-primary {
   padding: 10px 20px;
-  background: #1976d2;
-  color: white;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+  color: #0a0e27;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .btn-primary:hover {
-  background: #1565c0;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
 }
 
 .btn-danger {
   padding: 8px 16px;
-  background: #d32f2f;
+  background: #c41e3a;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .btn-danger:hover {
-  background: #b71c1c;
+  background: #a01830;
 }
 
 .participant-list,
 .entries-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+  margin-top: 15px;
 }
 
 .participant-item,
@@ -744,8 +714,9 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background: #f5f5f5;
-  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid #2a2f4a;
+  border-radius: 6px;
 }
 
 .participant-item div,
@@ -755,319 +726,121 @@ export default {
 
 .participant-item p,
 .entry-item p {
-  margin: 5px 0;
+  margin: 4px 0;
   font-size: 0.9rem;
 }
 
-.email,
-.entry-id,
-.players {
-  color: #666;
+.participant-item strong,
+.entry-item strong {
+  color: #00d4ff;
 }
 
-.fee,
-.score {
+.email, .entry-id, .players {
+  color: #888;
+}
+
+.fee, .score {
   font-weight: 600;
-  color: #333;
+  color: #e0e0e0;
 }
 
 .entry-count {
-  color: #1976d2;
+  color: #00d4ff;
   font-weight: 600;
 }
 
-.score-log {
-  margin-top: 20px;
+.section-description {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 8px 0;
+  font-style: italic;
+}
+
+.player-names-textarea,
+.player-stats-input {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px;
+  border: 2px solid #2a2f4a;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  resize: vertical;
+  background: #0a0e27;
+  color: #e0e0e0;
+}
+
+.player-names-textarea:focus,
+.player-stats-input:focus {
+  border-color: #00d4ff;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+}
+
+.player-stats-results {
+  margin-top: 15px;
   padding: 15px;
-  background: #f9f9f9;
-  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
 }
 
-.log-entry {
+.result-entry {
   padding: 10px;
-  background: white;
-  border-left: 3px solid #1976d2;
-  margin-bottom: 10px;
-  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid #2a2f4a;
+  margin-bottom: 8px;
+  border-radius: 0 4px 4px 0;
 }
 
-.log-entry p {
-  margin: 5px 0;
+.result-entry.success {
+  border-left-color: #51cf66;
 }
 
-.timestamp {
+.result-entry.failure {
+  border-left-color: #c41e3a;
+}
+
+.result-detail {
   font-size: 0.85rem;
-  color: #999;
+  color: #888;
+  margin: 4px 0 0 0;
+}
+
+.error-detail {
+  color: #ff6b6b;
+  font-weight: 600;
 }
 
 .summary {
-  background: #f0f7ff;
-  border: 2px solid #1976d2;
+  border-color: #00d4ff;
 }
 
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 15px;
   margin-top: 15px;
 }
 
 .summary-item {
   padding: 15px;
-  background: white;
-  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
   text-align: center;
-  border: 1px solid #ddd;
+  border: 1px solid #2a2f4a;
 }
 
 .summary-item .label {
   font-size: 0.9rem;
-  color: #666;
+  color: #888;
   margin: 0;
 }
 
 .summary-item .value {
   font-size: 2rem;
   font-weight: bold;
-  color: #1976d2;
+  color: #00d4ff;
   margin: 10px 0 0 0;
 }
-
-.section-description {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 10px 0;
-  font-style: italic;
-}
-
-.no-data {
-  padding: 20px;
-  text-align: center;
-  color: #999;
-  font-style: italic;
-}
-
-.player-stats-table {
-  overflow-x: auto;
-}
-
-.player-stats-table table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.player-stats-table th {
-  background: #f5f5f5;
-  padding: 12px;
-  text-align: left;
-  font-weight: 600;
-  border-bottom: 2px solid #ddd;
-}
-
-.player-stats-table td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
-}
-
-.player-stats-table tr:hover {
-  background: #f9f9f9;
-}
-
-.scoring-input {
-  width: 100%;
-  min-height: 120px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 0.9rem;
-  box-sizing: border-box;
-  resize: vertical;
-}
-
-.player-data-input {
-  width: 100%;
-  min-height: 150px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 0.85rem;
-  box-sizing: border-box;
-  resize: vertical;
-}
-
-.scoring-results {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f9f9f9;
-  border-radius: 4px;
-}
-
-.result-entry {
-  padding: 10px;
-  background: white;
-  border-left: 3px solid #1976d2;
-  margin-bottom: 10px;
-  border-radius: 2px;
-}
-
-.result-entry.success {
-  border-left-color: #388e3c;
-}
-
-.result-entry.failure {
-  border-left-color: #d32f2f;
-}
-
-.result-detail {
-  font-size: 0.85rem;
-  color: #666;
-  margin: 5px 0 0 0;
-}
-
-.error-detail {
-  color: #d32f2f;
-  font-weight: 600;
-}
-
-.scoring-update-log {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f9f9f9;
-  border-radius: 4px;
-}
-
-.scoring-update-log .log-entry {
-  padding: 10px;
-  background: white;
-  border-left: 3px solid #1976d2;
-  margin-bottom: 10px;
-  border-radius: 2px;
-}
-
-.scoring-update-log .log-entry.success {
-  border-left-color: #388e3c;
-}
-
-.scoring-update-log .log-entry.failure {
-  border-left-color: #d32f2f;
-}
-
-.player-data-results {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f9f9f9;
-  border-radius: 4px;
-}
-
-.player-data-results .result-entry {
-  padding: 10px;
-  background: white;
-  border-left: 3px solid #1976d2;
-  margin-bottom: 10px;
-  border-radius: 2px;
-}
-
-.player-data-results .result-entry.success {
-  border-left-color: #388e3c;
-}
-
-.player-data-results .result-entry.failure {
-  border-left-color: #d32f2f;
-}
-
-.player-stats-input {
-  width: 100%;
-  min-height: 150px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 0.85rem;
-  box-sizing: border-box;
-  resize: vertical;
-}
-
-.player-stats-results {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f9f9f9;
-  border-radius: 4px;
-}
-
-.player-stats-results .result-entry {
-  padding: 10px;
-  background: white;
-  border-left: 3px solid #1976d2;
-  margin-bottom: 10px;
-  border-radius: 2px;
-}
-
-.player-stats-results .result-entry.success {
-  border-left-color: #388e3c;
-}
-
-.player-stats-results .result-entry.failure {
-  border-left-color: #d32f2f;
-}
-
-.player-stats-update-log {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f9f9f9;
-  border-radius: 4px;
-}
-
-.player-stats-update-log .log-entry {
-  padding: 10px;
-  background: white;
-  border-left: 3px solid #1976d2;
-  margin-bottom: 10px;
-  border-radius: 2px;
-}
-
-.player-stats-update-log .log-entry.success {
-  border-left-color: #388e3c;
-}
-
-.player-stats-update-log .log-entry.failure {
-  border-left-color: #d32f2f;
-}
-
-.compact-stats-list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.compact-stat-line {
-  display: flex;
-  gap: 15px;
-  font-size: 0.8rem;
-  padding: 4px 8px;
-  background: #f9f9f9;
-  border-radius: 2px;
-  align-items: center;
-}
-
-.compact-stat-line .player-name {
-  flex: 1;
-  font-weight: 500;
-  color: #333;
-}
-
-.compact-stat-line .player-pts {
-  font-weight: 600;
-  color: #1976d2;
-  min-width: 50px;
-}
-
-.compact-stat-line .player-time {
-  color: #999;
-  font-size: 0.75rem;
-  white-space: nowrap;
-}
-
 </style>

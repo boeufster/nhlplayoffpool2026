@@ -1,39 +1,17 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useParticipantsStore } from '../participants'
 
-describe('Participants Store (Task 2.1)', () => {
+describe('Participants Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    // Safely clear localStorage
-    try {
-      const keys = ['entries', 'participants', 'scores', 'scoringEvents', 'processedEventIds']
-      for (const key of keys) {
-        try {
-          localStorage.removeItem(key)
-        } catch (e) {
-          // Ignore
-        }
-      }
-      localStorage.clear()
-    } catch (e) {
-      // Ignore localStorage errors
-    }
-  })
-
-  afterEach(() => {
-    try {
-      localStorage.clear()
-    } catch (e) {
-      // Ignore
-    }
   })
 
   describe('Participant Creation', () => {
     it('should add a participant with email, name, and entryFee', () => {
       const store = useParticipantsStore()
       store.addParticipant('john@example.com', 'John Doe', 20)
-      
+
       expect(store.participants).toHaveLength(1)
       expect(store.participants[0]).toEqual({
         email: 'john@example.com',
@@ -46,11 +24,11 @@ describe('Participants Store (Task 2.1)', () => {
     it('should use email as unique identifier', () => {
       const store = useParticipantsStore()
       store.addParticipant('john@example.com', 'John Doe', 20)
-      
+
       expect(() => {
         store.addParticipant('john@example.com', 'John Smith', 20)
       }).toThrow('Participant with this email already exists')
-      
+
       expect(store.participants).toHaveLength(1)
     })
 
@@ -59,7 +37,7 @@ describe('Participants Store (Task 2.1)', () => {
       const beforeTime = new Date().getTime()
       store.addParticipant('john@example.com', 'John Doe', 20)
       const afterTime = new Date().getTime()
-      
+
       const participant = store.participants[0]
       expect(participant.createdAt).toBeDefined()
       const participantTime = new Date(participant.createdAt).getTime()
@@ -72,7 +50,7 @@ describe('Participants Store (Task 2.1)', () => {
     it('should retrieve participant by email', () => {
       const store = useParticipantsStore()
       store.addParticipant('john@example.com', 'John Doe', 20)
-      
+
       const participant = store.getParticipant('john@example.com')
       expect(participant).toBeDefined()
       expect(participant.email).toBe('john@example.com')
@@ -91,9 +69,9 @@ describe('Participants Store (Task 2.1)', () => {
       const store = useParticipantsStore()
       store.addParticipant('john@example.com', 'John Doe', 20)
       store.addParticipant('jane@example.com', 'Jane Doe', 20)
-      
+
       store.removeParticipant('john@example.com')
-      
+
       expect(store.participants).toHaveLength(1)
       expect(store.participants[0].email).toBe('jane@example.com')
     })
@@ -101,47 +79,23 @@ describe('Participants Store (Task 2.1)', () => {
     it('should handle removal of non-existent participant gracefully', () => {
       const store = useParticipantsStore()
       store.addParticipant('john@example.com', 'John Doe', 20)
-      
+
       expect(() => {
         store.removeParticipant('nonexistent@example.com')
       }).not.toThrow()
-      
+
       expect(store.participants).toHaveLength(1)
     })
   })
 
-  describe('LocalStorage Persistence', () => {
-    it('should save participants to localStorage', () => {
+  describe('Hydration', () => {
+    it('should hydrate participants from API data', () => {
       const store = useParticipantsStore()
-      store.addParticipant('john@example.com', 'John Doe', 20)
-      
-      const stored = JSON.parse(localStorage.getItem('participants'))
-      expect(stored).toHaveLength(1)
-      expect(stored[0].email).toBe('john@example.com')
-    })
-
-    it('should load participants from localStorage', () => {
-      const store = useParticipantsStore()
-      store.addParticipant('john@example.com', 'John Doe', 20)
-      
-      // Create new store instance
-      const newStore = useParticipantsStore()
-      newStore.participants = []
-      newStore.loadFromStorage()
-      
-      expect(newStore.participants).toHaveLength(1)
-      expect(newStore.participants[0].email).toBe('john@example.com')
-    })
-
-    it('should handle corrupted localStorage data gracefully', () => {
-      localStorage.setItem('participants', 'invalid json')
-      
-      const store = useParticipantsStore()
-      expect(() => {
-        store.loadFromStorage()
-      }).not.toThrow()
-      
-      expect(store.participants).toEqual([])
+      store.hydrateFromData([
+        { email: 'a@example.com', name: 'Alice', entryFee: 20, createdAt: '2025-01-01T00:00:00Z' }
+      ])
+      expect(store.participants).toHaveLength(1)
+      expect(store.participants[0].name).toBe('Alice')
     })
   })
 })

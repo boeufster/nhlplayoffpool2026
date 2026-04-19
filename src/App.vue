@@ -6,8 +6,8 @@
         <button @click="currentView = 'standings'" :class="{ active: currentView === 'standings' }">
           Standings
         </button>
-        <button @click="currentView = 'player-selector'" :class="{ active: currentView === 'player-selector' }">
-          Player Selection
+        <button @click="currentView = 'teams'" :class="{ active: currentView === 'teams' }">
+          Teams
         </button>
         <button @click="currentView = 'admin'" :class="{ active: currentView === 'admin' }">
           Admin
@@ -23,14 +23,14 @@
 <script>
 import { ref, computed } from 'vue'
 import StandingsView from './views/StandingsView.vue'
-import PlayerSelectorView from './views/PlayerSelectorView.vue'
+import TeamsView from './views/TeamsView.vue'
 import AdminView from './views/AdminView.vue'
 
 export default {
   name: 'App',
   components: {
     StandingsView,
-    PlayerSelectorView,
+    TeamsView,
     AdminView
   },
   setup() {
@@ -38,7 +38,7 @@ export default {
 
     const currentComponent = computed(() => {
       if (currentView.value === 'standings') return StandingsView
-      if (currentView.value === 'player-selector') return PlayerSelectorView
+      if (currentView.value === 'teams') return TeamsView
       return AdminView
     })
 

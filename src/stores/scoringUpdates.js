@@ -151,7 +151,6 @@ export const useScoringUpdatesStore = defineStore('scoringUpdates', () => {
    * Log scoring updates with timestamp
    * Create log entries for all scoring updates
    * Include timestamp, player name, event type, points awarded
-   * Store logs in localStorage
    */
   const logScoringUpdate = (update) => {
     const logEntry = {
@@ -166,7 +165,6 @@ export const useScoringUpdatesStore = defineStore('scoringUpdates', () => {
     }
 
     scoringUpdateLogs.value.push(logEntry)
-    saveLogsToStorage()
     return logEntry
   }
 
@@ -182,43 +180,13 @@ export const useScoringUpdatesStore = defineStore('scoringUpdates', () => {
    */
   const clearScoringUpdateLogs = () => {
     scoringUpdateLogs.value = []
-    saveLogsToStorage()
   }
 
   /**
-   * Save logs to localStorage
+   * Hydrate scoring update logs from API data
    */
-  const saveLogsToStorage = () => {
-    try {
-      if (typeof localStorage !== 'undefined' && localStorage) {
-        localStorage.setItem('scoringUpdateLogs', JSON.stringify(scoringUpdateLogs.value))
-      }
-    } catch (error) {
-      console.error('Error saving scoring update logs to storage:', error)
-    }
-  }
-
-  /**
-   * Load logs from localStorage
-   */
-  const loadLogsFromStorage = () => {
-    try {
-      const stored = localStorage.getItem('scoringUpdateLogs')
-      if (stored && typeof stored === 'string' && stored.length > 0) {
-        const parsed = JSON.parse(stored)
-        if (Array.isArray(parsed)) {
-          scoringUpdateLogs.value = parsed
-        }
-      }
-    } catch (error) {
-      console.error('Error loading scoring update logs from storage:', error)
-      try {
-        localStorage.removeItem('scoringUpdateLogs')
-      } catch (e) {
-        console.error('Error clearing corrupted scoringUpdateLogs:', e)
-      }
-      scoringUpdateLogs.value = []
-    }
+  const hydrateFromData = (logsArray) => {
+    scoringUpdateLogs.value = logsArray
   }
 
   return {
@@ -231,6 +199,6 @@ export const useScoringUpdatesStore = defineStore('scoringUpdates', () => {
     logScoringUpdate,
     getScoringUpdateLogs,
     clearScoringUpdateLogs,
-    loadLogsFromStorage
+    hydrateFromData
   }
 })

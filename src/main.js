@@ -4,7 +4,7 @@ import App from './App.vue'
 import { useParticipantsStore } from './stores/participants'
 import { useEntriesStore } from './stores/entries'
 import { useScoresStore } from './stores/scores'
-import { useScoringEngineStore } from './stores/scoringEngine'
+import { apiService } from './services/apiService'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -75,19 +75,20 @@ style.textContent = `
 `
 document.head.appendChild(style)
 
-// Load data from storage on app startup
-try {
-  const participantsStore = useParticipantsStore()
-  const entriesStore = useEntriesStore()
-  const scoresStore = useScoresStore()
-  const scoringEngineStore = useScoringEngineStore()
+// Fetch pool data from API and hydrate stores
+;(async () => {
+  try {
+    const data = await apiService.fetchPoolData()
+    const participantsStore = useParticipantsStore()
+    const entriesStore = useEntriesStore()
+    const scoresStore = useScoresStore()
 
-  participantsStore.loadFromStorage()
-  entriesStore.loadFromStorage()
-  scoresStore.loadFromStorage()
-  scoringEngineStore.loadProcessedEvents()
-} catch (error) {
-  console.error('Error loading data from storage:', error)
-}
+    participantsStore.hydrateFromData(data.participants)
+    entriesStore.hydrateFromData(data.entries)
+    scoresStore.hydrateFromData(data.scoringEvents)
+  } catch (error) {
+    console.error('Failed to load pool data from API:', error)
+  }
 
-app.mount('#app')
+  app.mount('#app')
+})()

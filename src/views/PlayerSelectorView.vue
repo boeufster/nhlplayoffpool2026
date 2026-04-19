@@ -78,15 +78,24 @@
 <script>
 import { ref, computed } from 'vue'
 import { useParticipantsStore } from '../stores/participants'
-import { usePlayerSelectionStore } from '../stores/playerSelection'
 import { useEntriesStore } from '../stores/entries'
 
 export default {
   name: 'PlayerSelectorView',
   setup() {
     const participantsStore = useParticipantsStore()
-    const playerSelectionStore = usePlayerSelectionStore()
     const entriesStore = useEntriesStore()
+
+    // playerSelection store removed — stub out references for backward compat until TeamsView replaces this view
+    const playerSelectionStore = {
+      selectedPlayers: [],
+      availablePlayers: [],
+      isPlayerSelected: () => false,
+      selectPlayer: () => {},
+      deselectPlayer: () => {},
+      clearSelection: () => {},
+      getSelectedPlayerIds: () => []
+    }
 
     const selectedParticipantEmail = ref('')
     const selectedPosition = ref(null)

@@ -4,6 +4,10 @@ import { ref } from 'vue'
 export const useEntriesStore = defineStore('entries', () => {
   const entries = ref([])
 
+  const hydrateFromData = (entriesArray) => {
+    entries.value = entriesArray
+  }
+
   const createEntry = (email, participantName) => {
     const id = `entry-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     const entry = {
@@ -15,13 +19,11 @@ export const useEntriesStore = defineStore('entries', () => {
       createdAt: new Date().toISOString()
     }
     entries.value.push(entry)
-    saveToStorage()
     return entry
   }
 
   const removeEntry = (entryId) => {
     entries.value = entries.value.filter(e => e.id !== entryId)
-    saveToStorage()
   }
 
   const getEntry = (entryId) => {
@@ -32,7 +34,6 @@ export const useEntriesStore = defineStore('entries', () => {
     const entry = getEntry(entryId)
     if (entry) {
       entry.totalScore += points
-      saveToStorage()
     }
   }
 
@@ -41,7 +42,6 @@ export const useEntriesStore = defineStore('entries', () => {
     if (entry) {
       entry.playerIds = playerIds
       entry.submittedAt = new Date().toISOString()
-      saveToStorage()
     }
   }
 
@@ -50,48 +50,17 @@ export const useEntriesStore = defineStore('entries', () => {
     if (entry) {
       entry.playerNames = playerNames
       entry.submittedAt = new Date().toISOString()
-      saveToStorage()
-    }
-  }
-
-  const saveToStorage = () => {
-    try {
-      if (typeof localStorage !== 'undefined' && localStorage) {
-        localStorage.setItem('entries', JSON.stringify(entries.value))
-      }
-    } catch (error) {
-      console.error('Error saving entries to storage:', error)
-    }
-  }
-
-  const loadFromStorage = () => {
-    try {
-      const stored = localStorage.getItem('entries')
-      if (stored && typeof stored === 'string' && stored.length > 0) {
-        const parsed = JSON.parse(stored)
-        if (Array.isArray(parsed)) {
-          entries.value = parsed
-        }
-      }
-    } catch (error) {
-      console.error('Error loading entries from storage:', error)
-      try {
-        localStorage.removeItem('entries')
-      } catch (e) {
-        console.error('Error clearing corrupted entries:', e)
-      }
-      entries.value = []
     }
   }
 
   return {
     entries,
+    hydrateFromData,
     createEntry,
     removeEntry,
     getEntry,
     updateEntryScore,
     setEntryPlayers,
-    setEntryPlayerNames,
-    loadFromStorage
+    setEntryPlayerNames
   }
 })
