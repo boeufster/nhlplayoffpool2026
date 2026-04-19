@@ -110,7 +110,7 @@ export default {
 .player-row:hover { background: var(--bg-row-hover); }
 .player-number { font-weight: 600; color: var(--text-secondary); min-width: 24px; text-align: right; font-size: 0.8rem; }
 .player-name { color: var(--text-primary); font-size: 0.9rem; flex: 1; min-width: 0; }
-.player-bar-wrap { width: 80px; height: 10px; background: var(--border-light); border-radius: 5px; overflow: hidden; flex-shrink: 0; }
+.player-bar-wrap { width: 480px; height: 10px; background: var(--border-light); border-radius: 5px; overflow: hidden; flex-shrink: 0; }
 .player-bar { height: 100%; background: var(--text-heading); border-radius: 5px; transition: width 0.3s ease; min-width: 0; }
 .player-pts { font-weight: 700; color: var(--text-primary); font-size: 0.85rem; min-width: 30px; text-align: right; background: var(--bg-highlight); padding: 2px 8px; border-radius: 3px; flex-shrink: 0; }
 .no-players { color: var(--text-secondary); font-style: italic; padding: 10px; text-align: center; }
