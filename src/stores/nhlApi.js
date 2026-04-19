@@ -16,7 +16,7 @@ export const useNhlApiStore = defineStore('nhlApi', () => {
   const maxRetryAttempts = 5
   const retryBackoffMs = ref(1000) // Start at 1 second
 
-  const API_BASE = 'https://cors-anywhere.herokuapp.com/https://statsapi.web.nhl.com/api/v1'
+  const API_BASE = '/api/nhl-proxy'
   const REQUEST_TIMEOUT = 30000 // 30 seconds
 
   const logApiInteraction = (action, details, status = 'info') => {
@@ -66,13 +66,13 @@ export const useNhlApiStore = defineStore('nhlApi', () => {
     const cached = getCachedResponse(cacheKey)
     if (cached) return cached
 
-    logApiInteraction('Fetch Players', { endpoint: `${API_BASE}/teams` }, 'info')
+    logApiInteraction('Fetch Players', { endpoint: `${API_BASE}?endpoint=teams` }, 'info')
 
     try {
       const players = []
       
       // Fetch all teams
-      const teamsResponse = await axios.get(`${API_BASE}/teams`, { timeout: REQUEST_TIMEOUT })
+      const teamsResponse = await axios.get(`${API_BASE}?endpoint=teams`, { timeout: REQUEST_TIMEOUT })
       const teams = teamsResponse.data.teams
       
       logApiInteraction('Fetch Teams Success', { teamCount: teams.length }, 'info')
@@ -80,7 +80,7 @@ export const useNhlApiStore = defineStore('nhlApi', () => {
       // Fetch roster for each team
       for (const team of teams) {
         try {
-          const rosterResponse = await axios.get(`${API_BASE}/teams/${team.id}/roster`, { timeout: REQUEST_TIMEOUT })
+          const rosterResponse = await axios.get(`${API_BASE}?endpoint=teams/${team.id}/roster`, { timeout: REQUEST_TIMEOUT })
           const roster = rosterResponse.data.roster
 
           roster.forEach(player => {
