@@ -11,7 +11,9 @@
     "test:run": "vitest --run"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vercel/postgres": "^0.10.0",
+    "@vercel/speed-insights": "^2.0.0",
     "axios": "^1.5.0",
     "pinia": "^2.1.6",
     "vue": "^3.3.4"

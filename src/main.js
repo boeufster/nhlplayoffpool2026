@@ -6,6 +6,11 @@ import { useEntriesStore } from './stores/entries'
 import { useScoresStore } from './stores/scores'
 import { apiService } from './services/apiService'
 import { applyTheme, getStoredTheme } from './themes'
+import { injectSpeedInsights } from '@vercel/speed-insights'
+import { inject } from '@vercel/analytics'
+
+injectSpeedInsights()
+inject()
 
 const app = createApp(App)
 const pinia = createPinia()
