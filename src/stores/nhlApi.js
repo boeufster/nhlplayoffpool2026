@@ -16,7 +16,7 @@ export const useNhlApiStore = defineStore('nhlApi', () => {
   const maxRetryAttempts = 5
   const retryBackoffMs = ref(1000) // Start at 1 second
 
-  const API_BASE = 'https://statsapi.web.nhl.com/api/v1'
+  const API_BASE = 'https://cors-anywhere.herokuapp.com/https://statsapi.web.nhl.com/api/v1'
   const REQUEST_TIMEOUT = 30000 // 30 seconds
 
   const logApiInteraction = (action, details, status = 'info') => {
