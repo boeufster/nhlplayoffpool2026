@@ -11,7 +11,8 @@
           <th>Rank</th>
           <th>Participant</th>
           <th>Entry ID</th>
-          <th>Points</th>
+          <th class="points-header">Points</th>
+          <th>Prize</th>
         </tr>
       </thead>
       <tbody>
@@ -19,7 +20,8 @@
           <td>{{ index + 1 }}</td>
           <td>{{ entry.participantName }}</td>
           <td>{{ entry.id }}</td>
-          <td>{{ entry.calculatedScore }}</td>
+          <td class="points-cell">{{ entry.calculatedScore }}</td>
+          <td class="prize-cell">{{ getPrize(index) }}</td>
         </tr>
       </tbody>
     </table>
@@ -98,6 +100,13 @@ export default {
       })
     })
 
+    const getPrize = (index) => {
+      if (index === 0) return '$85'
+      if (index === 1) return '$40'
+      if (index === 2) return '$15'
+      return ''
+    }
+
     const lastUpdated = computed(() => {
       if (scoresStore.scoringEvents.length === 0) return null
       const dates = scoresStore.scoringEvents
@@ -113,7 +122,8 @@ export default {
       entries,
       sortedEntries,
       latestPlayerStats,
-      lastUpdated
+      lastUpdated,
+      getPrize
     }
   }
 }
@@ -126,9 +136,12 @@ export default {
 .empty-state { text-align: center; padding: 60px 40px; color: var(--text-secondary); border: 1px dashed var(--border-color); border-radius: 4px; }
 .standings-table { width: 100%; border-collapse: collapse; background: var(--bg-card); }
 .standings-table th { background: var(--bg-card) !important; color: var(--text-secondary) !important; padding: 10px 12px; text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border-color) !important; font-size: 0.75rem; }
-.standings-table th:last-child { background: var(--bg-highlight) !important; color: var(--text-primary) !important; }
+.standings-table th:last-child { background: var(--bg-card) !important; }
 .standings-table td { padding: 12px; border-bottom: 1px solid var(--border-light) !important; color: var(--text-primary); font-size: 0.9rem; }
-.standings-table td:last-child { background: var(--bg-highlight); font-weight: 700; }
+.standings-table td:last-child { font-weight: 700; }
+.points-cell { background: var(--bg-highlight) !important; font-weight: 700; font-size: 1.05rem; }
+.points-header { background: var(--bg-highlight) !important; color: var(--text-primary) !important; }
+.prize-cell { color: var(--success-color); font-weight: 600; }
 .standings-table tbody tr:hover { background: var(--bg-row-hover) !important; }
 .standings-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
 .player-stats-section { margin-top: 40px; padding: 0; border: none; background: none; }
