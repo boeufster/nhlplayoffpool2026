@@ -16,8 +16,9 @@ export const useNhlApiStore = defineStore('nhlApi', () => {
   const maxRetryAttempts = 5
   const retryBackoffMs = ref(1000) // Start at 1 second
 
-  const API_BASE = 'https://statsapi.web.nhl.com/api/v1'
+  const API_BASE = import.meta.env.VITE_API_PROXY || 'https://statsapi.web.nhl.com/api/v1'
   const REQUEST_TIMEOUT = 30000 // 30 seconds
+  const USE_PROXY = import.meta.env.VITE_USE_PROXY === 'true' || (typeof window !== 'undefined' && window.location.hostname !== 'localhost')
 
   const logApiInteraction = (action, details, status = 'info') => {
     const logEntry = {
@@ -66,21 +67,31 @@ export const useNhlApiStore = defineStore('nhlApi', () => {
     const cached = getCachedResponse(cacheKey)
     if (cached) return cached
 
-    logApiInteraction('Fetch Players', { endpoint: `${API_BASE}/teams` }, 'info')
+    logApiInteraction('Fetch Players', { endpoint: `${API_BASE}/teams`, useProxy: USE_PROXY }, 'info')
 
     try {
       const players = []
       
       // Fetch all teams
-      const teamsResponse = await axios.get(`${API_BASE}/teams`, { timeout: REQUEST_TIMEOUT })
-      const teams = teamsResponse.data.teams
+      let teamsUrl = `${API_BASE}/teams`
+      if (USE_PROXY) {
+        teamsUrl = `/api/nhl-proxy?endpoint=teams`
+      }
       
-      logApiInteraction('Fetch Teams Success', { teamCount: teams.length }, 'info')
+      const teamsResponse = await axios.get(teamsUrl, { timeout: REQUEST_TIMEOUT })
+      const allTeams = teamsResponse.data.teams
+      
+      logApiInteraction('Fetch Teams Success', { teamCount: allTeams.length }, 'info')
 
       // Fetch roster for each team
-      for (const team of teams) {
+      for (const team of allTeams) {
         try {
-          const rosterResponse = await axios.get(`${API_BASE}/teams/${team.id}/roster`, { timeout: REQUEST_TIMEOUT })
+          let rosterUrl = `${API_BASE}/teams/${team.id}/roster`
+          if (USE_PROXY) {
+            rosterUrl = `/api/nhl-proxy?endpoint=teams/${team.id}/roster`
+          }
+          
+          const rosterResponse = await axios.get(rosterUrl, { timeout: REQUEST_TIMEOUT })
           const roster = rosterResponse.data.roster
 
           roster.forEach(player => {
@@ -121,17 +132,27 @@ export const useNhlApiStore = defineStore('nhlApi', () => {
   }
 
   const fetchScoringEvents = async () => {
-    logApiInteraction('Fetch Scoring Events', { endpoint: `${API_BASE}/schedule` }, 'info')
+    logApiInteraction('Fetch Scoring Events', { endpoint: `${API_BASE}/schedule`, useProxy: USE_PROXY }, 'info')
 
     try {
       // Fetch live games
-      const gamesResponse = await axios.get(`${API_BASE}/schedule`, { timeout: REQUEST_TIMEOUT })
+      let scheduleUrl = `${API_BASE}/schedule`
+      if (USE_PROXY) {
+        scheduleUrl = `/api/nhl-proxy?endpoint=schedule`
+      }
+      
+      const gamesResponse = await axios.get(scheduleUrl, { timeout: REQUEST_TIMEOUT })
       const events = []
 
       for (const game of gamesResponse.data.dates[0]?.games || []) {
         if (game.status.abstractGameState === 'Live' || game.status.abstractGameState === 'Final') {
           try {
-            const gameResponse = await axios.get(`${API_BASE}/game/${game.gamePk}/feed/live`, { timeout: REQUEST_TIMEOUT })
+            let gameUrl = `${API_BASE}/game/${game.gamePk}/feed/live`
+            if (USE_PROXY) {
+              gameUrl = `/api/nhl-proxy?endpoint=game/${game.gamePk}/feed/live`
+            }
+            
+            const gameResponse = await axios.get(gameUrl, { timeout: REQUEST_TIMEOUT })
             const plays = gameResponse.data.liveData.plays
 
             plays.forEach(play => {
@@ -156,7 +177,6 @@ export const useNhlApiStore = defineStore('nhlApi', () => {
 
             // Check for wins and shutouts
             if (game.status.abstractGameState === 'Final') {
-              const teams = gameResponse.data.gameData.teams
               const liveData = gameResponse.data.liveData
 
               // Determine winning team

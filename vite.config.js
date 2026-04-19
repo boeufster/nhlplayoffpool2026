@@ -6,7 +6,19 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: false,
-    open: true
+    open: true,
+    proxy: {
+      '/api/nhl-proxy': {
+        target: 'https://statsapi.web.nhl.com/api/v1',
+        changeOrigin: true,
+        rewrite: (path) => {
+          // Extract the endpoint parameter from the query string
+          const url = new URL(path, 'http://localhost')
+          const endpoint = url.searchParams.get('endpoint')
+          return endpoint ? `/${endpoint}` : '/'
+        }
+      }
+    }
   },
   build: {
     target: 'esnext',
