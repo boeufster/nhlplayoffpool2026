@@ -6,10 +6,20 @@
       <div class="controls">
         <div class="participant-select">
           <label for="participant">Select Participant:</label>
-          <select v-model="selectedParticipantEmail" id="participant">
+          <select v-model="selectedParticipantEmail" id="participant" @change="onParticipantChange">
             <option value="">-- Choose a participant --</option>
             <option v-for="p in participants" :key="p.email" :value="p.email">
               {{ p.name }}
+            </option>
+          </select>
+        </div>
+
+        <div v-if="selectedParticipantEmail" class="entry-select">
+          <label for="entry">Select Entry:</label>
+          <select v-model="selectedEntryId" id="entry" @change="onEntryChange">
+            <option value="">-- Create new entry --</option>
+            <option v-for="entry in participantEntries" :key="entry.id" :value="entry.id">
+              {{ entry.id }} ({{ entry.playerNames ? entry.playerNames.length : 0 }} players)
             </option>
           </select>
         </div>
@@ -70,7 +80,6 @@ import { ref, computed } from 'vue'
 import { useParticipantsStore } from '../stores/participants'
 import { usePlayerSelectionStore } from '../stores/playerSelection'
 import { useEntriesStore } from '../stores/entries'
-import { useNhlApiStore } from '../stores/nhlApi'
 
 export default {
   name: 'PlayerSelectorView',
@@ -78,12 +87,10 @@ export default {
     const participantsStore = useParticipantsStore()
     const playerSelectionStore = usePlayerSelectionStore()
     const entriesStore = useEntriesStore()
-    const nhlApiStore = useNhlApiStore()
 
     const selectedParticipantEmail = ref('')
     const selectedPosition = ref(null)
-    const isLoading = ref(false)
-    const errorMessage = ref('')
+    const selectedEntryId = ref('')
     
     // Text input state
     const playerNamesInput = ref('')
@@ -103,6 +110,11 @@ export default {
     const selectedPlayers = computed(() => playerSelectionStore.selectedPlayers)
     const availablePlayers = computed(() => playerSelectionStore.availablePlayers)
 
+    const participantEntries = computed(() => {
+      if (!selectedParticipantEmail.value) return []
+      return entriesStore.entries.filter(e => e.email === selectedParticipantEmail.value)
+    })
+
     const filteredAvailablePlayers = computed(() => {
       let players = availablePlayers.value.filter(
         p => !playerSelectionStore.isPlayerSelected(p.id)
@@ -118,74 +130,6 @@ export default {
     const isSelectionComplete = computed(() => {
       return selectedPlayers.value.length === MAX_PLAYERS
     })
-
-    const loadPlayers = async () => {
-      isLoading.value = true
-      errorMessage.value = ''
-      try {
-        const players = await nhlApiStore.fetchPlayers()
-        
-        // Fallback to mock data if no players loaded
-        if (!players || players.length === 0) {
-          console.warn('No players from API, using mock data')
-          const mockPlayers = [
-            { id: 1, name: 'Fake Player One', position: 'F', team: 'Mock Team A' },
-            { id: 2, name: 'Fake Player Two', position: 'F', team: 'Mock Team A' },
-            { id: 3, name: 'Fake Player Three', position: 'D', team: 'Mock Team B' },
-            { id: 4, name: 'Fake Player Four', position: 'D', team: 'Mock Team C' },
-            { id: 5, name: 'Fake Player Five', position: 'G', team: 'Mock Team C' },
-            { id: 6, name: 'Fake Player Six', position: 'G', team: 'Mock Team D' },
-            { id: 7, name: 'Fake Player Seven', position: 'F', team: 'Mock Team E' },
-            { id: 8, name: 'Fake Player Eight', position: 'F', team: 'Mock Team E' },
-            { id: 9, name: 'Fake Player Nine', position: 'D', team: 'Mock Team E' },
-            { id: 10, name: 'Fake Player Ten', position: 'G', team: 'Mock Team E' },
-            { id: 11, name: 'Fake Player Eleven', position: 'F', team: 'Mock Team B' },
-            { id: 12, name: 'Fake Player Twelve', position: 'F', team: 'Mock Team D' },
-            { id: 13, name: 'Fake Player Thirteen', position: 'D', team: 'Mock Team D' },
-            { id: 14, name: 'Fake Player Fourteen', position: 'D', team: 'Mock Team A' },
-            { id: 15, name: 'Fake Player Fifteen', position: 'F', team: 'Mock Team F' },
-            { id: 16, name: 'Fake Player Sixteen', position: 'D', team: 'Mock Team F' },
-            { id: 17, name: 'Fake Player Seventeen', position: 'G', team: 'Mock Team F' },
-            { id: 18, name: 'Fake Player Eighteen', position: 'G', team: 'Mock Team G' },
-            { id: 19, name: 'Fake Player Nineteen', position: 'F', team: 'Mock Team G' },
-            { id: 20, name: 'Fake Player Twenty', position: 'D', team: 'Mock Team G' }
-          ]
-          playerSelectionStore.setAvailablePlayers(mockPlayers)
-        } else {
-          playerSelectionStore.setAvailablePlayers(players)
-        }
-      } catch (error) {
-        errorMessage.value = 'Failed to load players. Using mock data.'
-        console.error('Error loading players:', error)
-        
-        // Fallback to mock data on error
-        const mockPlayers = [
-          { id: 1, name: 'Fake Player One', position: 'F', team: 'Mock Team A' },
-          { id: 2, name: 'Fake Player Two', position: 'F', team: 'Mock Team A' },
-          { id: 3, name: 'Fake Player Three', position: 'D', team: 'Mock Team B' },
-          { id: 4, name: 'Fake Player Four', position: 'D', team: 'Mock Team C' },
-          { id: 5, name: 'Fake Player Five', position: 'G', team: 'Mock Team C' },
-          { id: 6, name: 'Fake Player Six', position: 'G', team: 'Mock Team D' },
-          { id: 7, name: 'Fake Player Seven', position: 'F', team: 'Mock Team E' },
-          { id: 8, name: 'Fake Player Eight', position: 'F', team: 'Mock Team E' },
-          { id: 9, name: 'Fake Player Nine', position: 'D', team: 'Mock Team E' },
-          { id: 10, name: 'Fake Player Ten', position: 'G', team: 'Mock Team E' },
-          { id: 11, name: 'Fake Player Eleven', position: 'F', team: 'Mock Team B' },
-          { id: 12, name: 'Fake Player Twelve', position: 'F', team: 'Mock Team D' },
-          { id: 13, name: 'Fake Player Thirteen', position: 'D', team: 'Mock Team D' },
-          { id: 14, name: 'Fake Player Fourteen', position: 'D', team: 'Mock Team A' },
-          { id: 15, name: 'Fake Player Fifteen', position: 'F', team: 'Mock Team F' },
-          { id: 16, name: 'Fake Player Sixteen', position: 'D', team: 'Mock Team F' },
-          { id: 17, name: 'Fake Player Seventeen', position: 'G', team: 'Mock Team F' },
-          { id: 18, name: 'Fake Player Eighteen', position: 'G', team: 'Mock Team G' },
-          { id: 19, name: 'Fake Player Nineteen', position: 'F', team: 'Mock Team G' },
-          { id: 20, name: 'Fake Player Twenty', position: 'D', team: 'Mock Team G' }
-        ]
-        playerSelectionStore.setAvailablePlayers(mockPlayers)
-      } finally {
-        isLoading.value = false
-      }
-    }
 
     const updatePlayerCount = () => {
       // Count players from text input (one per line or comma-separated)
@@ -209,6 +153,30 @@ export default {
       textInputError.value = ''
     }
 
+    const onParticipantChange = () => {
+      selectedEntryId.value = ''
+      submittedPlayers.value = []
+      clearTextInput()
+    }
+
+    const onEntryChange = () => {
+      if (!selectedEntryId.value) {
+        submittedPlayers.value = []
+        clearTextInput()
+        return
+      }
+
+      const entry = entriesStore.getEntry(selectedEntryId.value)
+      if (entry && entry.playerNames) {
+        submittedPlayers.value = entry.playerNames.map((name, idx) => ({
+          id: idx,
+          name: name
+        }))
+        playerNamesInput.value = entry.playerNames.join('\n')
+        updatePlayerCount()
+      }
+    }
+
     const submitTextInput = () => {
       if (!selectedParticipantEmail.value) {
         textInputError.value = 'Please select a participant'
@@ -222,20 +190,31 @@ export default {
 
       try {
         const participant = participantsStore.getParticipant(selectedParticipantEmail.value)
-        const entry = entriesStore.createEntry(
-          selectedParticipantEmail.value,
-          participant.name
-        )
-
+        
         // Parse player names from input
         const playerNames = playerNamesInput.value
           .split(/[\n,]+/)
           .map(name => name.trim())
           .filter(name => name.length > 0)
 
-        // Store the player names
-        entriesStore.setEntryPlayerNames(entry.id, playerNames)
-        
+        let entryId
+        if (selectedEntryId.value) {
+          // Update existing entry
+          entryId = selectedEntryId.value
+          entriesStore.setEntryPlayerNames(entryId, playerNames)
+          alert('Entry updated successfully!')
+        } else {
+          // Create new entry
+          const entry = entriesStore.createEntry(
+            selectedParticipantEmail.value,
+            participant.name
+          )
+          entryId = entry.id
+          entriesStore.setEntryPlayerNames(entryId, playerNames)
+          selectedEntryId.value = entryId
+          alert('Entry submitted successfully!')
+        }
+
         // Update submitted players list for display
         submittedPlayers.value = playerNames.map((name, idx) => ({
           id: idx,
@@ -244,9 +223,6 @@ export default {
 
         // Clear input for next entry
         clearTextInput()
-        selectedParticipantEmail.value = ''
-
-        alert('Entry submitted successfully!')
       } catch (error) {
         textInputError.value = 'Failed to submit entry: ' + error.message
         console.error('Error submitting entry:', error)
@@ -256,9 +232,8 @@ export default {
     const selectPlayer = (player) => {
       try {
         playerSelectionStore.selectPlayer(player)
-        errorMessage.value = ''
       } catch (error) {
-        errorMessage.value = error.message
+        console.error('Error selecting player:', error)
       }
     }
 
@@ -268,7 +243,6 @@ export default {
 
     const clearSelection = () => {
       playerSelectionStore.clearSelection()
-      errorMessage.value = ''
     }
 
     const submitSelection = () => {
@@ -302,18 +276,15 @@ export default {
       }
     }
 
-    // Load players on component mount
-    loadPlayers()
-
     return {
       selectedParticipantEmail,
       selectedPosition,
-      isLoading,
-      errorMessage,
+      selectedEntryId,
       MAX_PLAYERS,
       positions,
       positionLabels,
       participants,
+      participantEntries,
       selectedPlayers,
       availablePlayers,
       filteredAvailablePlayers,
@@ -329,7 +300,9 @@ export default {
       submittedPlayers,
       updatePlayerCount,
       clearTextInput,
-      submitTextInput
+      submitTextInput,
+      onParticipantChange,
+      onEntryChange
     }
   }
 }
@@ -370,6 +343,23 @@ export default {
 }
 
 .participant-select select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.entry-select {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.entry-select label {
+  font-weight: 600;
+}
+
+.entry-select select {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;

@@ -66,30 +66,6 @@
         </div>
       </section>
 
-      <!-- Manual Score Updates Section -->
-      <section class="admin-section">
-        <h3>Manual Score Updates</h3>
-        <div class="form-group">
-          <select v-model="scoreUpdate.entryId">
-            <option value="">Select Entry</option>
-            <option v-for="entry in entries" :key="entry.id" :value="entry.id">
-              {{ entry.participantName }} - {{ entry.id }}
-            </option>
-          </select>
-          <input v-model.number="scoreUpdate.points" placeholder="Points to add" type="number" />
-          <button @click="updateScore" class="btn-primary">Update Score</button>
-          <p v-if="scoreError" class="error">{{ scoreError }}</p>
-        </div>
-        <div class="score-log">
-          <h4>Score Update Log</h4>
-          <p v-if="scoreLogs.length === 0">No manual updates yet</p>
-          <div v-for="(log, idx) in scoreLogs" :key="idx" class="log-entry">
-            <p><strong>{{ log.entryId }}</strong> +{{ log.points }} pts</p>
-            <p class="timestamp">{{ formatTime(log.timestamp) }} by {{ log.adminId }}</p>
-          </div>
-        </div>
-      </section>
-
       <!-- Scoring Updates from Player Events Section -->
       <section class="admin-section">
         <h3>Scoring Updates from Player Stats</h3>
@@ -117,36 +93,12 @@
         <div class="player-stats-update-log">
           <h4>Stats Update History</h4>
           <p v-if="playerStatsUpdateLogs.length === 0">No stats updates yet</p>
-          <div v-for="(log, idx) in playerStatsUpdateLogs" :key="idx" class="log-entry" :class="{ success: log.success, failure: !log.success }">
-            <p><strong>{{ log.playerName }}</strong> - PTS: {{ log.points }}</p>
-            <p class="timestamp">{{ formatTime(log.timestamp) }}</p>
-            <p v-if="!log.success" class="error-detail">{{ log.reason }}</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Player Data Import Section -->
-      <section class="admin-section">
-        <h3>Player Data Import</h3>
-        <p class="section-description">Import player data in table format (RK, NAME, POS, GP, G, A, PTS)</p>
-        <p class="section-description">Format: RK | NAME (with team code) | POS | GP | G | A | PTS</p>
-        <p class="section-description">Example: 1 | Mats Zuccarello MIN | RW | 1 | 0 | 3 | 3</p>
-        <div class="form-group">
-          <textarea 
-            v-model="playerDataInput" 
-            placeholder="RK  NAME                    POS  GP  G   A   PTS&#10;1   Mats Zuccarello MIN     RW   1   0   3   3&#10;2   Kirill Kaprizov MIN     LW   1   1   2   3"
-            class="player-data-input"
-          ></textarea>
-          <button @click="importPlayerData" class="btn-primary">Import Player Data</button>
-          <p v-if="playerDataError" class="error">{{ playerDataError }}</p>
-          <p v-if="playerDataSuccess" class="success">{{ playerDataSuccess }}</p>
-        </div>
-        <div class="player-data-results" v-if="playerDataResults.length > 0">
-          <h4>Import Results</h4>
-          <div v-for="(result, idx) in playerDataResults" :key="idx" class="result-entry" :class="{ success: result.success, failure: !result.success }">
-            <p><strong>{{ result.playerName }}</strong> ({{ result.team }}) - {{ result.position }}</p>
-            <p class="result-detail">Goals: {{ result.goals }} | Assists: {{ result.assists }} | Points: {{ result.points }}</p>
-            <p v-if="!result.success" class="result-detail error-detail">{{ result.reason }}</p>
+          <div v-else class="compact-stats-list">
+            <div v-for="(log, idx) in playerStatsUpdateLogs.slice().reverse()" :key="idx" class="compact-stat-line">
+              <span class="player-name">{{ log.playerName }}</span>
+              <span class="player-pts">{{ log.points }} pts</span>
+              <span class="player-time">{{ formatTime(log.timestamp) }}</span>
+            </div>
           </div>
         </div>
       </section>
@@ -156,6 +108,32 @@
         <h3>Export Data</h3>
         <button @click="exportToCSV" class="btn-primary">Export Standings to CSV</button>
         <p v-if="exportMessage" class="success">{{ exportMessage }}</p>
+      </section>
+
+      <!-- Latest Player Stats Section -->
+      <section class="admin-section">
+        <h3>Latest Player Stats</h3>
+        <div v-if="playerStatsUpdateLogs.length === 0" class="no-data">
+          No player stats recorded yet
+        </div>
+        <div v-else class="player-stats-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Player Name</th>
+                <th>Points</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(log, idx) in playerStatsUpdateLogs.slice().reverse()" :key="idx">
+                <td>{{ log.playerName }}</td>
+                <td>{{ log.points }}</td>
+                <td>{{ formatTime(log.timestamp) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- Summary Section -->
@@ -185,7 +163,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useParticipantsStore } from '../stores/participants'
 import { useEntriesStore } from '../stores/entries'
 import { useScoresStore } from '../stores/scores'
@@ -220,13 +198,6 @@ export default {
       email: ''
     })
     const entryError = ref('')
-
-    // Score update form
-    const scoreUpdate = ref({
-      entryId: '',
-      points: 0
-    })
-    const scoreError = ref('')
     const exportMessage = ref('')
 
     // Manual score update logs
@@ -246,11 +217,30 @@ export default {
     const playerStatsResults = ref([])
     const playerStatsUpdateLogs = ref([])
 
-    // Player data import form
-    const playerDataInput = ref('')
-    const playerDataError = ref('')
-    const playerDataSuccess = ref('')
-    const playerDataResults = ref([])
+    const savePlayerStatsToStorage = () => {
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          localStorage.setItem('playerStats', JSON.stringify(playerStatsUpdateLogs.value))
+        }
+      } catch (error) {
+        console.error('Error saving player stats to storage:', error)
+      }
+    }
+
+    const loadPlayerStatsFromStorage = () => {
+      try {
+        const stored = localStorage.getItem('playerStats')
+        if (stored && typeof stored === 'string' && stored.length > 0) {
+          const parsed = JSON.parse(stored)
+          if (Array.isArray(parsed)) {
+            playerStatsUpdateLogs.value = parsed
+          }
+        }
+      } catch (error) {
+        console.error('Error loading player stats from storage:', error)
+        playerStatsUpdateLogs.value = []
+      }
+    }
 
     const participants = computed(() => {
       return participantsStore.participants.map(p => ({
@@ -274,12 +264,17 @@ export default {
       return entries.value.filter(e => e.playerIds.length > 0).length
     })
 
+    // Load player stats on component mount
+    onMounted(() => {
+      loadPlayerStatsFromStorage()
+    });
+
     const authenticate = () => {
       if (password.value === adminPassword) {
         isAuthenticated.value = true
         authError.value = ''
         password.value = ''
-        loadScoreLogs()
+        loadPlayerStatsFromStorage()
         scoringUpdatesStore.loadLogsFromStorage()
       } else {
         authError.value = 'Invalid password'
@@ -345,61 +340,6 @@ export default {
     const removeEntry = (entryId) => {
       if (confirm(`Remove entry ${entryId}?`)) {
         entriesStore.removeEntry(entryId)
-      }
-    }
-
-    const updateScore = () => {
-      scoreError.value = ''
-      if (!scoreUpdate.value.entryId) {
-        scoreError.value = 'Please select an entry'
-        return
-      }
-      if (scoreUpdate.value.points === 0) {
-        scoreError.value = 'Points must be non-zero'
-        return
-      }
-      const entry = entriesStore.getEntry(scoreUpdate.value.entryId)
-      if (!entry) {
-        scoreError.value = 'Entry not found'
-        return
-      }
-      entriesStore.updateEntryScore(scoreUpdate.value.entryId, scoreUpdate.value.points)
-      
-      // Log the manual update
-      const log = {
-        entryId: scoreUpdate.value.entryId,
-        points: scoreUpdate.value.points,
-        timestamp: new Date().toISOString(),
-        adminId: adminId
-      }
-      scoreLogs.value.push(log)
-      saveScoreLogs()
-      
-      scoreUpdate.value = { entryId: '', points: 0 }
-    }
-
-    const saveScoreLogs = () => {
-      try {
-        if (typeof localStorage !== 'undefined' && localStorage) {
-          localStorage.setItem('manualScoreLogs', JSON.stringify(scoreLogs.value))
-        }
-      } catch (error) {
-        console.error('Error saving score logs:', error)
-      }
-    }
-
-    const loadScoreLogs = () => {
-      try {
-        const stored = localStorage.getItem('manualScoreLogs')
-        if (stored && typeof stored === 'string' && stored.length > 0) {
-          const parsed = JSON.parse(stored)
-          if (Array.isArray(parsed)) {
-            scoreLogs.value = parsed
-          }
-        }
-      } catch (error) {
-        console.error('Error loading score logs:', error)
-        scoreLogs.value = []
       }
     }
 
@@ -506,146 +446,6 @@ export default {
         scoringUpdateResults.value = []
       }, 5000)
     }
-    const importPlayerData = () => {
-      playerDataError.value = ''
-      playerDataSuccess.value = ''
-      playerDataResults.value = []
-
-      if (!playerDataInput.value.trim()) {
-        playerDataError.value = 'Please enter player data'
-        return
-      }
-
-      // Parse player data table format
-      const lines = playerDataInput.value.trim().split('\n')
-      const playerDataArray = []
-      let successCount = 0
-      let failureCount = 0
-
-      for (const line of lines) {
-        if (!line.trim()) continue
-
-        // Parse line: RK | NAME | POS | GP | G | A | PTS
-        // Support both pipe-separated and whitespace-separated formats
-        const parts = line.includes('|') 
-          ? line.split('|').map(p => p.trim())
-          : line.split(/\s+/)
-
-        if (parts.length < 7) {
-          playerDataResults.value.push({
-            success: false,
-            reason: 'Invalid format. Expected: RK | NAME | POS | GP | G | A | PTS'
-          })
-          failureCount++
-          continue
-        }
-
-        try {
-          const rk = parseInt(parts[0])
-          const nameWithTeam = parts[1]
-          const pos = parts[2]
-          const gp = parseInt(parts[3])
-          const g = parseInt(parts[4])
-          const a = parseInt(parts[5])
-          const pts = parseInt(parts[6])
-
-          // Validate numeric values
-          if (isNaN(rk) || isNaN(gp) || isNaN(g) || isNaN(a) || isNaN(pts)) {
-            playerDataResults.value.push({
-              success: false,
-              playerName: nameWithTeam,
-              reason: 'Invalid numeric values'
-            })
-            failureCount++
-            continue
-          }
-
-          // Validate points calculation
-          if (pts !== g + a) {
-            playerDataResults.value.push({
-              success: false,
-              playerName: nameWithTeam,
-              reason: `Points mismatch: ${pts} !== ${g} + ${a}`
-            })
-            failureCount++
-            continue
-          }
-
-          // Extract name and team
-          const nameParts = nameWithTeam.trim().split(/\s+/)
-          const team = nameParts[nameParts.length - 1]
-          const playerName = nameParts.slice(0, -1).join(' ')
-
-          // Validate position
-          const validPositions = ['RW', 'LW', 'C', 'D']
-          if (!validPositions.includes(pos)) {
-            playerDataResults.value.push({
-              success: false,
-              playerName,
-              team,
-              reason: `Invalid position: ${pos}`
-            })
-            failureCount++
-            continue
-          }
-
-          // Add to array for batch import
-          playerDataArray.push({
-            name: playerName,
-            team,
-            position: pos,
-            gamesPlayed: gp,
-            goals: g,
-            assists: a,
-            points: pts
-          })
-        } catch (error) {
-          playerDataResults.value.push({
-            success: false,
-            reason: error.message
-          })
-          failureCount++
-        }
-      }
-
-      // Import all valid players to registry
-      if (playerDataArray.length > 0) {
-        const importResults = playerRegistryStore.importPlayers(playerDataArray)
-        
-        // Add import results to display
-        importResults.forEach(result => {
-          playerDataResults.value.push({
-            success: result.success,
-            playerName: result.playerName,
-            team: result.team,
-            reason: result.reason
-          })
-          if (result.success) {
-            successCount++
-          } else {
-            failureCount++
-          }
-        })
-      }
-
-      if (successCount > 0) {
-        playerDataSuccess.value = `Successfully imported ${successCount} player(s)`
-        if (failureCount > 0) {
-          playerDataSuccess.value += ` (${failureCount} failed)`
-        }
-      } else if (failureCount > 0) {
-        playerDataError.value = `Failed to import ${failureCount} player(s)`
-      }
-
-      // Clear input
-      playerDataInput.value = ''
-
-      // Clear results after 5 seconds
-      setTimeout(() => {
-        playerDataResults.value = []
-      }, 5000)
-    }
-
     const processPlayerStats = () => {
       playerStatsError.value = ''
       playerStatsSuccess.value = ''
@@ -734,6 +534,8 @@ export default {
         if (failureCount > 0) {
           playerStatsSuccess.value += ` (${failureCount} failed)`
         }
+        // Save to storage after successful processing
+        savePlayerStatsToStorage()
       } else if (failureCount > 0) {
         playerStatsError.value = `Failed to process ${failureCount} player stat(s)`
       }
@@ -755,12 +557,9 @@ export default {
       participantError,
       newEntry,
       entryError,
-      scoreUpdate,
-      scoreError,
       exportMessage,
       participants,
       entries,
-      scoreLogs,
       totalFees,
       entriesWithPlayers,
       scoringUpdateInput,
@@ -773,21 +572,15 @@ export default {
       playerStatsSuccess,
       playerStatsResults,
       playerStatsUpdateLogs,
-      playerDataInput,
-      playerDataError,
-      playerDataSuccess,
-      playerDataResults,
       authenticate,
       logout,
       addParticipant,
       removeParticipant,
       createEntry,
       removeEntry,
-      updateScore,
       exportToCSV,
       processScoringUpdates,
       processPlayerStats,
-      importPlayerData,
       formatTime
     }
   }
@@ -820,10 +613,12 @@ export default {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ddd;
+  border: 2px solid #1976d2;
   border-radius: 4px;
   font-size: 1rem;
   box-sizing: border-box;
+  background: white;
+  color: #333;
 }
 
 .auth-section button {
@@ -1045,6 +840,40 @@ export default {
   font-style: italic;
 }
 
+.no-data {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+.player-stats-table {
+  overflow-x: auto;
+}
+
+.player-stats-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.player-stats-table th {
+  background: #f5f5f5;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
+}
+
+.player-stats-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.player-stats-table tr:hover {
+  background: #f9f9f9;
+}
+
 .scoring-input {
   width: 100%;
   min-height: 120px;
@@ -1205,6 +1034,40 @@ export default {
 
 .player-stats-update-log .log-entry.failure {
   border-left-color: #d32f2f;
+}
+
+.compact-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.compact-stat-line {
+  display: flex;
+  gap: 15px;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  background: #f9f9f9;
+  border-radius: 2px;
+  align-items: center;
+}
+
+.compact-stat-line .player-name {
+  flex: 1;
+  font-weight: 500;
+  color: #333;
+}
+
+.compact-stat-line .player-pts {
+  font-weight: 600;
+  color: #1976d2;
+  min-width: 50px;
+}
+
+.compact-stat-line .player-time {
+  color: #999;
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 </style>
