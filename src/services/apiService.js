@@ -37,9 +37,9 @@ export const apiService = {
 
   // Entry players
   assignPlayers: (entryId, playerNames) =>
-    request(`/entries/${encodeURIComponent(entryId)}/players`, {
-      method: 'PUT',
-      body: { playerNames }
+    request('/assign-players', {
+      method: 'POST',
+      body: { entryId, playerNames }
     }),
 
   // Scores

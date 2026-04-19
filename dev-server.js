@@ -72,7 +72,25 @@ app.delete('/api/entries', async (req, res) => {
   res.json({ deleted: id })
 })
 
-// Assign players
+// Assign players (flat route)
+app.post('/api/assign-players', async (req, res) => {
+  const { entryId, playerNames } = req.body
+  if (!entryId) return res.status(400).json({ error: 'entryId required' })
+  if (!Array.isArray(playerNames) || playerNames.length !== 15) {
+    return res.status(400).json({ error: 'Exactly 15 playerNames required' })
+  }
+  const { rows } = await pool.query('SELECT id FROM entries WHERE id = $1', [entryId])
+  if (rows.length === 0) return res.status(404).json({ error: 'Entry not found' })
+
+  await pool.query('DELETE FROM entry_players WHERE entry_id = $1', [entryId])
+  for (let i = 0; i < playerNames.length; i++) {
+    await pool.query('INSERT INTO entry_players (entry_id, player_name, position) VALUES ($1, $2, $3)', [entryId, playerNames[i].trim(), i + 1])
+  }
+  await pool.query('UPDATE entries SET submitted_at = NOW() WHERE id = $1', [entryId])
+  res.json({ entryId, playerNames, submittedAt: new Date().toISOString() })
+})
+
+// Assign players (dynamic route - kept for backward compat)
 app.put('/api/entries/:id/players', async (req, res) => {
   const { id } = req.params
   const { playerNames } = req.body
