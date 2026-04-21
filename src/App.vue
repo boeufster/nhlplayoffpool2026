@@ -146,4 +146,13 @@ export default {
   background: var(--bg-content);
   min-height: 60vh;
 }
+
+@media (max-width: 768px) {
+  .header { padding: 12px 16px; }
+  .header-top { flex-wrap: wrap; }
+  .header h1 { font-size: 1.1rem; }
+  .version { font-size: 0.65rem; }
+  .nav button { padding: 8px 14px; font-size: 0.75rem; }
+  .main { padding: 16px; }
+}
 </style>

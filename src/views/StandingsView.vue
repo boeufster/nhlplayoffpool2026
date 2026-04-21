@@ -154,4 +154,13 @@ export default {
 .player-stats-table td:last-child { background: var(--bg-highlight); font-weight: 700; }
 .player-stats-table tbody tr:hover { background: var(--bg-row-hover) !important; }
 .player-stats-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
+
+@media (max-width: 768px) {
+  .standings-table th, .standings-table td { padding: 8px 6px; font-size: 0.8rem; }
+  .standings-table th:nth-child(3), .standings-table td:nth-child(3) { display: none; }
+  .points-cell { font-size: 0.9rem; }
+  .standings-view h2 { font-size: 1.4rem; }
+  .player-stats-section h3 { font-size: 1.1rem; }
+  .player-stats-table th, .player-stats-table td { padding: 8px 6px; font-size: 0.8rem; }
+}
 </style>

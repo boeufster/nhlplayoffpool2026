@@ -114,4 +114,16 @@ export default {
 .player-bar { height: 100%; background: var(--text-heading); border-radius: 5px; transition: width 0.3s ease; min-width: 0; }
 .player-pts { font-weight: 700; color: var(--text-primary); font-size: 0.85rem; min-width: 30px; text-align: right; background: var(--bg-highlight); padding: 2px 8px; border-radius: 3px; flex-shrink: 0; }
 .no-players { color: var(--text-secondary); font-style: italic; padding: 10px; text-align: center; }
+
+@media (max-width: 768px) {
+  .player-bar-wrap { display: none; }
+  .entry-header { flex-wrap: wrap; gap: 4px; }
+  .participant-name { font-size: 1rem; }
+  .entry-id { font-size: 0.7rem; }
+  .player-row { gap: 6px; padding: 4px 6px; }
+  .player-name { font-size: 0.8rem; }
+  .player-pts { font-size: 0.8rem; padding: 2px 6px; min-width: 24px; }
+  .player-number { min-width: 20px; font-size: 0.75rem; }
+  .entry-card { padding: 12px 14px; }
+}
 </style>
