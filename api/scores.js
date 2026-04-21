@@ -16,7 +16,9 @@ export default async function handler(req, res) {
     }
 
     const results = []
-    for (const { playerName, points } of players) {
+    for (let { playerName, points } of players) {
+      // Strip invisible/non-printable characters from player names
+      playerName = playerName ? playerName.replace(/[^\x20-\x7E\u00C0-\u024F]/g, '').trim() : playerName
       if (!playerName || typeof points !== 'number') {
         results.push({ playerName, success: false, reason: 'Invalid data' })
         continue
