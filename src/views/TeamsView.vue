@@ -13,7 +13,7 @@
         </div>
         <p class="entry-id">Entry: {{ entry.id }}</p>
         <div v-if="entry.playerNames && entry.playerNames.length > 0" class="players-list">
-          <div v-for="(player, idx) in entry.playerNames" :key="idx" class="player-row" :class="{ eliminated: getPlayerPoints(player) === 0 }">
+          <div v-for="(player, idx) in entry.playerNames" :key="idx" class="player-row">
             <span class="player-number">{{ idx + 1 }}.</span>
             <span class="player-name">{{ player }}</span>
             <div class="player-bar-wrap">
@@ -114,8 +114,6 @@ export default {
 .player-bar { height: 100%; background: var(--text-heading); border-radius: 5px; transition: width 0.3s ease; min-width: 0; }
 .player-pts { font-weight: 700; color: var(--text-primary); font-size: 0.85rem; min-width: 30px; text-align: right; background: var(--bg-highlight); padding: 2px 8px; border-radius: 3px; flex-shrink: 0; }
 .no-players { color: var(--text-secondary); font-style: italic; padding: 10px; text-align: center; }
-.eliminated .player-name { opacity: 0.4; text-decoration: line-through; }
-.eliminated .player-pts { opacity: 0.4; }
 
 @media (max-width: 768px) {
   .player-bar-wrap { display: none; }
