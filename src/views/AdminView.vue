@@ -518,6 +518,7 @@ export default {
         await apiService.postTickerMessage(newTickerMessage.value.trim())
         newTickerMessage.value = ''
         await loadTickerMessages()
+        if (window.__refreshTicker) window.__refreshTicker()
         tickerSuccess.value = 'Message added!'
         setTimeout(() => { tickerSuccess.value = '' }, 3000)
       } catch (error) {
@@ -530,6 +531,7 @@ export default {
       try {
         await apiService.deleteTickerMessage(id)
         await loadTickerMessages()
+        if (window.__refreshTicker) window.__refreshTicker()
       } catch (error) {
         tickerError.value = error.message
       }

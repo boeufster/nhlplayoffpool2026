@@ -63,13 +63,18 @@ export default {
       month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
     })
 
-    onMounted(async () => {
+    const refreshTicker = async () => {
       try {
         tickerMessages.value = await apiService.getTickerMessages()
-      } catch (e) {
-        /* ticker is non-critical */
-      }
+      } catch (e) { /* non-critical */ }
+    }
+
+    onMounted(() => {
+      refreshTicker()
     })
+
+    // Expose refreshTicker globally so AdminView can call it
+    window.__refreshTicker = refreshTicker
 
     return { currentView, currentComponent, currentTheme, themes, switchTheme, buildTime, tickerMessages }
   }
