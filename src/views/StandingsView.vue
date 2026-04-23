@@ -32,7 +32,7 @@
         </tr>
       </thead>
       <TransitionGroup name="standings" tag="tbody">
-        <tr v-for="(entry, index) in sortedEntries" :key="entry.id">
+        <tr v-for="(entry, index) in sortedEntries" :key="entry.id" class="standings-row" :style="{ animationDelay: index * 0.15 + 's' }">
           <td>{{ index + 1 }}</td>
           <td>{{ entry.participantName }}</td>
           <td class="hide-mobile">{{ entry.id }}</td>
@@ -302,6 +302,18 @@ export default {
 .standings-enter-active, .standings-leave-active { transition: all 0.5s ease; }
 .standings-enter-from { opacity: 0; transform: translateX(-30px); }
 .standings-leave-to { opacity: 0; transform: translateX(30px); }
+
+/* Stacked entrance animation on page load */
+.standings-row {
+  animation: unstack 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(-100px) scale(0.95);
+}
+@keyframes unstack {
+  0% { opacity: 0; transform: translateY(-100px) scale(0.95); }
+  60% { opacity: 1; transform: translateY(5px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
 
 /* Dark Horse Card */
 .darkhorse-card { margin-top: 16px; padding: 20px; background: var(--bg-card); border: 2px solid var(--text-heading); border-radius: 4px; text-align: center; }
