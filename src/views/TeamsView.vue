@@ -3,7 +3,7 @@
     <h2>Teams</h2>
     <p v-if="lastUpdated" class="last-updated">Stats updated: {{ lastUpdated }}</p>
 
-    <!-- Player Overlap Matrix -->
+    <!-- Player Overlap Matrix (desktop) -->
     <section v-if="sortedEntries.length > 1" class="overlap-section hide-mobile">
       <h3>Player Overlap</h3>
       <div class="overlap-table-wrap">
@@ -25,6 +25,15 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- Player Overlap List (mobile) -->
+    <section v-if="sortedEntries.length > 1" class="overlap-mobile show-mobile-only">
+      <h3>Player Overlap</h3>
+      <div v-for="pair in overlapPairs" :key="pair.key" class="overlap-pair" :class="{ 'overlap-pair-high': pair.count >= 5 }">
+        <span class="overlap-pair-names">{{ pair.nameA }} vs {{ pair.nameB }}</span>
+        <span class="overlap-pair-count">{{ pair.count }}</span>
       </div>
     </section>
 
@@ -156,7 +165,28 @@ export default {
       return matrix
     })
 
-    return { sortedEntries, getPlayerPoints, getPlayerPct, lastUpdated, isHotStreak, shortName, overlapMatrix }
+    const overlapPairs = computed(() => {
+      const entries = sortedEntries.value
+      const pairs = []
+      for (let i = 0; i < entries.length; i++) {
+        const playersI = new Set((entries[i].playerNames || []).map(p => String(p).toLowerCase()))
+        for (let j = i + 1; j < entries.length; j++) {
+          let count = 0
+          for (const p of (entries[j].playerNames || [])) {
+            if (playersI.has(String(p).toLowerCase())) count++
+          }
+          pairs.push({
+            key: entries[i].id + '-' + entries[j].id,
+            nameA: shortName(entries[i].participantName),
+            nameB: shortName(entries[j].participantName),
+            count
+          })
+        }
+      }
+      return pairs.sort((a, b) => b.count - a.count)
+    })
+
+    return { sortedEntries, getPlayerPoints, getPlayerPct, lastUpdated, isHotStreak, shortName, overlapMatrix, overlapPairs }
   }
 }
 </script>
@@ -196,6 +226,21 @@ export default {
   .entry-card { padding: 12px 14px; }
   .hide-mobile { display: none; }
 }
+
+.show-mobile-only { display: none; }
+@media (max-width: 768px) {
+  .show-mobile-only { display: block; }
+}
+
+/* Mobile Overlap List */
+.overlap-mobile { margin-bottom: 20px; }
+.overlap-mobile h3 { margin: 0 0 10px 0; color: var(--text-heading); font-size: 1.1rem; font-weight: 700; }
+.overlap-pair { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--border-light); }
+.overlap-pair:last-child { border-bottom: none; }
+.overlap-pair-names { color: var(--text-primary); font-size: 0.85rem; }
+.overlap-pair-count { font-weight: 700; color: var(--text-secondary); font-size: 0.85rem; min-width: 24px; text-align: right; }
+.overlap-pair-high .overlap-pair-count { color: var(--text-heading); }
+.overlap-pair-high { background: var(--bg-highlight); }
 
 /* Hot Streak Badge */
 .hot-streak { display: inline-block; margin-left: 4px; animation: pulse-fire 1.5s ease-in-out infinite; }
