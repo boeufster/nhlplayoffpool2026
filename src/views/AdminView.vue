@@ -158,6 +158,24 @@
         <p v-if="exportMessage" class="success">{{ exportMessage }}</p>
       </section>
 
+      <!-- Trash Talk Ticker Section -->
+      <section class="admin-section">
+        <h3>Trash Talk Ticker</h3>
+        <div class="form-group">
+          <input v-model="newTickerMessage" placeholder="Enter trash talk message" @keyup.enter="addTickerMessage" />
+          <button @click="addTickerMessage" class="btn-primary">Add Message</button>
+        </div>
+        <p v-if="tickerError" class="error">{{ tickerError }}</p>
+        <p v-if="tickerSuccess" class="success">{{ tickerSuccess }}</p>
+        <div class="ticker-list">
+          <p v-if="tickerMessages.length === 0">No ticker messages yet</p>
+          <div v-for="msg in tickerMessages" :key="msg.id" class="ticker-item">
+            <span class="ticker-msg-text">{{ msg.message }}</span>
+            <button @click="removeTickerMessage(msg.id)" class="btn-danger">Remove</button>
+          </div>
+        </div>
+      </section>
+
       <!-- Summary Section -->
       <section class="admin-section summary">
         <h3>Pool Summary</h3>
@@ -230,6 +248,11 @@ export default {
     const goalieStatsSuccess = ref('')
     const goalieStatsResults = ref([])
 
+    // Ticker form
+    const newTickerMessage = ref('')
+    const tickerMessages = ref([])
+    const tickerError = ref('')
+    const tickerSuccess = ref('')
     const participants = computed(() => participantsStore.participants)
     const entries = computed(() => entriesStore.entries)
 
@@ -271,6 +294,7 @@ export default {
         const stored = localStorage.getItem('adminAuthenticated')
         if (stored === 'true') {
           isAuthenticated.value = true
+          loadTickerMessages()
         }
       } catch (e) { /* ignore */ }
     })
@@ -480,6 +504,37 @@ export default {
       }
     }
 
+    const loadTickerMessages = async () => {
+      try {
+        tickerMessages.value = await apiService.getTickerMessages()
+      } catch (e) { /* ignore */ }
+    }
+
+    const addTickerMessage = async () => {
+      tickerError.value = ''
+      tickerSuccess.value = ''
+      if (!newTickerMessage.value.trim()) { tickerError.value = 'Message is required'; return }
+      try {
+        await apiService.postTickerMessage(newTickerMessage.value.trim())
+        newTickerMessage.value = ''
+        await loadTickerMessages()
+        tickerSuccess.value = 'Message added!'
+        setTimeout(() => { tickerSuccess.value = '' }, 3000)
+      } catch (error) {
+        tickerError.value = error.message
+      }
+    }
+
+    const removeTickerMessage = async (id) => {
+      tickerError.value = ''
+      try {
+        await apiService.deleteTickerMessage(id)
+        await loadTickerMessages()
+      } catch (error) {
+        tickerError.value = error.message
+      }
+    }
+
     const exportToCSV = () => {
       exportMessage.value = ''
       try {
@@ -514,12 +569,14 @@ export default {
       assignForm, assignError, assignSuccess, assignParticipantEntries,
       playerStatsInput, playerStatsError, playerStatsSuccess, playerStatsResults,
       goalieStatsInput, goalieStatsError, goalieStatsSuccess, goalieStatsResults,
+      newTickerMessage, tickerMessages, tickerError, tickerSuccess,
       participants, entries, totalFees, entriesWithPlayers,
       getEntryCount, onAssignParticipantChange,
       authenticate, logout,
       addParticipant, removeParticipant,
       createEntry, removeEntry,
       assignPlayers, processPlayerStats, processGoalieStats,
+      addTickerMessage, removeTickerMessage,
       exportToCSV
     }
   }
@@ -567,6 +624,9 @@ export default {
 .result-detail { font-size: 0.8rem; color: var(--text-secondary); margin: 2px 0 0 0; }
 .error-detail { color: var(--error-color); font-weight: 600; }
 .summary { border-color: var(--text-heading); }
+.ticker-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.ticker-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--bg-row-even); border: 1px solid var(--border-light); border-radius: 4px; }
+.ticker-msg-text { color: var(--text-primary); font-size: 0.9rem; flex: 1; margin-right: 12px; }
 .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 12px; }
 .summary-item { padding: 14px; background: var(--bg-row-even); border-radius: 4px; text-align: center; border: 1px solid var(--border-light); }
 .summary-item .label { font-size: 0.8rem; color: var(--text-secondary); margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }

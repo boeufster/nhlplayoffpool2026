@@ -1,5 +1,20 @@
 <template>
   <div class="standings-view">
+    <!-- Confetti overlay -->
+    <div v-if="showConfetti" class="confetti-container">
+      <div
+        v-for="i in 30"
+        :key="i"
+        class="confetti-piece"
+        :style="{
+          left: Math.random() * 100 + '%',
+          backgroundColor: confettiColors[i % confettiColors.length],
+          animationDelay: Math.random() * 2 + 's',
+          animationDuration: (2 + Math.random() * 2) + 's'
+        }"
+      ></div>
+    </div>
+
     <h2>Standings</h2>
     <p v-if="lastUpdated" class="last-updated">Stats updated: {{ lastUpdated }}</p>
     <div v-if="entries.length === 0" class="empty-state">
@@ -10,8 +25,9 @@
         <tr>
           <th>Rank</th>
           <th>Participant</th>
-          <th>Entry ID</th>
+          <th class="hide-mobile">Entry ID</th>
           <th class="points-header">Points</th>
+          <th class="hide-mobile">Gap</th>
           <th>Prize</th>
         </tr>
       </thead>
@@ -19,12 +35,20 @@
         <tr v-for="(entry, index) in sortedEntries" :key="entry.id">
           <td>{{ index + 1 }}</td>
           <td>{{ entry.participantName }}</td>
-          <td>{{ entry.id }}</td>
+          <td class="hide-mobile">{{ entry.id }}</td>
           <td class="points-cell">{{ entry.calculatedScore }}</td>
+          <td class="gap-cell hide-mobile">{{ index === 0 ? '—' : entry.calculatedScore - sortedEntries[0].calculatedScore }}</td>
           <td class="prize-cell">{{ getPrize(index) }}</td>
         </tr>
       </tbody>
     </table>
+
+    <!-- MVP Player Card -->
+    <div v-if="mvpPlayer" class="mvp-card">
+      <div class="mvp-label">🏆 MVP Player</div>
+      <div class="mvp-name">{{ mvpPlayer.playerName }}</div>
+      <div class="mvp-points">{{ mvpPlayer.points }} pts</div>
+    </div>
 
     <!-- Latest Player Stats Section -->
     <section class="player-stats-section">
@@ -51,7 +75,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useEntriesStore } from '../stores/entries'
 import { useScoresStore } from '../stores/scores'
 
@@ -61,10 +85,12 @@ export default {
     const entriesStore = useEntriesStore()
     const scoresStore = useScoresStore()
 
+    const showConfetti = ref(false)
+    const confettiColors = ['#c8102e', '#ffffff', '#003087', '#ffd700']
+
     const entries = computed(() => entriesStore.entries)
 
     const sortedEntries = computed(() => {
-      // Build player → points map from scoring events (case-insensitive)
       const playerPointsMap = new Map()
       for (const event of scoresStore.scoringEvents) {
         if (event.playerName) {
@@ -72,7 +98,6 @@ export default {
         }
       }
 
-      // Calculate score for each entry
       const entriesWithScores = entries.value.map(entry => {
         let calculatedScore = 0
         const players = entry.playerNames || entry.playerIds || []
@@ -83,7 +108,6 @@ export default {
         return { ...entry, calculatedScore }
       })
 
-      // Sort by score descending, tiebreak by createdAt ascending
       return entriesWithScores.sort((a, b) => {
         if (b.calculatedScore !== a.calculatedScore) {
           return b.calculatedScore - a.calculatedScore
@@ -92,8 +116,18 @@ export default {
       })
     })
 
+    const mvpPlayer = computed(() => {
+      if (scoresStore.scoringEvents.length === 0) return null
+      let best = null
+      for (const event of scoresStore.scoringEvents) {
+        if (!best || event.points > best.points) {
+          best = event
+        }
+      }
+      return best
+    })
+
     const latestPlayerStats = computed(() => {
-      // Show scoring events sorted by points descending
       return [...scoresStore.scoringEvents].sort((a, b) => {
         if (b.points !== a.points) return b.points - a.points
         return (a.playerName || '').localeCompare(b.playerName || '')
@@ -118,19 +152,37 @@ export default {
       return latest.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
     })
 
+    onMounted(() => {
+      if (entries.value.length > 0) {
+        showConfetti.value = true
+        setTimeout(() => { showConfetti.value = false }, 3000)
+      }
+    })
+
+    // Also trigger if entries load after mount
+    watch(entries, (val) => {
+      if (val.length > 0 && !showConfetti.value) {
+        showConfetti.value = true
+        setTimeout(() => { showConfetti.value = false }, 3000)
+      }
+    }, { once: true })
+
     return {
       entries,
       sortedEntries,
       latestPlayerStats,
+      mvpPlayer,
       lastUpdated,
-      getPrize
+      getPrize,
+      showConfetti,
+      confettiColors
     }
   }
 }
 </script>
 
 <style scoped>
-.standings-view { padding: 0; }
+.standings-view { padding: 0; position: relative; }
 .standings-view h2 { margin: 0 0 4px 0; color: var(--text-heading); font-size: 1.8rem; font-weight: 700; }
 .last-updated { color: var(--text-secondary); font-size: 0.8rem; margin: 0 0 16px 0; }
 .empty-state { text-align: center; padding: 60px 40px; color: var(--text-secondary); border: 1px dashed var(--border-color); border-radius: 4px; }
@@ -141,9 +193,25 @@ export default {
 .standings-table td:last-child { font-weight: 700; }
 .points-cell { background: var(--bg-highlight) !important; font-weight: 700; font-size: 1.05rem; }
 .points-header { background: var(--bg-highlight) !important; color: var(--text-primary) !important; }
+.gap-cell { color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; }
 .prize-cell { color: var(--success-color); font-weight: 600; }
 .standings-table tbody tr:hover { background: var(--bg-row-hover) !important; }
 .standings-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
+
+/* MVP Card */
+.mvp-card { margin-top: 24px; padding: 20px; background: var(--bg-card); border: 2px solid var(--text-heading); border-radius: 4px; text-align: center; }
+.mvp-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; }
+.mvp-name { font-size: 1.4rem; font-weight: 700; color: var(--text-heading); }
+.mvp-points { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-top: 4px; }
+
+/* Confetti */
+.confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; overflow: hidden; }
+.confetti-piece { position: absolute; top: -10px; width: 10px; height: 10px; opacity: 0.85; animation: confetti-fall linear forwards; }
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
 .player-stats-section { margin-top: 40px; padding: 0; border: none; background: none; }
 .player-stats-section h3 { margin: 0 0 16px 0; color: var(--text-heading); font-size: 1.4rem; font-weight: 700; }
 .no-data { padding: 30px; text-align: center; color: var(--text-secondary); border: 1px dashed var(--border-color); border-radius: 4px; }
@@ -157,10 +225,12 @@ export default {
 
 @media (max-width: 768px) {
   .standings-table th, .standings-table td { padding: 8px 6px; font-size: 0.8rem; }
-  .standings-table th:nth-child(3), .standings-table td:nth-child(3) { display: none; }
+  .hide-mobile { display: none; }
   .points-cell { font-size: 0.9rem; }
   .standings-view h2 { font-size: 1.4rem; }
   .player-stats-section h3 { font-size: 1.1rem; }
   .player-stats-table th, .player-stats-table td { padding: 8px 6px; font-size: 0.8rem; }
+  .mvp-card { padding: 14px; }
+  .mvp-name { font-size: 1.1rem; }
 }
 </style>

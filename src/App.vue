@@ -20,6 +20,13 @@
         </button>
       </nav>
     </header>
+    <div v-if="tickerMessages.length > 0" class="ticker-bar">
+      <div class="ticker-content">
+        <span v-for="(msg, i) in tickerMessages" :key="msg.id">
+          {{ msg.message }}<span v-if="i < tickerMessages.length - 1" class="ticker-sep"> 🏒 </span>
+        </span>
+      </div>
+    </div>
     <main class="main">
       <component :is="currentComponent" />
     </main>
@@ -27,11 +34,12 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import StandingsView from './views/StandingsView.vue'
 import TeamsView from './views/TeamsView.vue'
 import AdminView from './views/AdminView.vue'
 import { themes, applyTheme, getStoredTheme } from './themes'
+import { apiService } from './services/apiService'
 
 export default {
   name: 'App',
@@ -39,6 +47,7 @@ export default {
   setup() {
     const currentView = ref('standings')
     const currentTheme = ref(getStoredTheme())
+    const tickerMessages = ref([])
 
     const currentComponent = computed(() => {
       if (currentView.value === 'standings') return StandingsView
@@ -54,7 +63,15 @@ export default {
       month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
     })
 
-    return { currentView, currentComponent, currentTheme, themes, switchTheme, buildTime }
+    onMounted(async () => {
+      try {
+        tickerMessages.value = await apiService.getTickerMessages()
+      } catch (e) {
+        /* ticker is non-critical */
+      }
+    })
+
+    return { currentView, currentComponent, currentTheme, themes, switchTheme, buildTime, tickerMessages }
   }
 }
 </script>
@@ -154,5 +171,30 @@ export default {
   .version { font-size: 0.65rem; }
   .nav button { padding: 8px 14px; font-size: 0.75rem; }
   .main { padding: 16px; }
+}
+
+.ticker-bar {
+  background: var(--bg-header);
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-header);
+}
+
+.ticker-content {
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--text-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: ticker-scroll 20s linear infinite;
+}
+
+.ticker-sep {
+  margin: 0 16px;
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
 </style>

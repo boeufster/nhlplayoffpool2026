@@ -146,6 +146,27 @@ app.post('/api/scores', async (req, res) => {
   res.json({ results })
 })
 
+// Ticker messages
+app.get('/api/ticker', async (req, res) => {
+  const { rows } = await pool.query('SELECT id, message, created_at AS "createdAt" FROM ticker_messages ORDER BY created_at DESC')
+  res.json(rows)
+})
+
+app.post('/api/ticker', async (req, res) => {
+  const { message } = req.body
+  if (!message || !message.trim()) return res.status(400).json({ error: 'message is required' })
+  const id = `ticker-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
+  await pool.query('INSERT INTO ticker_messages (id, message) VALUES ($1, $2)', [id, message.trim()])
+  res.status(201).json({ id, message: message.trim() })
+})
+
+app.delete('/api/ticker', async (req, res) => {
+  const { id } = req.query
+  if (!id) return res.status(400).json({ error: 'id query param required' })
+  await pool.query('DELETE FROM ticker_messages WHERE id = $1', [id])
+  res.json({ deleted: id })
+})
+
 // Pool data (bulk fetch)
 app.get('/api/pool-data', async (req, res) => {
   const [participantsResult, entriesResult, playersResult, scoresResult, logsResult] = await Promise.all([

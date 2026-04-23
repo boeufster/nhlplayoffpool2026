@@ -46,4 +46,10 @@ CREATE TABLE IF NOT EXISTS scoring_update_logs (
   created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS ticker_messages (
+  id          VARCHAR(100) PRIMARY KEY,
+  message     TEXT NOT NULL,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 COMMIT;

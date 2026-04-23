@@ -45,5 +45,12 @@ export const apiService = {
   // Scores
   getScores: () => request('/scores'),
   updateScores: (players) =>
-    request('/scores', { method: 'POST', body: { players } })
+    request('/scores', { method: 'POST', body: { players } }),
+
+  // Ticker messages
+  getTickerMessages: () => request('/ticker'),
+  postTickerMessage: (message) =>
+    request('/ticker', { method: 'POST', body: { message } }),
+  deleteTickerMessage: (id) =>
+    request(`/ticker?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
 }
