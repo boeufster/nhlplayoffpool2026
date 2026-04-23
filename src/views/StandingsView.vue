@@ -211,13 +211,15 @@ export default {
     })
 
     const biggestBust = computed(() => {
-      if (scoresStore.scoringEvents.length === 0 || entries.value.length === 0) return null
+      if (entries.value.length === 0) return null
       const playerEntryCount = new Map()
+      const playerOriginalName = new Map()
       for (const entry of entries.value) {
         const players = entry.playerNames || entry.playerIds || []
         for (const p of players) {
           const key = String(p).toLowerCase()
           playerEntryCount.set(key, (playerEntryCount.get(key) || 0) + 1)
+          if (!playerOriginalName.has(key)) playerOriginalName.set(key, String(p))
         }
       }
       const playerPointsMap = new Map()
@@ -231,8 +233,7 @@ export default {
         if (count < 3) continue
         const pts = playerPointsMap.get(name) || 0
         if (!worst || pts < worst.points || (pts === worst.points && count > worst.entryCount)) {
-          const original = scoresStore.scoringEvents.find(e => e.playerName && e.playerName.toLowerCase() === name)
-          worst = { playerName: original ? original.playerName : name, points: pts, entryCount: count }
+          worst = { playerName: playerOriginalName.get(name) || name, points: pts, entryCount: count }
         }
       }
       return worst

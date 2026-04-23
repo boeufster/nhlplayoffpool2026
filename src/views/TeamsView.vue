@@ -2,30 +2,6 @@
   <div class="teams-view">
     <h2>Teams</h2>
     <p v-if="lastUpdated" class="last-updated">Stats updated: {{ lastUpdated }}</p>
-    <div v-if="sortedEntries.length === 0" class="empty-state">
-      <p>No entries yet</p>
-    </div>
-    <div v-else class="entries-grid">
-      <div v-for="entry in sortedEntries" :key="entry.id" class="entry-card">
-        <div class="entry-header">
-          <h3 class="participant-name">{{ entry.participantName }}</h3>
-          <span class="entry-score">{{ entry.calculatedScore }} pts</span>
-        </div>
-        <p class="entry-id">Entry: {{ entry.id }}</p>
-        <div v-if="entry.playerNames && entry.playerNames.length > 0" class="players-list">
-          <div v-for="(player, idx) in entry.playerNames" :key="idx" class="player-row">
-            <span class="player-number">{{ idx + 1 }}.</span>
-            <span class="player-name">{{ player }}</span>
-            <span v-if="isHotStreak(player)" class="hot-streak">🔥</span>
-            <div class="player-bar-wrap">
-              <div class="player-bar" :style="{ width: getPlayerPct(player, entry.calculatedScore) + '%' }"></div>
-            </div>
-            <span class="player-pts">{{ getPlayerPoints(player) }}</span>
-          </div>
-        </div>
-        <div v-else class="no-players">No players assigned</div>
-      </div>
-    </div>
 
     <!-- Player Overlap Matrix -->
     <section v-if="sortedEntries.length > 1" class="overlap-section hide-mobile">
@@ -51,6 +27,31 @@
         </table>
       </div>
     </section>
+
+    <div v-if="sortedEntries.length === 0" class="empty-state">
+      <p>No entries yet</p>
+    </div>
+    <div v-else class="entries-grid">
+      <div v-for="entry in sortedEntries" :key="entry.id" class="entry-card">
+        <div class="entry-header">
+          <h3 class="participant-name">{{ entry.participantName }}</h3>
+          <span class="entry-score">{{ entry.calculatedScore }} pts</span>
+        </div>
+        <p class="entry-id">Entry: {{ entry.id }}</p>
+        <div v-if="entry.playerNames && entry.playerNames.length > 0" class="players-list">
+          <div v-for="(player, idx) in entry.playerNames" :key="idx" class="player-row">
+            <span class="player-number">{{ idx + 1 }}.</span>
+            <span class="player-name">{{ player }}</span>
+            <span v-if="isHotStreak(player)" class="hot-streak">🔥</span>
+            <div class="player-bar-wrap">
+              <div class="player-bar" :style="{ width: getPlayerPct(player, entry.calculatedScore) + '%' }"></div>
+            </div>
+            <span class="player-pts">{{ getPlayerPoints(player) }}</span>
+          </div>
+        </div>
+        <div v-else class="no-players">No players assigned</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -204,10 +205,10 @@ export default {
 }
 
 /* Player Overlap Matrix */
-.overlap-section { margin-top: 32px; }
+.overlap-section { margin-bottom: 24px; margin-top: 0; }
 .overlap-section h3 { margin: 0 0 12px 0; color: var(--text-heading); font-size: 1.2rem; font-weight: 700; }
 .overlap-table-wrap { overflow-x: auto; }
-.overlap-table { border-collapse: collapse; background: var(--bg-card); width: auto; }
+.overlap-table { border-collapse: collapse; background: var(--bg-card); width: 100%; }
 .overlap-table th { background: var(--bg-card); color: var(--text-secondary); padding: 8px 10px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 2px solid var(--border-color); white-space: nowrap; }
 .overlap-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); text-align: center; font-size: 0.85rem; font-weight: 600; }
 .overlap-row-label { text-align: left !important; color: var(--text-secondary); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
