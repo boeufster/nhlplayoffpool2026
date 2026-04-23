@@ -31,7 +31,7 @@
           <th>Prize</th>
         </tr>
       </thead>
-      <tbody>
+      <TransitionGroup name="standings" tag="tbody">
         <tr v-for="(entry, index) in sortedEntries" :key="entry.id">
           <td>{{ index + 1 }}</td>
           <td>{{ entry.participantName }}</td>
@@ -40,7 +40,7 @@
           <td class="gap-cell hide-mobile">{{ index === 0 ? '—' : entry.calculatedScore - sortedEntries[0].calculatedScore }}</td>
           <td class="prize-cell">{{ getPrize(index) }}</td>
         </tr>
-      </tbody>
+      </TransitionGroup>
     </table>
 
     <!-- MVP Player Card -->
@@ -48,6 +48,20 @@
       <div class="mvp-label">🏆 MVP Player</div>
       <div class="mvp-name">{{ mvpPlayer.playerName }}</div>
       <div class="mvp-points">{{ mvpPlayer.points }} pts</div>
+    </div>
+
+    <!-- Dark Horse Card -->
+    <div v-if="darkHorse" class="darkhorse-card">
+      <div class="darkhorse-label">🐴 Dark Horse</div>
+      <div class="darkhorse-name">{{ darkHorse.playerName }}</div>
+      <div class="darkhorse-meta">{{ darkHorse.points }} pts · in {{ darkHorse.entryCount }} {{ darkHorse.entryCount === 1 ? 'entry' : 'entries' }}</div>
+    </div>
+
+    <!-- Biggest Bust Card -->
+    <div v-if="biggestBust" class="bust-card">
+      <div class="bust-label">💩 Biggest Bust</div>
+      <div class="bust-name">{{ biggestBust.playerName }}</div>
+      <div class="bust-meta">{{ biggestBust.points }} pts · picked by {{ biggestBust.entryCount }} entries</div>
     </div>
 
     <!-- Latest Player Stats Section -->
@@ -167,11 +181,70 @@ export default {
       }
     }, { once: true })
 
+    const darkHorse = computed(() => {
+      if (scoresStore.scoringEvents.length === 0 || entries.value.length === 0) return null
+      const playerEntryCount = new Map()
+      for (const entry of entries.value) {
+        const players = entry.playerNames || entry.playerIds || []
+        for (const p of players) {
+          const key = String(p).toLowerCase()
+          playerEntryCount.set(key, (playerEntryCount.get(key) || 0) + 1)
+        }
+      }
+      const playerPointsMap = new Map()
+      for (const event of scoresStore.scoringEvents) {
+        if (event.playerName) {
+          playerPointsMap.set(event.playerName.toLowerCase(), event.points)
+        }
+      }
+      let best = null
+      for (const [name, count] of playerEntryCount) {
+        if (count > 2) continue
+        const pts = playerPointsMap.get(name) || 0
+        if (pts === 0) continue
+        if (!best || pts > best.points) {
+          const original = scoresStore.scoringEvents.find(e => e.playerName && e.playerName.toLowerCase() === name)
+          best = { playerName: original ? original.playerName : name, points: pts, entryCount: count }
+        }
+      }
+      return best
+    })
+
+    const biggestBust = computed(() => {
+      if (scoresStore.scoringEvents.length === 0 || entries.value.length === 0) return null
+      const playerEntryCount = new Map()
+      for (const entry of entries.value) {
+        const players = entry.playerNames || entry.playerIds || []
+        for (const p of players) {
+          const key = String(p).toLowerCase()
+          playerEntryCount.set(key, (playerEntryCount.get(key) || 0) + 1)
+        }
+      }
+      const playerPointsMap = new Map()
+      for (const event of scoresStore.scoringEvents) {
+        if (event.playerName) {
+          playerPointsMap.set(event.playerName.toLowerCase(), event.points)
+        }
+      }
+      let worst = null
+      for (const [name, count] of playerEntryCount) {
+        if (count < 3) continue
+        const pts = playerPointsMap.get(name) || 0
+        if (!worst || pts < worst.points || (pts === worst.points && count > worst.entryCount)) {
+          const original = scoresStore.scoringEvents.find(e => e.playerName && e.playerName.toLowerCase() === name)
+          worst = { playerName: original ? original.playerName : name, points: pts, entryCount: count }
+        }
+      }
+      return worst
+    })
+
     return {
       entries,
       sortedEntries,
       latestPlayerStats,
       mvpPlayer,
+      darkHorse,
+      biggestBust,
       lastUpdated,
       getPrize,
       showConfetti,
@@ -223,6 +296,24 @@ export default {
 .player-stats-table tbody tr:hover { background: var(--bg-row-hover) !important; }
 .player-stats-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
 
+/* Standings Transition Animations */
+.standings-move { transition: transform 0.5s ease; }
+.standings-enter-active, .standings-leave-active { transition: all 0.5s ease; }
+.standings-enter-from { opacity: 0; transform: translateX(-30px); }
+.standings-leave-to { opacity: 0; transform: translateX(30px); }
+
+/* Dark Horse Card */
+.darkhorse-card { margin-top: 16px; padding: 20px; background: var(--bg-card); border: 2px solid var(--text-heading); border-radius: 4px; text-align: center; }
+.darkhorse-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; }
+.darkhorse-name { font-size: 1.4rem; font-weight: 700; color: var(--text-heading); }
+.darkhorse-meta { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
+
+/* Biggest Bust Card */
+.bust-card { margin-top: 16px; padding: 20px; background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 4px; text-align: center; }
+.bust-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; }
+.bust-name { font-size: 1.4rem; font-weight: 700; color: var(--text-heading); }
+.bust-meta { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
+
 @media (max-width: 768px) {
   .standings-table th, .standings-table td { padding: 8px 6px; font-size: 0.8rem; }
   .hide-mobile { display: none; }
@@ -232,5 +323,9 @@ export default {
   .player-stats-table th, .player-stats-table td { padding: 8px 6px; font-size: 0.8rem; }
   .mvp-card { padding: 14px; }
   .mvp-name { font-size: 1.1rem; }
+  .darkhorse-card { padding: 14px; }
+  .darkhorse-name { font-size: 1.1rem; }
+  .bust-card { padding: 14px; }
+  .bust-name { font-size: 1.1rem; }
 }
 </style>

@@ -107,17 +107,17 @@ describe('apiService', () => {
   })
 
   describe('Player Assignment API', () => {
-    it('should call PUT /api/entries/:id/players with playerNames body', async () => {
+    it('should call POST /api/assign-players with entryId and playerNames body', async () => {
       const playerNames = Array.from({ length: 15 }, (_, i) => `Player ${i + 1}`)
       fetchMock.mockReturnValue(mockOkResponse({ entryId: 'entry-1', playerNames }))
 
       await apiService.assignPlayers('entry-1', playerNames)
 
       expect(fetchMock).toHaveBeenCalledWith(
-        '/api/entries/entry-1/players',
+        '/api/assign-players',
         expect.objectContaining({
-          method: 'PUT',
-          body: JSON.stringify({ playerNames })
+          method: 'POST',
+          body: JSON.stringify({ entryId: 'entry-1', playerNames })
         })
       )
     })

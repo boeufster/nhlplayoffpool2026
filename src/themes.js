@@ -66,7 +66,7 @@ export const themes = {
     '--btn-bg': '#cc6600', '--btn-text': '#1a0f00', '--btn-hover': '#ff8800',
     '--btn-danger-bg': '#cc0000', '--btn-danger-hover': '#ff0000',
     '--error-color': '#ff4444', '--success-color': '#ffcc00',
-    '--font-family': "'Bangers', 'Impact', cursive",
+    '--font-family': "'Permanent Marker', 'Impact', cursive",
     '--font-mono': "'Courier New', monospace", '--nav-active-border': '#ff8800',
   },
   eighties: {
@@ -94,7 +94,7 @@ export const themes = {
     '--btn-bg': '#2244aa', '--btn-text': '#fff', '--btn-hover': '#3366cc',
     '--btn-danger-bg': '#aa2222', '--btn-danger-hover': '#cc3333',
     '--error-color': '#ee4444', '--success-color': '#44aa88',
-    '--font-family': "'Permanent Marker', 'Comic Sans MS', cursive",
+    '--font-family': "'Bangers', 'Arial Black', cursive",
     '--font-mono': "'Courier New', monospace", '--nav-active-border': '#4488cc',
   },
   twothousands: {

@@ -16,6 +16,7 @@
           <div v-for="(player, idx) in entry.playerNames" :key="idx" class="player-row">
             <span class="player-number">{{ idx + 1 }}.</span>
             <span class="player-name">{{ player }}</span>
+            <span v-if="isHotStreak(player)" class="hot-streak">🔥</span>
             <div class="player-bar-wrap">
               <div class="player-bar" :style="{ width: getPlayerPct(player, entry.calculatedScore) + '%' }"></div>
             </div>
@@ -25,6 +26,31 @@
         <div v-else class="no-players">No players assigned</div>
       </div>
     </div>
+
+    <!-- Player Overlap Matrix -->
+    <section v-if="sortedEntries.length > 1" class="overlap-section hide-mobile">
+      <h3>Player Overlap</h3>
+      <div class="overlap-table-wrap">
+        <table class="overlap-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th v-for="entry in sortedEntries" :key="'oh-' + entry.id">{{ shortName(entry.participantName) }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(rowEntry, ri) in sortedEntries" :key="'or-' + rowEntry.id">
+              <td class="overlap-row-label">{{ shortName(rowEntry.participantName) }}</td>
+              <td
+                v-for="(colEntry, ci) in sortedEntries"
+                :key="'oc-' + colEntry.id"
+                :class="{ 'overlap-diag': ri === ci, 'overlap-high': ri !== ci && overlapMatrix[ri][ci] >= 5 }"
+              >{{ overlapMatrix[ri][ci] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -87,7 +113,49 @@ export default {
       return latest.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
     })
 
-    return { sortedEntries, getPlayerPoints, getPlayerPct, lastUpdated }
+    const topScorerNames = computed(() => {
+      const sorted = [...scoresStore.scoringEvents]
+        .filter(e => e.playerName)
+        .sort((a, b) => b.points - a.points)
+      const top3 = sorted.slice(0, 3)
+      return new Set(top3.map(e => e.playerName.toLowerCase()))
+    })
+
+    const isHotStreak = (playerName) => {
+      return topScorerNames.value.has(String(playerName).toLowerCase())
+    }
+
+    const shortName = (name) => {
+      if (!name) return ''
+      const parts = name.trim().split(/\s+/)
+      if (parts.length <= 1 || name.length <= 10) return name
+      return parts[0] + ' ' + parts[parts.length - 1][0] + '.'
+    }
+
+    const overlapMatrix = computed(() => {
+      const entries = sortedEntries.value
+      const matrix = []
+      for (let i = 0; i < entries.length; i++) {
+        const row = []
+        const playersI = new Set((entries[i].playerNames || []).map(p => String(p).toLowerCase()))
+        for (let j = 0; j < entries.length; j++) {
+          if (i === j) {
+            row.push(playersI.size || 15)
+          } else {
+            const playersJ = (entries[j].playerNames || []).map(p => String(p).toLowerCase())
+            let count = 0
+            for (const p of playersJ) {
+              if (playersI.has(p)) count++
+            }
+            row.push(count)
+          }
+        }
+        matrix.push(row)
+      }
+      return matrix
+    })
+
+    return { sortedEntries, getPlayerPoints, getPlayerPct, lastUpdated, isHotStreak, shortName, overlapMatrix }
   }
 }
 </script>
@@ -125,5 +193,25 @@ export default {
   .player-pts { font-size: 0.8rem; padding: 2px 6px; min-width: 24px; }
   .player-number { min-width: 20px; font-size: 0.75rem; }
   .entry-card { padding: 12px 14px; }
+  .hide-mobile { display: none; }
 }
+
+/* Hot Streak Badge */
+.hot-streak { display: inline-block; margin-left: 4px; animation: pulse-fire 1.5s ease-in-out infinite; }
+@keyframes pulse-fire {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.15); }
+}
+
+/* Player Overlap Matrix */
+.overlap-section { margin-top: 32px; }
+.overlap-section h3 { margin: 0 0 12px 0; color: var(--text-heading); font-size: 1.2rem; font-weight: 700; }
+.overlap-table-wrap { overflow-x: auto; }
+.overlap-table { border-collapse: collapse; background: var(--bg-card); width: auto; }
+.overlap-table th { background: var(--bg-card); color: var(--text-secondary); padding: 8px 10px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 2px solid var(--border-color); white-space: nowrap; }
+.overlap-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); text-align: center; font-size: 0.85rem; font-weight: 600; }
+.overlap-row-label { text-align: left !important; color: var(--text-secondary); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
+.overlap-diag { background: var(--bg-highlight); color: var(--text-secondary); }
+.overlap-high { background: var(--bg-highlight); color: var(--text-heading); font-weight: 700; }
+.overlap-table tbody tr:hover { background: var(--bg-row-hover); }
 </style>

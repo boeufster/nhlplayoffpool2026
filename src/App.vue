@@ -178,14 +178,17 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   border-bottom: 1px solid var(--border-header);
+  position: relative;
 }
 
 .ticker-content {
   display: inline-block;
   padding: 6px 0;
-  color: var(--text-heading);
+  color: var(--text-nav-active);
   font-size: 0.85rem;
   font-weight: 600;
+  position: relative;
+  left: 100%;
   animation: ticker-scroll 20s linear infinite;
 }
 
@@ -194,7 +197,7 @@ export default {
 }
 
 @keyframes ticker-scroll {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100% - 1200px)); }
 }
 </style>
