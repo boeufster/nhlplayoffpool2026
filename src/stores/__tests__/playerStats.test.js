@@ -1,4 +1,4 @@
-﻿import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useEntriesStore } from '../entries'
 import { useScoresStore } from '../scores'
@@ -57,6 +57,7 @@ describe('Player Stats and Entry Scoring', () => {
       expect(playerPointsMap.get('unknown') || 0).toBe(0)
     })
   })
+
 
   describe('Standings Sorting', () => {
     it('should sort by score descending', () => {
