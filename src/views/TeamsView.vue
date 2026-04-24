@@ -124,11 +124,11 @@ export default {
     })
 
     const topScorerNames = computed(() => {
-      const sorted = [...scoresStore.scoringEvents]
-        .filter(e => e.playerName)
-        .sort((a, b) => b.points - a.points)
-      const top3 = sorted.slice(0, 3)
-      return new Set(top3.map(e => e.playerName.toLowerCase()))
+      const events = scoresStore.scoringEvents.filter(e => e.playerName && e.points > 0)
+      if (events.length === 0) return new Set()
+      const sorted = [...events].sort((a, b) => b.points - a.points)
+      const topScore = sorted[0].points
+      return new Set(sorted.filter(e => e.points >= topScore - 1).map(e => e.playerName.toLowerCase()))
     })
 
     const isHotStreak = (playerName) => {
