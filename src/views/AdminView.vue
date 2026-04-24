@@ -111,8 +111,9 @@
             placeholder="Mats Zuccarello  3&#10;Kirill Kaprizov  3&#10;Matt Boldy  3"
             class="player-stats-input"
           ></textarea>
-          <button @click="processPlayerStats" class="btn-primary">Process Stats</button>
+          <button @click="processPlayerStats" class="btn-primary" :disabled="playerStatsProcessing">{{ playerStatsProcessing ? 'Processing...' : 'Process Stats' }}</button>
         </div>
+        <div v-if="playerStatsProcessing" class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
         <p v-if="playerStatsError" class="error">{{ playerStatsError }}</p>
         <p v-if="playerStatsSuccess" class="success">{{ playerStatsSuccess }}</p>
         <div class="player-stats-results" v-if="playerStatsResults.length > 0">
@@ -137,8 +138,9 @@
             placeholder="Frederik Andersen  1  1&#10;Jesper Wallstedt  1  0&#10;Dan Vladar  1  0"
             class="player-stats-input"
           ></textarea>
-          <button @click="processGoalieStats" class="btn-primary">Process Goalie Stats</button>
+          <button @click="processGoalieStats" class="btn-primary" :disabled="goalieStatsProcessing">{{ goalieStatsProcessing ? 'Processing...' : 'Process Goalie Stats' }}</button>
         </div>
+        <div v-if="goalieStatsProcessing" class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
         <p v-if="goalieStatsError" class="error">{{ goalieStatsError }}</p>
         <p v-if="goalieStatsSuccess" class="success">{{ goalieStatsSuccess }}</p>
         <div class="player-stats-results" v-if="goalieStatsResults.length > 0">
@@ -241,12 +243,14 @@ export default {
     const playerStatsError = ref('')
     const playerStatsSuccess = ref('')
     const playerStatsResults = ref([])
+    const playerStatsProcessing = ref(false)
 
     // Goalie stats form
     const goalieStatsInput = ref('')
     const goalieStatsError = ref('')
     const goalieStatsSuccess = ref('')
     const goalieStatsResults = ref([])
+    const goalieStatsProcessing = ref(false)
 
     // Ticker form
     const newTickerMessage = ref('')
@@ -430,7 +434,9 @@ export default {
       }
 
       try {
+        playerStatsProcessing.value = true
         const response = await apiService.updateScores(players)
+        playerStatsProcessing.value = false
         playerStatsResults.value = response.results || []
         const successCount = playerStatsResults.value.filter(r => r.success).length
         const failureCount = playerStatsResults.value.filter(r => !r.success).length
@@ -444,6 +450,7 @@ export default {
         playerStatsInput.value = ''
         setTimeout(() => { playerStatsResults.value = [] }, 5000)
       } catch (error) {
+        playerStatsProcessing.value = false
         playerStatsError.value = error.message
       }
     }
@@ -480,9 +487,11 @@ export default {
       }
 
       try {
+        goalieStatsProcessing.value = true
         const response = await apiService.updateScores(
           players.map(p => ({ playerName: p.playerName, points: p.points }))
         )
+        goalieStatsProcessing.value = false
         goalieStatsResults.value = (response.results || []).map((r, i) => ({
           ...r,
           wins: players[i]?.wins ?? 0,
@@ -500,6 +509,7 @@ export default {
         goalieStatsInput.value = ''
         setTimeout(() => { goalieStatsResults.value = [] }, 5000)
       } catch (error) {
+        goalieStatsProcessing.value = false
         goalieStatsError.value = error.message
       }
     }
@@ -569,8 +579,8 @@ export default {
       newParticipant, participantError,
       newEntry, entryError, exportMessage,
       assignForm, assignError, assignSuccess, assignParticipantEntries,
-      playerStatsInput, playerStatsError, playerStatsSuccess, playerStatsResults,
-      goalieStatsInput, goalieStatsError, goalieStatsSuccess, goalieStatsResults,
+      playerStatsInput, playerStatsError, playerStatsSuccess, playerStatsResults, playerStatsProcessing,
+      goalieStatsInput, goalieStatsError, goalieStatsSuccess, goalieStatsResults, goalieStatsProcessing,
       newTickerMessage, tickerMessages, tickerError, tickerSuccess,
       participants, entries, totalFees, entriesWithPlayers,
       getEntryCount, onAssignParticipantChange,
@@ -626,6 +636,9 @@ export default {
 .result-detail { font-size: 0.8rem; color: var(--text-secondary); margin: 2px 0 0 0; }
 .error-detail { color: var(--error-color); font-weight: 600; }
 .summary { border-color: var(--text-heading); }
+.progress-bar-wrap { width: 100%; height: 6px; background: var(--border-light); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.progress-bar-fill { height: 100%; background: var(--text-heading); border-radius: 3px; animation: progress-fill 2s ease-in-out infinite; }
+@keyframes progress-fill { 0% { width: 0%; } 50% { width: 80%; } 100% { width: 100%; } }
 .ticker-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .ticker-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--bg-row-even); border: 1px solid var(--border-light); border-radius: 4px; }
 .ticker-msg-text { color: var(--text-primary); font-size: 0.9rem; flex: 1; margin-right: 12px; }
