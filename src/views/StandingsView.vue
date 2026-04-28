@@ -25,9 +25,9 @@
         <tr>
           <th>Rank</th>
           <th>Participant</th>
-          <th class="hide-mobile">Entry ID</th>
           <th class="points-header">Points</th>
           <th class="hide-mobile">Gap</th>
+          <th class="active-header">Active</th>
           <th>Prize</th>
         </tr>
       </thead>
@@ -35,9 +35,9 @@
         <tr v-for="(entry, index) in sortedEntries" :key="entry.id" class="standings-row" :style="{ animationDelay: index * 0.15 + 's' }">
           <td>{{ index + 1 }}</td>
           <td>{{ entry.participantName }}</td>
-          <td class="hide-mobile">{{ entry.id }}</td>
           <td class="points-cell">{{ entry.calculatedScore }}</td>
           <td class="gap-cell hide-mobile">{{ index === 0 ? '—' : entry.calculatedScore - sortedEntries[0].calculatedScore }}</td>
+          <td class="active-cell">{{ entry.remainingPlayers }}/15</td>
           <td class="prize-cell">{{ getPrize(index) }}</td>
         </tr>
       </TransitionGroup>
@@ -128,7 +128,19 @@ export default {
           const key = String(playerName).toLowerCase()
           calculatedScore += playerPointsMap.get(key) || 0
         }
-        return { ...entry, calculatedScore }
+
+        // Count remaining (non-eliminated) players
+        let remainingPlayers = 0
+        for (const playerName of players) {
+          const teamCode = entry.playerTeams
+            ? entry.playerTeams[String(playerName).toLowerCase()] || null
+            : null
+          if (!teamCode || !eliminatedTeamsStore.isTeamEliminated(teamCode)) {
+            remainingPlayers++
+          }
+        }
+
+        return { ...entry, calculatedScore, remainingPlayers }
       })
 
       return entriesWithScores.sort((a, b) => {
@@ -310,6 +322,8 @@ export default {
 .points-cell { background: var(--bg-highlight) !important; font-weight: 700; font-size: 1.05rem; }
 .points-header { background: var(--bg-highlight) !important; color: var(--text-primary) !important; }
 .gap-cell { color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; }
+.active-cell { text-align: center; font-weight: 600; font-size: 0.85rem; color: var(--text-primary); }
+.active-header { text-align: center !important; }
 .prize-cell { color: var(--success-color); font-weight: 600; }
 .standings-table tbody tr:hover { background: var(--bg-row-hover) !important; }
 .standings-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
