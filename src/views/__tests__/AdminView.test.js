@@ -3,6 +3,7 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useParticipantsStore } from '../../stores/participants'
 import { useEntriesStore } from '../../stores/entries'
 import { useScoresStore } from '../../stores/scores'
+import { useEliminatedTeamsStore } from '../../stores/eliminatedTeams'
 
 describe('AdminView Logic', () => {
   beforeEach(() => {
@@ -216,6 +217,67 @@ describe('AdminView Logic', () => {
       ).length
 
       expect(entriesWithPlayers).toBe(1)
+    })
+  })
+
+  describe('Eliminated Teams Management', () => {
+    it('should parse comma-separated team codes to uppercase', () => {
+      const input = 'mtl, ott, buf'
+      const parsedCodes = input
+        .split(/[,\n]+/)
+        .map(code => code.trim().toUpperCase())
+        .filter(code => /^[A-Z]{2,4}$/.test(code))
+
+      expect(parsedCodes).toEqual(['MTL', 'OTT', 'BUF'])
+    })
+
+    it('should filter out invalid team codes during parsing', () => {
+      const input = 'MTL, , TOOLONG, A, OTT, 123'
+      const parsedCodes = input
+        .split(/[,\n]+/)
+        .map(code => code.trim().toUpperCase())
+        .filter(code => /^[A-Z]{2,4}$/.test(code))
+
+      expect(parsedCodes).toEqual(['MTL', 'OTT'])
+    })
+
+    it('should parse newline-separated team codes', () => {
+      const input = 'MTL\nOTT\nBUF'
+      const parsedCodes = input
+        .split(/[,\n]+/)
+        .map(code => code.trim().toUpperCase())
+        .filter(code => /^[A-Z]{2,4}$/.test(code))
+
+      expect(parsedCodes).toEqual(['MTL', 'OTT', 'BUF'])
+    })
+
+    it('should produce empty array from empty input', () => {
+      const input = ''
+      const parsedCodes = input
+        .trim()
+        .split(/[,\n]+/)
+        .map(code => code.trim().toUpperCase())
+        .filter(code => /^[A-Z]{2,4}$/.test(code))
+
+      expect(parsedCodes).toEqual([])
+    })
+
+    it('should hydrate eliminated teams store after successful update', () => {
+      const store = useEliminatedTeamsStore()
+      store.hydrateFromData(['MTL', 'OTT', 'BUF'])
+
+      expect(store.eliminatedTeams).toEqual(['MTL', 'OTT', 'BUF'])
+      expect(store.isTeamEliminated('MTL')).toBe(true)
+      expect(store.isTeamEliminated('EDM')).toBe(false)
+    })
+
+    it('should display eliminated teams from the store', () => {
+      const store = useEliminatedTeamsStore()
+      store.hydrateFromData(['MTL', 'OTT'])
+
+      expect(store.eliminatedTeams).toHaveLength(2)
+      expect(store.eliminatedTeams).toContain('MTL')
+      expect(store.eliminatedTeams).toContain('OTT')
     })
   })
 })

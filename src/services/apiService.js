@@ -47,6 +47,11 @@ export const apiService = {
   updateScores: (players) =>
     request('/scores', { method: 'POST', body: { players } }),
 
+  // Eliminated teams
+  getEliminatedTeams: () => request('/eliminated-teams'),
+  updateEliminatedTeams: (teams) =>
+    request('/eliminated-teams', { method: 'POST', body: { teams } }),
+
   // Ticker messages
   getTickerMessages: () => request('/ticker'),
   postTickerMessage: (message) =>

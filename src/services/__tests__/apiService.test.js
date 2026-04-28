@@ -143,6 +143,31 @@ describe('apiService', () => {
     })
   })
 
+  describe('Eliminated Teams API', () => {
+    it('should call GET /api/eliminated-teams', async () => {
+      fetchMock.mockReturnValue(mockOkResponse(['MTL', 'OTT']))
+      const result = await apiService.getEliminatedTeams()
+      expect(fetchMock).toHaveBeenCalledWith('/api/eliminated-teams', expect.objectContaining({
+        headers: { 'Content-Type': 'application/json' }
+      }))
+      expect(result).toEqual(['MTL', 'OTT'])
+    })
+
+    it('should call POST /api/eliminated-teams with teams body', async () => {
+      const teams = ['MTL', 'OTT', 'BUF']
+      fetchMock.mockReturnValue(mockOkResponse({ eliminatedTeams: teams }))
+
+      const result = await apiService.updateEliminatedTeams(teams)
+
+      expect(fetchMock).toHaveBeenCalledWith('/api/eliminated-teams', expect.objectContaining({
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teams })
+      }))
+      expect(result).toEqual({ eliminatedTeams: teams })
+    })
+  })
+
   describe('Error Handling', () => {
     it('should throw Error with server error message on non-OK response', async () => {
       fetchMock.mockReturnValue(mockErrorResponse(400, { error: 'email and name required' }))

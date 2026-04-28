@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useEntriesStore } from '../../stores/entries'
+import { useEliminatedTeamsStore } from '../../stores/eliminatedTeams'
 
 /**
  * TeamsView Logic Tests
@@ -98,6 +99,112 @@ describe('TeamsView Logic', () => {
       expect(sortedEntries[0].participantName).toBe('Alice')
       expect(sortedEntries[0].totalScore).toBe(10)
       expect(sortedEntries[0].playerNames).toEqual(['P1'])
+    })
+  })
+
+  describe('Eliminated player indicators', () => {
+    let eliminatedTeamsStore
+
+    beforeEach(() => {
+      eliminatedTeamsStore = useEliminatedTeamsStore()
+    })
+
+    // Helper functions replicating TeamsView logic
+    const getPlayerTeam = (playerName, entry) => {
+      if (!entry || !entry.playerTeams) return null
+      return entry.playerTeams[String(playerName).toLowerCase()] || null
+    }
+
+    const isPlayerEliminated = (playerName, entry) => {
+      const teamCode = getPlayerTeam(playerName, entry)
+      return eliminatedTeamsStore.isTeamEliminated(teamCode)
+    }
+
+    it('should identify a player as eliminated when their team is in the eliminated list', () => {
+      eliminatedTeamsStore.hydrateFromData(['MTL', 'OTT'])
+
+      const entry = {
+        id: 'e1',
+        participantName: 'Alice',
+        playerNames: ['Connor McDavid', 'Nick Suzuki'],
+        playerTeams: { 'connor mcdavid': 'EDM', 'nick suzuki': 'MTL' }
+      }
+
+      expect(isPlayerEliminated('Nick Suzuki', entry)).toBe(true)
+      expect(isPlayerEliminated('Connor McDavid', entry)).toBe(false)
+    })
+
+    it('should return false for players without a team code', () => {
+      eliminatedTeamsStore.hydrateFromData(['MTL'])
+
+      const entry = {
+        id: 'e1',
+        participantName: 'Bob',
+        playerNames: ['Sidney Crosby'],
+        playerTeams: { 'sidney crosby': null }
+      }
+
+      expect(isPlayerEliminated('Sidney Crosby', entry)).toBe(false)
+    })
+
+    it('should return false when entry has no playerTeams data', () => {
+      eliminatedTeamsStore.hydrateFromData(['MTL'])
+
+      const entry = {
+        id: 'e1',
+        participantName: 'Charlie',
+        playerNames: ['Player One']
+      }
+
+      expect(isPlayerEliminated('Player One', entry)).toBe(false)
+    })
+
+    it('should return the team code from playerTeams map', () => {
+      const entry = {
+        id: 'e1',
+        participantName: 'Alice',
+        playerNames: ['Connor McDavid'],
+        playerTeams: { 'connor mcdavid': 'EDM' }
+      }
+
+      expect(getPlayerTeam('Connor McDavid', entry)).toBe('EDM')
+    })
+
+    it('should return null for players not in the playerTeams map', () => {
+      const entry = {
+        id: 'e1',
+        participantName: 'Alice',
+        playerNames: ['Unknown Player'],
+        playerTeams: { 'connor mcdavid': 'EDM' }
+      }
+
+      expect(getPlayerTeam('Unknown Player', entry)).toBeNull()
+    })
+
+    it('should handle case-insensitive player name lookup', () => {
+      const entry = {
+        id: 'e1',
+        participantName: 'Alice',
+        playerNames: ['Connor McDavid'],
+        playerTeams: { 'connor mcdavid': 'EDM' }
+      }
+
+      expect(getPlayerTeam('CONNOR MCDAVID', entry)).toBe('EDM')
+      expect(getPlayerTeam('connor mcdavid', entry)).toBe('EDM')
+    })
+
+    it('should not mark players on non-eliminated teams as eliminated', () => {
+      eliminatedTeamsStore.hydrateFromData(['MTL', 'OTT'])
+
+      const entry = {
+        id: 'e1',
+        participantName: 'Alice',
+        playerNames: ['Connor McDavid', 'Auston Matthews'],
+        playerTeams: { 'connor mcdavid': 'EDM', 'auston matthews': 'TOR' }
+      }
+
+      expect(isPlayerEliminated('Connor McDavid', entry)).toBe(false)
+      expect(isPlayerEliminated('Auston Matthews', entry)).toBe(false)
     })
   })
 })

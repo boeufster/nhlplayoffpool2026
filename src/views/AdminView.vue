@@ -89,7 +89,7 @@
         <div class="form-group">
           <textarea
             v-model="assignForm.playerNamesText"
-            placeholder="Enter 15 player names (one per line)"
+            placeholder="Enter 15 player names with team code (one per line)&#10;e.g. Connor McDavid EDM"
             class="player-names-textarea"
           ></textarea>
         </div>
@@ -103,12 +103,12 @@
       <!-- Scoring Updates from Player Stats Section -->
       <section class="admin-section">
         <h3>Scoring Updates from Player Stats</h3>
-        <p class="section-description">Paste player stats (NAME  PTS, one per line)</p>
-        <p class="section-description">Example: Mats Zuccarello  3</p>
+        <p class="section-description">Paste player stats (NAME TEAM PTS, one per line)</p>
+        <p class="section-description">Example: Connor McDavid EDM 2</p>
         <div class="form-group">
           <textarea
             v-model="playerStatsInput"
-            placeholder="Mats Zuccarello  3&#10;Kirill Kaprizov  3&#10;Matt Boldy  3"
+            placeholder="Connor McDavid EDM 2&#10;Kirill Kaprizov MIN 3&#10;Matt Boldy MIN 3"
             class="player-stats-input"
           ></textarea>
           <button @click="processPlayerStats" class="btn-primary" :disabled="playerStatsProcessing">{{ playerStatsProcessing ? 'Processing...' : 'Process Stats' }}</button>
@@ -129,13 +129,13 @@
       <!-- Goalie Stats Section -->
       <section class="admin-section">
         <h3>Goalie Stats</h3>
-        <p class="section-description">Paste goalie stats (NAME  WINS  SHUTOUTS, one per line)</p>
+        <p class="section-description">Paste goalie stats (NAME TEAM WINS SHUTOUTS, one per line)</p>
         <p class="section-description">Scoring: 1 pt per win + 2 extra pts per shutout</p>
-        <p class="section-description">Example: Frederik Andersen  1  1  (= 3 pts)</p>
+        <p class="section-description">Example: Scott Wedgewood COL 4 1  (= 6 pts)</p>
         <div class="form-group">
           <textarea
             v-model="goalieStatsInput"
-            placeholder="Frederik Andersen  1  1&#10;Jesper Wallstedt  1  0&#10;Dan Vladar  1  0"
+            placeholder="Scott Wedgewood COL 4 1&#10;Jesper Wallstedt MIN 1 0&#10;Dan Vladar CGY 1 0"
             class="player-stats-input"
           ></textarea>
           <button @click="processGoalieStats" class="btn-primary" :disabled="goalieStatsProcessing">{{ goalieStatsProcessing ? 'Processing...' : 'Process Goalie Stats' }}</button>
@@ -149,6 +149,28 @@
             <p><strong>{{ result.playerName }}</strong></p>
             <p class="result-detail">Wins: {{ result.wins }}, Shutouts: {{ result.shutouts }} → {{ result.points }} pts</p>
             <p v-if="!result.success" class="result-detail error-detail">{{ result.reason }}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Eliminated Teams Section -->
+      <section class="admin-section">
+        <h3>Eliminated Teams</h3>
+        <div class="form-group">
+          <input
+            v-model="eliminatedTeamsInput"
+            placeholder="Enter team code (e.g. MTL)"
+            @keyup.enter="addEliminatedTeam"
+          />
+          <button @click="addEliminatedTeam" class="btn-primary">Add Team</button>
+        </div>
+        <p v-if="eliminatedTeamsError" class="error">{{ eliminatedTeamsError }}</p>
+        <p v-if="eliminatedTeamsSuccess" class="success">{{ eliminatedTeamsSuccess }}</p>
+        <div class="ticker-list">
+          <p v-if="eliminatedTeams.length === 0">No teams currently eliminated</p>
+          <div v-for="team in eliminatedTeams" :key="team" class="ticker-item">
+            <span class="ticker-msg-text">{{ team }}</span>
+            <button @click="removeEliminatedTeam(team)" class="btn-danger">Remove</button>
           </div>
         </div>
       </section>
@@ -209,7 +231,9 @@ import { ref, computed, onMounted } from 'vue'
 import { useParticipantsStore } from '../stores/participants'
 import { useEntriesStore } from '../stores/entries'
 import { useScoresStore } from '../stores/scores'
+import { useEliminatedTeamsStore } from '../stores/eliminatedTeams'
 import { apiService } from '../services/apiService'
+import { parsePlayerNameAndTeam } from '../utils/parsePlayerNameAndTeam'
 
 export default {
   name: 'AdminView',
@@ -217,6 +241,7 @@ export default {
     const participantsStore = useParticipantsStore()
     const entriesStore = useEntriesStore()
     const scoresStore = useScoresStore()
+    const eliminatedTeamsStore = useEliminatedTeamsStore()
 
     const isAuthenticated = ref(false)
     const password = ref('')
@@ -251,6 +276,12 @@ export default {
     const goalieStatsSuccess = ref('')
     const goalieStatsResults = ref([])
     const goalieStatsProcessing = ref(false)
+
+    // Eliminated teams form
+    const eliminatedTeamsInput = ref('')
+    const eliminatedTeamsError = ref('')
+    const eliminatedTeamsSuccess = ref('')
+    const eliminatedTeams = computed(() => eliminatedTeamsStore.eliminatedTeams)
 
     // Ticker form
     const newTickerMessage = ref('')
@@ -287,6 +318,7 @@ export default {
         participantsStore.hydrateFromData(data.participants)
         entriesStore.hydrateFromData(data.entries)
         scoresStore.hydrateFromData(data.scoringEvents)
+        eliminatedTeamsStore.hydrateFromData(data.eliminatedTeams)
       } catch (err) {
         apiError.value = 'Failed to refresh data: ' + err.message
       }
@@ -422,9 +454,10 @@ export default {
         const parts = line.trim().split(/\s+/)
         if (parts.length < 2) continue
         const pts = parseInt(parts[parts.length - 1])
-        const playerName = parts.slice(0, -1).join(' ')
+        const rawName = parts.slice(0, -1).join(' ')
+        const { playerName, team } = parsePlayerNameAndTeam(rawName)
         if (!isNaN(pts) && pts >= 0) {
-          players.push({ playerName, points: pts })
+          players.push({ playerName, points: pts, team })
         }
       }
 
@@ -474,10 +507,11 @@ export default {
         if (parts.length < 3) continue
         const shutouts = parseInt(parts[parts.length - 1])
         const wins = parseInt(parts[parts.length - 2])
-        const playerName = parts.slice(0, -2).join(' ')
+        const rawName = parts.slice(0, -2).join(' ')
+        const { playerName, team } = parsePlayerNameAndTeam(rawName)
         if (!isNaN(wins) && !isNaN(shutouts) && wins >= 0 && shutouts >= 0) {
           const points = wins + (shutouts * 2)
-          players.push({ playerName, points, wins, shutouts })
+          players.push({ playerName, points, wins, shutouts, team })
         }
       }
 
@@ -489,7 +523,7 @@ export default {
       try {
         goalieStatsProcessing.value = true
         const response = await apiService.updateScores(
-          players.map(p => ({ playerName: p.playerName, points: p.points }))
+          players.map(p => ({ playerName: p.playerName, points: p.points, team: p.team }))
         )
         goalieStatsProcessing.value = false
         goalieStatsResults.value = (response.results || []).map((r, i) => ({
@@ -511,6 +545,49 @@ export default {
       } catch (error) {
         goalieStatsProcessing.value = false
         goalieStatsError.value = error.message
+      }
+    }
+
+    const addEliminatedTeam = async () => {
+      eliminatedTeamsError.value = ''
+      eliminatedTeamsSuccess.value = ''
+      apiError.value = ''
+
+      const code = eliminatedTeamsInput.value.trim().toUpperCase()
+      if (!code || !/^[A-Z]{2,4}$/.test(code)) {
+        eliminatedTeamsError.value = 'Enter a valid 2-4 letter team code'
+        return
+      }
+      if (eliminatedTeams.value.includes(code)) {
+        eliminatedTeamsError.value = `${code} is already eliminated`
+        return
+      }
+
+      const newList = [...eliminatedTeams.value, code]
+      try {
+        const response = await apiService.updateEliminatedTeams(newList)
+        eliminatedTeamsStore.hydrateFromData(response.eliminatedTeams)
+        eliminatedTeamsInput.value = ''
+        eliminatedTeamsSuccess.value = `${code} added`
+        setTimeout(() => { eliminatedTeamsSuccess.value = '' }, 3000)
+      } catch (error) {
+        eliminatedTeamsError.value = error.message
+      }
+    }
+
+    const removeEliminatedTeam = async (code) => {
+      eliminatedTeamsError.value = ''
+      eliminatedTeamsSuccess.value = ''
+      apiError.value = ''
+
+      const newList = eliminatedTeams.value.filter(t => t !== code)
+      try {
+        const response = await apiService.updateEliminatedTeams(newList)
+        eliminatedTeamsStore.hydrateFromData(response.eliminatedTeams)
+        eliminatedTeamsSuccess.value = `${code} removed`
+        setTimeout(() => { eliminatedTeamsSuccess.value = '' }, 3000)
+      } catch (error) {
+        eliminatedTeamsError.value = error.message
       }
     }
 
@@ -581,6 +658,7 @@ export default {
       assignForm, assignError, assignSuccess, assignParticipantEntries,
       playerStatsInput, playerStatsError, playerStatsSuccess, playerStatsResults, playerStatsProcessing,
       goalieStatsInput, goalieStatsError, goalieStatsSuccess, goalieStatsResults, goalieStatsProcessing,
+      eliminatedTeamsInput, eliminatedTeamsError, eliminatedTeamsSuccess, eliminatedTeams,
       newTickerMessage, tickerMessages, tickerError, tickerSuccess,
       participants, entries, totalFees, entriesWithPlayers,
       getEntryCount, onAssignParticipantChange,
@@ -588,6 +666,7 @@ export default {
       addParticipant, removeParticipant,
       createEntry, removeEntry,
       assignPlayers, processPlayerStats, processGoalieStats,
+      addEliminatedTeam, removeEliminatedTeam,
       addTickerMessage, removeTickerMessage,
       exportToCSV
     }
@@ -646,4 +725,10 @@ export default {
 .summary-item { padding: 14px; background: var(--bg-row-even); border-radius: 4px; text-align: center; border: 1px solid var(--border-light); }
 .summary-item .label { font-size: 0.8rem; color: var(--text-secondary); margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
 .summary-item .value { font-size: 1.8rem; font-weight: 700; color: var(--text-heading); margin: 8px 0 0 0; }
+.eliminated-teams-current { margin-bottom: 12px; }
+.eliminated-teams-current .label { font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 6px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+.team-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.team-badge { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 3px; background: var(--border-light); color: var(--text-primary); letter-spacing: 0.5px; }
+.team-badge.eliminated { background: var(--error-color); color: #fff; }
+.no-eliminated { font-size: 0.85rem; color: var(--text-secondary); font-style: italic; margin-bottom: 8px; }
 </style>

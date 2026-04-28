@@ -50,8 +50,13 @@
         <div v-if="entry.playerNames && entry.playerNames.length > 0" class="players-list">
           <div v-for="(player, idx) in entry.playerNames" :key="idx" class="player-row">
             <span class="player-number">{{ idx + 1 }}.</span>
-            <span class="player-name">{{ player }}</span>
-            <span v-if="isHotStreak(player)" class="hot-streak">🔥</span>
+            <span class="player-name" :class="{ 'player-eliminated': isPlayerEliminated(player, entry) }">{{ player }}</span>
+            <span class="player-team-col">
+              <span v-if="getPlayerTeam(player, entry)" class="team-badge" :style="teamBadgeStyle(player, entry)">{{ getPlayerTeam(player, entry) }}</span>
+            </span>
+            <span class="player-hot-col">
+              <span v-if="isHotStreak(player)" class="hot-streak">🔥</span>
+            </span>
             <div class="player-bar-wrap">
               <div class="player-bar" :style="{ width: getPlayerPct(player, entry.calculatedScore) + '%' }"></div>
             </div>
@@ -68,12 +73,25 @@
 import { computed } from 'vue'
 import { useEntriesStore } from '../stores/entries'
 import { useScoresStore } from '../stores/scores'
+import { useEliminatedTeamsStore } from '../stores/eliminatedTeams'
+import { getTeamBadgeStyle } from '../utils/teamColors'
 
 export default {
   name: 'TeamsView',
   setup() {
     const entriesStore = useEntriesStore()
     const scoresStore = useScoresStore()
+    const eliminatedTeamsStore = useEliminatedTeamsStore()
+
+    const getPlayerTeam = (playerName, entry) => {
+      if (!entry || !entry.playerTeams) return null
+      return entry.playerTeams[String(playerName).toLowerCase()] || null
+    }
+
+    const isPlayerEliminated = (playerName, entry) => {
+      const teamCode = getPlayerTeam(playerName, entry)
+      return eliminatedTeamsStore.isTeamEliminated(teamCode)
+    }
 
     const playerPointsMap = computed(() => {
       const map = new Map()
@@ -186,7 +204,12 @@ export default {
       return pairs.sort((a, b) => b.count - a.count)
     })
 
-    return { sortedEntries, getPlayerPoints, getPlayerPct, lastUpdated, isHotStreak, shortName, overlapMatrix, overlapPairs }
+    const teamBadgeStyle = (player, entry) => {
+      const teamCode = getPlayerTeam(player, entry)
+      return getTeamBadgeStyle(teamCode, isPlayerEliminated(player, entry))
+    }
+
+    return { sortedEntries, getPlayerPoints, getPlayerPct, lastUpdated, isHotStreak, shortName, overlapMatrix, overlapPairs, getPlayerTeam, isPlayerEliminated, teamBadgeStyle }
   }
 }
 </script>
@@ -209,6 +232,8 @@ export default {
 .player-row:hover { background: var(--bg-row-hover); }
 .player-number { font-weight: 600; color: var(--text-secondary); min-width: 24px; text-align: right; font-size: 0.8rem; }
 .player-name { color: var(--text-primary); font-size: 0.9rem; flex: 1; min-width: 0; }
+.player-team-col { min-width: 48px; width: 48px; text-align: center; flex-shrink: 0; }
+.player-hot-col { min-width: 24px; width: 24px; text-align: center; flex-shrink: 0; }
 .player-bar-wrap { width: 480px; height: 10px; background: var(--border-light); border-radius: 5px; overflow: hidden; flex-shrink: 0; }
 .player-bar { height: 100%; background: var(--text-heading); border-radius: 5px; transition: width 0.3s ease; min-width: 0; }
 .player-pts { font-weight: 700; color: var(--text-primary); font-size: 0.85rem; min-width: 30px; text-align: right; background: var(--bg-highlight); padding: 2px 8px; border-radius: 3px; flex-shrink: 0; }
@@ -260,4 +285,8 @@ export default {
 .overlap-diag { background: var(--bg-highlight); color: var(--text-secondary); }
 .overlap-high { background: var(--bg-highlight); color: var(--text-heading); font-weight: 700; }
 .overlap-table tbody tr:hover { background: var(--bg-row-hover); }
+
+/* Eliminated Player Styles */
+.player-eliminated { text-decoration: line-through; opacity: 0.5; color: var(--text-secondary); }
+.team-badge { font-size: 0.85rem; padding: 3px 8px; border-radius: 3px; font-weight: 700; letter-spacing: 0.5px; flex-shrink: 0; }
 </style>

@@ -74,12 +74,18 @@
         <thead>
           <tr>
             <th>Player Name</th>
+            <th class="team-col-header">Team</th>
             <th>Points</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(stat, idx) in latestPlayerStats" :key="idx">
-            <td>{{ stat.playerName }}</td>
+            <td>
+              <span :class="{ 'player-eliminated': isStatPlayerEliminated(stat.playerName, stat.team) }">{{ stat.playerName }}</span>
+            </td>
+            <td>
+              <span v-if="stat.team || getStatPlayerTeam(stat.playerName)" class="team-badge" :style="statTeamBadgeStyle(stat.playerName, stat)">{{ stat.team || getStatPlayerTeam(stat.playerName) }}</span>
+            </td>
             <td>{{ stat.points }}</td>
           </tr>
         </tbody>
@@ -92,12 +98,15 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useEntriesStore } from '../stores/entries'
 import { useScoresStore } from '../stores/scores'
+import { useEliminatedTeamsStore } from '../stores/eliminatedTeams'
+import { getTeamBadgeStyle } from '../utils/teamColors'
 
 export default {
   name: 'StandingsView',
   setup() {
     const entriesStore = useEntriesStore()
     const scoresStore = useScoresStore()
+    const eliminatedTeamsStore = useEliminatedTeamsStore()
 
     const showConfetti = ref(false)
     const confettiColors = ['#c8102e', '#ffffff', '#003087', '#ffd700']
@@ -147,6 +156,31 @@ export default {
         return (a.playerName || '').localeCompare(b.playerName || '')
       })
     })
+
+    // Build a global player name → team code lookup from all entries' playerTeams maps
+    const playerTeamMap = computed(() => {
+      const map = new Map()
+      for (const entry of entriesStore.entries) {
+        if (entry.playerTeams) {
+          for (const [name, team] of Object.entries(entry.playerTeams)) {
+            if (team && !map.has(name)) {
+              map.set(name, team)
+            }
+          }
+        }
+      }
+      return map
+    })
+
+    const getStatPlayerTeam = (playerName) => {
+      if (!playerName) return null
+      return playerTeamMap.value.get(String(playerName).toLowerCase()) || null
+    }
+
+    const isStatPlayerEliminated = (playerName, statTeam) => {
+      const teamCode = statTeam || getStatPlayerTeam(playerName)
+      return eliminatedTeamsStore.isTeamEliminated(teamCode)
+    }
 
     const getPrize = (index) => {
       if (index === 0) return '$85'
@@ -239,6 +273,11 @@ export default {
       return worst
     })
 
+    const statTeamBadgeStyle = (playerName, stat) => {
+      const teamCode = stat.team || getStatPlayerTeam(playerName)
+      return getTeamBadgeStyle(teamCode, isStatPlayerEliminated(playerName, stat.team))
+    }
+
     return {
       entries,
       sortedEntries,
@@ -249,7 +288,10 @@ export default {
       lastUpdated,
       getPrize,
       showConfetti,
-      confettiColors
+      confettiColors,
+      getStatPlayerTeam,
+      isStatPlayerEliminated,
+      statTeamBadgeStyle
     }
   }
 }
@@ -294,8 +336,14 @@ export default {
 .player-stats-table th:last-child { background: var(--bg-highlight) !important; }
 .player-stats-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light) !important; color: var(--text-primary); }
 .player-stats-table td:last-child { background: var(--bg-highlight); font-weight: 700; }
+.player-stats-table td:nth-child(2) { text-align: center; width: 50px; }
+.team-col-header { text-align: center !important; width: 50px; }
 .player-stats-table tbody tr:hover { background: var(--bg-row-hover) !important; }
 .player-stats-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
+
+/* Eliminated Player Styles */
+.player-eliminated { text-decoration: line-through; opacity: 0.5; color: var(--text-secondary); }
+.team-badge { font-size: 0.85rem; padding: 3px 8px; border-radius: 3px; font-weight: 700; letter-spacing: 0.5px; margin-left: 6px; }
 
 /* Standings Transition Animations */
 .standings-move { transition: transform 0.5s ease; }

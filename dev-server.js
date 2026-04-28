@@ -72,6 +72,19 @@ app.delete('/api/entries', async (req, res) => {
   res.json({ deleted: id })
 })
 
+// Parse player name and team code helper
+function parsePlayerNameAndTeam(raw) {
+  const trimmed = raw.trim()
+  const parts = trimmed.split(/\s+/)
+  if (parts.length >= 2) {
+    const lastToken = parts[parts.length - 1]
+    if (/^[A-Z]{2,4}$/.test(lastToken)) {
+      return { playerName: parts.slice(0, -1).join(' '), team: lastToken }
+    }
+  }
+  return { playerName: trimmed, team: null }
+}
+
 // Assign players (flat route)
 app.post('/api/assign-players', async (req, res) => {
   const { entryId, playerNames } = req.body
@@ -84,7 +97,8 @@ app.post('/api/assign-players', async (req, res) => {
 
   await pool.query('DELETE FROM entry_players WHERE entry_id = $1', [entryId])
   for (let i = 0; i < playerNames.length; i++) {
-    await pool.query('INSERT INTO entry_players (entry_id, player_name, position) VALUES ($1, $2, $3)', [entryId, playerNames[i].trim(), i + 1])
+    const { playerName, team } = parsePlayerNameAndTeam(playerNames[i])
+    await pool.query('INSERT INTO entry_players (entry_id, player_name, position, team) VALUES ($1, $2, $3, $4)', [entryId, playerName, i + 1, team])
   }
   await pool.query('UPDATE entries SET submitted_at = NOW() WHERE id = $1', [entryId])
   res.json({ entryId, playerNames, submittedAt: new Date().toISOString() })
@@ -102,7 +116,8 @@ app.put('/api/entries/:id/players', async (req, res) => {
 
   await pool.query('DELETE FROM entry_players WHERE entry_id = $1', [id])
   for (let i = 0; i < playerNames.length; i++) {
-    await pool.query('INSERT INTO entry_players (entry_id, player_name, position) VALUES ($1, $2, $3)', [id, playerNames[i].trim(), i + 1])
+    const { playerName, team } = parsePlayerNameAndTeam(playerNames[i])
+    await pool.query('INSERT INTO entry_players (entry_id, player_name, position, team) VALUES ($1, $2, $3, $4)', [id, playerName, i + 1, team])
   }
   await pool.query('UPDATE entries SET submitted_at = NOW() WHERE id = $1', [id])
   res.json({ entryId: id, playerNames, submittedAt: new Date().toISOString() })
@@ -110,7 +125,7 @@ app.put('/api/entries/:id/players', async (req, res) => {
 
 // Scores
 app.get('/api/scores', async (req, res) => {
-  const { rows } = await pool.query('SELECT id, player_name AS "playerName", points, created_at AS "createdAt" FROM scoring_events ORDER BY created_at DESC')
+  const { rows } = await pool.query('SELECT id, player_name AS "playerName", points, team, created_at AS "createdAt" FROM scoring_events ORDER BY created_at DESC')
   res.json(rows)
 })
 
@@ -119,19 +134,26 @@ app.post('/api/scores', async (req, res) => {
   if (!Array.isArray(players) || players.length === 0) return res.status(400).json({ error: 'players array required' })
 
   const results = []
-  for (let { playerName, points } of players) {
+  for (let { playerName, points, team } of players) {
     playerName = playerName ? playerName.replace(/[^\x20-\x7E\u00C0-\u024F]/g, '').trim() : playerName
     if (!playerName || typeof points !== 'number') {
       results.push({ playerName, success: false, reason: 'Invalid data' })
       continue
     }
+    team = team && /^[A-Z]{2,4}$/.test(team) ? team : null
     const id = `score-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
     await pool.query('DELETE FROM scoring_events WHERE player_name = $1', [playerName])
-    await pool.query('INSERT INTO scoring_events (id, player_name, points) VALUES ($1, $2, $3)', [id, playerName, points])
+    await pool.query('INSERT INTO scoring_events (id, player_name, points, team) VALUES ($1, $2, $3, $4)', [id, playerName, points, team])
 
     const { rows: affected } = await pool.query(
       'SELECT DISTINCT e.id FROM entries e JOIN entry_players ep ON ep.entry_id = e.id WHERE LOWER(ep.player_name) = LOWER($1)', [playerName]
     )
+
+    // Backfill team on entry_players if not already set
+    if (team) {
+      await pool.query('UPDATE entry_players SET team = $1 WHERE LOWER(player_name) = LOWER($2) AND team IS NULL', [team, playerName])
+    }
+
     for (const entry of affected) {
       const { rows: scoreRows } = await pool.query(
         'SELECT COALESCE(SUM(se.points), 0) AS total FROM entry_players ep JOIN scoring_events se ON LOWER(se.player_name) = LOWER(ep.player_name) WHERE ep.entry_id = $1', [entry.id]
@@ -167,22 +189,45 @@ app.delete('/api/ticker', async (req, res) => {
   res.json({ deleted: id })
 })
 
+// Eliminated teams
+app.get('/api/eliminated-teams', async (req, res) => {
+  const { rows } = await pool.query('SELECT team_code FROM eliminated_teams ORDER BY eliminated_at ASC')
+  res.json(rows.map(r => r.team_code))
+})
+
+app.post('/api/eliminated-teams', async (req, res) => {
+  const { teams } = req.body
+  if (!Array.isArray(teams)) return res.status(400).json({ error: 'teams array required' })
+  const valid = teams.every(t => typeof t === 'string' && /^[A-Z]{2,4}$/.test(t))
+  if (!valid) return res.status(400).json({ error: 'Each team must be 2-4 uppercase letters' })
+  await pool.query('DELETE FROM eliminated_teams')
+  for (const team of teams) {
+    await pool.query('INSERT INTO eliminated_teams (team_code) VALUES ($1) ON CONFLICT DO NOTHING', [team])
+  }
+  res.json({ eliminatedTeams: teams })
+})
+
 // Pool data (bulk fetch)
 app.get('/api/pool-data', async (req, res) => {
-  const [participantsResult, entriesResult, playersResult, scoresResult, logsResult] = await Promise.all([
+  const [participantsResult, entriesResult, playersResult, scoresResult, logsResult, eliminatedTeamsResult] = await Promise.all([
     pool.query('SELECT email, name, entry_fee AS "entryFee", created_at AS "createdAt" FROM participants ORDER BY created_at ASC'),
     pool.query('SELECT id, email, participant_name AS "participantName", total_score AS "totalScore", created_at AS "createdAt", submitted_at AS "submittedAt" FROM entries ORDER BY created_at ASC'),
-    pool.query('SELECT entry_id AS "entryId", player_name AS "playerName", position FROM entry_players ORDER BY position ASC'),
-    pool.query('SELECT id, player_name AS "playerName", points, created_at AS "createdAt" FROM scoring_events ORDER BY created_at DESC'),
-    pool.query('SELECT id, player_name AS "playerName", points, entries_affected AS "entriesAffected", success, reason, created_at AS "createdAt" FROM scoring_update_logs ORDER BY created_at DESC')
+    pool.query('SELECT entry_id AS "entryId", player_name AS "playerName", position, team FROM entry_players ORDER BY position ASC'),
+    pool.query('SELECT id, player_name AS "playerName", points, team, created_at AS "createdAt" FROM scoring_events ORDER BY created_at DESC'),
+    pool.query('SELECT id, player_name AS "playerName", points, entries_affected AS "entriesAffected", success, reason, created_at AS "createdAt" FROM scoring_update_logs ORDER BY created_at DESC'),
+    pool.query('SELECT team_code AS "teamCode" FROM eliminated_teams ORDER BY eliminated_at ASC')
   ])
   const playersByEntry = {}
+  const playerTeamsByEntry = {}
   for (const p of playersResult.rows) {
     if (!playersByEntry[p.entryId]) playersByEntry[p.entryId] = []
     playersByEntry[p.entryId].push(p.playerName)
+    if (!playerTeamsByEntry[p.entryId]) playerTeamsByEntry[p.entryId] = {}
+    playerTeamsByEntry[p.entryId][p.playerName.toLowerCase()] = p.team || null
   }
-  const entries = entriesResult.rows.map(e => ({ ...e, playerNames: playersByEntry[e.id] || [], playerIds: playersByEntry[e.id] || [] }))
-  res.json({ participants: participantsResult.rows, entries, scoringEvents: scoresResult.rows, scoringUpdateLogs: logsResult.rows, lastUpdated: new Date().toISOString() })
+  const eliminatedTeams = eliminatedTeamsResult.rows.map(r => r.teamCode)
+  const entries = entriesResult.rows.map(e => ({ ...e, playerNames: playersByEntry[e.id] || [], playerIds: playersByEntry[e.id] || [], playerTeams: playerTeamsByEntry[e.id] || {} }))
+  res.json({ participants: participantsResult.rows, entries, eliminatedTeams, scoringEvents: scoresResult.rows, scoringUpdateLogs: logsResult.rows, lastUpdated: new Date().toISOString() })
 })
 
 // Proxy everything else to Vite

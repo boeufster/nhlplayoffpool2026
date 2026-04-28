@@ -16,21 +16,22 @@ export default async function handler(req, res) {
     }
 
     const results = []
-    for (let { playerName, points } of players) {
+    for (let { playerName, points, team } of players) {
       // Strip invisible/non-printable characters from player names
       playerName = playerName ? playerName.replace(/[^\x20-\x7E\u00C0-\u024F]/g, '').trim() : playerName
       if (!playerName || typeof points !== 'number') {
         results.push({ playerName, success: false, reason: 'Invalid data' })
         continue
       }
+      team = team && /^[A-Z]{2,4}$/.test(team) ? team : null
 
       const id = `score-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
 
       // Upsert: delete old record for this player, insert new
       await sql`DELETE FROM scoring_events WHERE player_name = ${playerName}`
       await sql`
-        INSERT INTO scoring_events (id, player_name, points)
-        VALUES (${id}, ${playerName}, ${points})
+        INSERT INTO scoring_events (id, player_name, points, team)
+        VALUES (${id}, ${playerName}, ${points}, ${team})
       `
 
       // Count affected entries (entries that have this player)
@@ -40,6 +41,14 @@ export default async function handler(req, res) {
         JOIN entry_players ep ON ep.entry_id = e.id
         WHERE LOWER(ep.player_name) = LOWER(${playerName})
       `
+
+      // Backfill team on entry_players if not already set
+      if (team) {
+        await sql`
+          UPDATE entry_players SET team = ${team}
+          WHERE LOWER(player_name) = LOWER(${playerName}) AND team IS NULL
+        `
+      }
 
       // Recalculate total_score for affected entries
       for (const entry of affected) {

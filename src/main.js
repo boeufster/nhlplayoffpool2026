@@ -4,6 +4,7 @@ import App from './App.vue'
 import { useParticipantsStore } from './stores/participants'
 import { useEntriesStore } from './stores/entries'
 import { useScoresStore } from './stores/scores'
+import { useEliminatedTeamsStore } from './stores/eliminatedTeams'
 import { apiService } from './services/apiService'
 import { applyTheme, getStoredTheme } from './themes'
 import { injectSpeedInsights } from '@vercel/speed-insights'
@@ -45,10 +46,12 @@ document.head.appendChild(style)
     const participantsStore = useParticipantsStore()
     const entriesStore = useEntriesStore()
     const scoresStore = useScoresStore()
+    const eliminatedTeamsStore = useEliminatedTeamsStore()
 
     participantsStore.hydrateFromData(data.participants)
     entriesStore.hydrateFromData(data.entries)
     scoresStore.hydrateFromData(data.scoringEvents)
+    eliminatedTeamsStore.hydrateFromData(data.eliminatedTeams)
   } catch (error) {
     console.error('Failed to load pool data from API:', error)
   }
