@@ -43,6 +43,47 @@
       </TransitionGroup>
     </table>
 
+    <!-- Player Popularity Section -->
+    <section v-if="popularityRows.length > 0" class="player-popularity-section">
+      <h3>Player Popularity</h3>
+      <p class="popularity-subtitle">Across {{ totalEntries }} entries</p>
+      <table class="player-popularity-table">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th class="team-col-header">Team</th>
+            <th>Points</th>
+            <th>Picked</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in popularityRows" :key="row.playerName">
+            <td>
+              <span :class="{ 'player-eliminated': row.eliminated }">{{ row.playerName }}</span>
+            </td>
+            <td>
+              <span v-if="row.team" class="team-badge" :style="getTeamBadgeStyle(row.team, row.eliminated)">{{ row.team }}</span>
+            </td>
+            <td class="points-cell">{{ row.points }}</td>
+            <td class="picked-cell">
+              <span class="picked-full">Picked by {{ row.pickCount }}/{{ totalEntries }} entries</span>
+              <span class="picked-short">{{ row.pickCount }}/{{ totalEntries }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section v-else-if="entries.length === 0" class="player-popularity-section">
+      <h3>Player Popularity</h3>
+      <div class="empty-state"><p>No entries yet</p></div>
+    </section>
+
+    <section v-else class="player-popularity-section">
+      <h3>Player Popularity</h3>
+      <div class="empty-state"><p>No players assigned yet</p></div>
+    </section>
+
     <!-- MVP Player Card -->
     <div v-if="mvpPlayer" class="mvp-card">
       <div class="mvp-label">🏆 MVP Player</div>
@@ -100,6 +141,7 @@ import { useEntriesStore } from '../stores/entries'
 import { useScoresStore } from '../stores/scores'
 import { useEliminatedTeamsStore } from '../stores/eliminatedTeams'
 import { getTeamBadgeStyle } from '../utils/teamColors'
+import { usePlayerPopularity } from '../composables/usePlayerPopularity'
 
 export default {
   name: 'StandingsView',
@@ -107,6 +149,8 @@ export default {
     const entriesStore = useEntriesStore()
     const scoresStore = useScoresStore()
     const eliminatedTeamsStore = useEliminatedTeamsStore()
+
+    const { popularityRows, totalEntries } = usePlayerPopularity()
 
     const showConfetti = ref(false)
     const confettiColors = ['#c8102e', '#ffffff', '#003087', '#ffd700']
@@ -303,7 +347,10 @@ export default {
       confettiColors,
       getStatPlayerTeam,
       isStatPlayerEliminated,
-      statTeamBadgeStyle
+      statTeamBadgeStyle,
+      popularityRows,
+      totalEntries,
+      getTeamBadgeStyle
     }
   }
 }
@@ -341,6 +388,20 @@ export default {
   0% { transform: translateY(0) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
+
+/* Player Popularity Section */
+.player-popularity-section { margin-top: 40px; padding: 0; border: none; background: none; }
+.player-popularity-section h3 { margin: 0 0 4px 0; color: var(--text-heading); font-size: 1.4rem; font-weight: 700; }
+.popularity-subtitle { color: var(--text-secondary); font-size: 0.85rem; margin: 0 0 16px 0; }
+.player-popularity-table { width: 100%; border-collapse: collapse; background: var(--bg-card); }
+.player-popularity-table th { background: var(--bg-card) !important; color: var(--text-secondary) !important; padding: 10px 12px; text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border-color) !important; font-size: 0.75rem; }
+.player-popularity-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light) !important; color: var(--text-primary); }
+.player-popularity-table td:nth-child(2) { text-align: center; width: 50px; }
+.player-popularity-table .points-cell { background: var(--bg-highlight) !important; font-weight: 700; }
+.player-popularity-table .picked-cell { color: var(--text-secondary); font-size: 0.85rem; }
+.player-popularity-table tbody tr:hover { background: var(--bg-row-hover) !important; }
+.player-popularity-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
+.picked-short { display: none; }
 
 .player-stats-section { margin-top: 40px; padding: 0; border: none; background: none; }
 .player-stats-section h3 { margin: 0 0 16px 0; color: var(--text-heading); font-size: 1.4rem; font-weight: 700; }
@@ -402,5 +463,9 @@ export default {
   .darkhorse-name { font-size: 1.1rem; }
   .bust-card { padding: 14px; }
   .bust-name { font-size: 1.1rem; }
+  .player-popularity-section h3 { font-size: 1.1rem; }
+  .player-popularity-table th, .player-popularity-table td { padding: 8px 6px; font-size: 0.8rem; }
+  .picked-full { display: none; }
+  .picked-short { display: inline; }
 }
 </style>
