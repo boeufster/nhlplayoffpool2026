@@ -453,6 +453,14 @@ export default {
         if (!line.trim()) continue
         const parts = line.trim().split(/\s+/)
         if (parts.length < 2) continue
+
+        // Check if last two tokens are both numbers — likely goalie stats entered here by mistake
+        const lastTwo = parts.slice(-2).map(t => parseInt(t))
+        if (parts.length >= 3 && !isNaN(lastTwo[0]) && !isNaN(lastTwo[1])) {
+          playerStatsError.value = 'This looks like goalie stats (two numbers). Use the Goalie Stats section below instead.'
+          return
+        }
+
         const pts = parseInt(parts[parts.length - 1])
         const rawName = parts.slice(0, -1).join(' ')
         const { playerName, team } = parsePlayerNameAndTeam(rawName)
@@ -505,6 +513,15 @@ export default {
         if (!line.trim()) continue
         const parts = line.trim().split(/\s+/)
         if (parts.length < 3) continue
+
+        // Check if only the last token is a number (but second-to-last is not) — likely player stats entered here by mistake
+        const last = parseInt(parts[parts.length - 1])
+        const secondLast = parseInt(parts[parts.length - 2])
+        if (!isNaN(last) && isNaN(secondLast)) {
+          goalieStatsError.value = 'This looks like player stats (one number). Use the Player Stats section above instead.'
+          return
+        }
+
         const shutouts = parseInt(parts[parts.length - 1])
         const wins = parseInt(parts[parts.length - 2])
         const rawName = parts.slice(0, -2).join(' ')
@@ -516,7 +533,7 @@ export default {
       }
 
       if (players.length === 0) {
-        goalieStatsError.value = 'No valid goalie stats found. Format: NAME  WINS  SHUTOUTS'
+        goalieStatsError.value = 'No valid goalie stats found. Format: NAME TEAM WINS SHUTOUTS'
         return
       }
 
