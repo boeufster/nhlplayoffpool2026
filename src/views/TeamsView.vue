@@ -5,7 +5,10 @@
 
     <!-- Head-to-Head Comparison -->
     <section class="head-to-head-section">
-      <h3>Head-to-Head</h3>
+      <h3 class="collapsible-heading" @click="showHeadToHead = !showHeadToHead">
+        <span class="collapse-arrow" :class="{ open: showHeadToHead }">▶</span> Head-to-Head
+      </h3>
+      <div v-show="showHeadToHead">
 
       <!-- Entry selectors -->
       <div class="h2h-selectors">
@@ -159,12 +162,15 @@
         </div>
 
       </div>
+      </div>
     </section>
 
     <!-- Player Overlap Matrix (desktop) -->
     <section v-if="sortedEntries.length > 1" class="overlap-section hide-mobile">
-      <h3>Player Overlap</h3>
-      <div class="overlap-table-wrap">
+      <h3 class="collapsible-heading" @click="showOverlap = !showOverlap">
+        <span class="collapse-arrow" :class="{ open: showOverlap }">▶</span> Player Overlap
+      </h3>
+      <div v-show="showOverlap" class="overlap-table-wrap">
         <table class="overlap-table">
           <thead>
             <tr>
@@ -188,10 +194,14 @@
 
     <!-- Player Overlap List (mobile) -->
     <section v-if="sortedEntries.length > 1" class="overlap-mobile show-mobile-only">
-      <h3>Player Overlap</h3>
+      <h3 class="collapsible-heading" @click="showOverlap = !showOverlap">
+        <span class="collapse-arrow" :class="{ open: showOverlap }">▶</span> Player Overlap
+      </h3>
+      <div v-show="showOverlap">
       <div v-for="pair in overlapPairs" :key="pair.key" class="overlap-pair" :class="{ 'overlap-pair-high': pair.count >= 5 }">
         <span class="overlap-pair-names">{{ pair.nameA }} vs {{ pair.nameB }}</span>
         <span class="overlap-pair-count">{{ pair.count }}</span>
+      </div>
       </div>
     </section>
 
@@ -245,6 +255,8 @@ export default {
     // Head-to-Head entry selection refs
     const selectedEntryIdA = ref('')
     const selectedEntryIdB = ref('')
+    const showHeadToHead = ref(false)
+    const showOverlap = ref(false)
 
     const {
       entryA,
@@ -403,6 +415,8 @@ export default {
       // Head-to-Head
       selectedEntryIdA,
       selectedEntryIdB,
+      showHeadToHead,
+      showOverlap,
       entryA,
       entryB,
       scoreA,
@@ -497,6 +511,12 @@ export default {
 /* Eliminated Player Styles */
 .player-eliminated { text-decoration: line-through; opacity: 0.5; color: var(--text-secondary); }
 .team-badge { font-size: 0.85rem; padding: 3px 8px; border-radius: 3px; font-weight: 700; letter-spacing: 0.5px; flex-shrink: 0; }
+
+/* Collapsible headings */
+.collapsible-heading { cursor: pointer; user-select: none; }
+.collapsible-heading:hover { opacity: 0.8; }
+.collapse-arrow { display: inline-block; font-size: 0.8em; margin-right: 6px; transition: transform 0.2s; }
+.collapse-arrow.open { transform: rotate(90deg); }
 
 /* Head-to-Head Section */
 .head-to-head-section { margin-bottom: 24px; }

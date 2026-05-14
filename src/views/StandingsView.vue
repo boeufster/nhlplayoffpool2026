@@ -43,11 +43,35 @@
       </TransitionGroup>
     </table>
 
+    <!-- MVP Player Card -->
+    <div v-if="mvpPlayer" class="mvp-card">
+      <div class="mvp-label">🏆 MVP Player</div>
+      <div class="mvp-name">{{ mvpPlayer.playerName }}</div>
+      <div class="mvp-points">{{ mvpPlayer.points }} pts</div>
+    </div>
+
+    <!-- Dark Horse Card -->
+    <div v-if="darkHorse" class="darkhorse-card">
+      <div class="darkhorse-label">🐴 Dark Horse</div>
+      <div class="darkhorse-name">{{ darkHorse.playerName }}</div>
+      <div class="darkhorse-meta">{{ darkHorse.points }} pts · in {{ darkHorse.entryCount }} {{ darkHorse.entryCount === 1 ? 'entry' : 'entries' }}</div>
+    </div>
+
+    <!-- Biggest Bust Card -->
+    <div v-if="biggestBust" class="bust-card">
+      <div class="bust-label">💩 Biggest Bust</div>
+      <div class="bust-name">{{ biggestBust.playerName }}</div>
+      <div class="bust-meta">{{ biggestBust.points }} pts · picked by {{ biggestBust.entryCount }} entries</div>
+    </div>
+
     <!-- Player Popularity Section -->
     <section v-if="popularityRows.length > 0" class="player-popularity-section">
-      <h3>Player Popularity</h3>
-      <p class="popularity-subtitle">Across {{ totalEntries }} entries</p>
-      <table class="player-popularity-table">
+      <h3 class="collapsible-heading" @click="showPopularity = !showPopularity">
+        <span class="collapse-arrow" :class="{ open: showPopularity }">▶</span> Player Popularity
+      </h3>
+      <div v-show="showPopularity">
+        <p class="popularity-subtitle">Across {{ totalEntries }} entries</p>
+        <table class="player-popularity-table">
         <thead>
           <tr>
             <th>Player</th>
@@ -72,42 +96,29 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </section>
 
     <section v-else-if="entries.length === 0" class="player-popularity-section">
-      <h3>Player Popularity</h3>
+      <h3 class="collapsible-heading" @click="showPopularity = !showPopularity">
+        <span class="collapse-arrow" :class="{ open: showPopularity }">▶</span> Player Popularity
+      </h3>
       <div class="empty-state"><p>No entries yet</p></div>
     </section>
 
     <section v-else class="player-popularity-section">
-      <h3>Player Popularity</h3>
+      <h3 class="collapsible-heading" @click="showPopularity = !showPopularity">
+        <span class="collapse-arrow" :class="{ open: showPopularity }">▶</span> Player Popularity
+      </h3>
       <div class="empty-state"><p>No players assigned yet</p></div>
     </section>
 
-    <!-- MVP Player Card -->
-    <div v-if="mvpPlayer" class="mvp-card">
-      <div class="mvp-label">🏆 MVP Player</div>
-      <div class="mvp-name">{{ mvpPlayer.playerName }}</div>
-      <div class="mvp-points">{{ mvpPlayer.points }} pts</div>
-    </div>
-
-    <!-- Dark Horse Card -->
-    <div v-if="darkHorse" class="darkhorse-card">
-      <div class="darkhorse-label">🐴 Dark Horse</div>
-      <div class="darkhorse-name">{{ darkHorse.playerName }}</div>
-      <div class="darkhorse-meta">{{ darkHorse.points }} pts · in {{ darkHorse.entryCount }} {{ darkHorse.entryCount === 1 ? 'entry' : 'entries' }}</div>
-    </div>
-
-    <!-- Biggest Bust Card -->
-    <div v-if="biggestBust" class="bust-card">
-      <div class="bust-label">💩 Biggest Bust</div>
-      <div class="bust-name">{{ biggestBust.playerName }}</div>
-      <div class="bust-meta">{{ biggestBust.points }} pts · picked by {{ biggestBust.entryCount }} entries</div>
-    </div>
-
     <!-- Latest Player Stats Section -->
     <section class="player-stats-section">
-      <h3>Latest Player Stats</h3>
+      <h3 class="collapsible-heading" @click="showPlayerStats = !showPlayerStats">
+        <span class="collapse-arrow" :class="{ open: showPlayerStats }">▶</span> Latest Player Stats
+      </h3>
+      <div v-show="showPlayerStats">
       <div v-if="latestPlayerStats.length === 0" class="no-data">
         No player stats recorded yet
       </div>
@@ -131,6 +142,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </section>
   </div>
 </template>
@@ -153,6 +165,8 @@ export default {
     const { popularityRows, totalEntries } = usePlayerPopularity()
 
     const showConfetti = ref(false)
+    const showPopularity = ref(false)
+    const showPlayerStats = ref(false)
     const confettiColors = ['#c8102e', '#ffffff', '#003087', '#ffd700']
 
     const entries = computed(() => entriesStore.entries)
@@ -344,6 +358,8 @@ export default {
       lastUpdated,
       getPrize,
       showConfetti,
+      showPopularity,
+      showPlayerStats,
       confettiColors,
       getStatPlayerTeam,
       isStatPlayerEliminated,
@@ -392,6 +408,12 @@ export default {
 /* Player Popularity Section */
 .player-popularity-section { margin-top: 40px; padding: 0; border: none; background: none; }
 .player-popularity-section h3 { margin: 0 0 4px 0; color: var(--text-heading); font-size: 1.4rem; font-weight: 700; }
+
+/* Collapsible headings */
+.collapsible-heading { cursor: pointer; user-select: none; }
+.collapsible-heading:hover { opacity: 0.8; }
+.collapse-arrow { display: inline-block; font-size: 0.8em; margin-right: 6px; transition: transform 0.2s; }
+.collapse-arrow.open { transform: rotate(90deg); }
 .popularity-subtitle { color: var(--text-secondary); font-size: 0.85rem; margin: 0 0 16px 0; }
 .player-popularity-table { width: 100%; border-collapse: collapse; background: var(--bg-card); }
 .player-popularity-table th { background: var(--bg-card) !important; color: var(--text-secondary) !important; padding: 10px 12px; text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border-color) !important; font-size: 0.75rem; }
