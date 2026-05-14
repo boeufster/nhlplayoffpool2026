@@ -23,6 +23,7 @@
     <table v-else class="standings-table">
       <thead>
         <tr>
+          <th></th>
           <th>Rank</th>
           <th>Participant</th>
           <th class="points-header">Points</th>
@@ -31,16 +32,33 @@
           <th>Prize</th>
         </tr>
       </thead>
-      <TransitionGroup name="standings" tag="tbody">
-        <tr v-for="(entry, index) in sortedEntries" :key="entry.id" class="standings-row" :style="{ animationDelay: index * 0.15 + 's' }">
-          <td>{{ index + 1 }}</td>
-          <td>{{ entry.participantName }}</td>
-          <td class="points-cell">{{ entry.calculatedScore }}</td>
-          <td class="gap-cell hide-mobile">{{ index === 0 ? '—' : entry.calculatedScore - sortedEntries[0].calculatedScore }}</td>
-          <td class="active-cell">{{ entry.remainingPlayers }}/15</td>
-          <td class="prize-cell">{{ getPrize(index) }}</td>
-        </tr>
-      </TransitionGroup>
+      <tbody>
+        <template v-for="(entry, index) in sortedEntries" :key="entry.id">
+          <tr class="standings-row" :style="{ animationDelay: index * 0.15 + 's' }">
+            <td class="expand-cell" @click="toggleExpand(entry.id)">
+              <span class="collapse-arrow" :class="{ open: expandedEntries.has(entry.id) }">▶</span>
+            </td>
+            <td>{{ index + 1 }}</td>
+            <td>{{ entry.participantName }}</td>
+            <td class="points-cell">{{ entry.calculatedScore }}</td>
+            <td class="gap-cell hide-mobile">{{ index === 0 ? '—' : entry.calculatedScore - sortedEntries[0].calculatedScore }}</td>
+            <td class="active-cell">{{ entry.remainingPlayers }}/15</td>
+            <td class="prize-cell">{{ getPrize(index) }}</td>
+          </tr>
+          <tr v-if="expandedEntries.has(entry.id)" class="expanded-roster-row">
+            <td :colspan="7" class="expanded-roster-cell">
+              <div class="expanded-roster">
+                <div v-for="(player, idx) in (entry.playerNames || [])" :key="idx" class="expanded-player">
+                  <span class="expanded-player-num">{{ idx + 1 }}.</span>
+                  <span :class="{ 'player-eliminated': isEntryPlayerEliminated(player, entry) }">{{ player }}</span>
+                  <span v-if="getEntryPlayerTeam(player, entry)" class="team-badge" :style="getTeamBadgeStyle(getEntryPlayerTeam(player, entry), isEntryPlayerEliminated(player, entry))">{{ getEntryPlayerTeam(player, entry) }}</span>
+                  <span class="expanded-player-pts">{{ getEntryPlayerPoints(player) }}</span>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
     </table>
 
     <!-- MVP Player Card -->
@@ -167,6 +185,7 @@ export default {
     const showConfetti = ref(false)
     const showPopularity = ref(false)
     const showPlayerStats = ref(false)
+    const expandedEntries = ref(new Set())
     const confettiColors = ['#c8102e', '#ffffff', '#003087', '#ffd700']
 
     const entries = computed(() => entriesStore.entries)
@@ -257,6 +276,36 @@ export default {
       if (index === 1) return '$40'
       if (index === 2) return '$15'
       return ''
+    }
+
+    const toggleExpand = (entryId) => {
+      const newSet = new Set(expandedEntries.value)
+      if (newSet.has(entryId)) {
+        newSet.delete(entryId)
+      } else {
+        newSet.add(entryId)
+      }
+      expandedEntries.value = newSet
+    }
+
+    const getEntryPlayerTeam = (playerName, entry) => {
+      if (!entry || !entry.playerTeams) return null
+      return entry.playerTeams[String(playerName).toLowerCase()] || null
+    }
+
+    const isEntryPlayerEliminated = (playerName, entry) => {
+      const teamCode = getEntryPlayerTeam(playerName, entry)
+      return eliminatedTeamsStore.isTeamEliminated(teamCode)
+    }
+
+    const getEntryPlayerPoints = (playerName) => {
+      const key = String(playerName).toLowerCase()
+      for (const event of scoresStore.scoringEvents) {
+        if (event.playerName && event.playerName.toLowerCase() === key) {
+          return event.points || 0
+        }
+      }
+      return 0
     }
 
     const lastUpdated = computed(() => {
@@ -357,6 +406,12 @@ export default {
       biggestBust,
       lastUpdated,
       getPrize,
+      toggleExpand,
+      expandedEntries,
+      getEntryPlayerTeam,
+      isEntryPlayerEliminated,
+      getEntryPlayerPoints,
+      getTeamBadgeStyle,
       showConfetti,
       showPopularity,
       showPlayerStats,
@@ -365,8 +420,7 @@ export default {
       isStatPlayerEliminated,
       statTeamBadgeStyle,
       popularityRows,
-      totalEntries,
-      getTeamBadgeStyle
+      totalEntries
     }
   }
 }
@@ -388,6 +442,15 @@ export default {
 .active-cell { text-align: center; font-weight: 600; font-size: 0.85rem; color: var(--text-primary); }
 .active-header { text-align: center !important; }
 .prize-cell { color: var(--success-color); font-weight: 600; }
+
+/* Expandable roster */
+.expand-cell { cursor: pointer; width: 24px; text-align: center; padding: 8px 4px !important; }
+.expanded-roster-row { background: var(--bg-highlight) !important; }
+.expanded-roster-cell { padding: 8px 16px !important; }
+.expanded-roster { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.expanded-player { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; padding: 2px 0; min-width: 200px; }
+.expanded-player-num { color: var(--text-secondary); font-weight: 600; min-width: 20px; text-align: right; }
+.expanded-player-pts { font-weight: 700; color: var(--text-primary); margin-left: auto; background: var(--bg-card); padding: 1px 6px; border-radius: 2px; font-size: 0.75rem; }
 .standings-table tbody tr:hover { background: var(--bg-row-hover) !important; }
 .standings-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
 
