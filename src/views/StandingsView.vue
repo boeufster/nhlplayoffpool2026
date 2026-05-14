@@ -600,5 +600,9 @@ export default {
   .player-popularity-table th, .player-popularity-table td { padding: 8px 6px; font-size: 0.8rem; }
   .picked-full { display: none; }
   .picked-short { display: inline; }
+  .expanded-player-name { min-width: 90px; width: 90px; }
+  .expanded-bar-wrap { min-width: 40px; }
+  .expanded-player-team { min-width: 36px; width: 36px; }
+  .expanded-roster-cell { padding: 6px 8px !important; }
 }
 </style>
