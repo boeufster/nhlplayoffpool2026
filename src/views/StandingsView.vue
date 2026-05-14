@@ -50,8 +50,16 @@
               <div class="expanded-roster">
                 <div v-for="(player, idx) in (entry.playerNames || [])" :key="idx" class="expanded-player">
                   <span class="expanded-player-num">{{ idx + 1 }}.</span>
-                  <span :class="{ 'player-eliminated': isEntryPlayerEliminated(player, entry) }">{{ player }}</span>
-                  <span v-if="getEntryPlayerTeam(player, entry)" class="team-badge" :style="getTeamBadgeStyle(getEntryPlayerTeam(player, entry), isEntryPlayerEliminated(player, entry))">{{ getEntryPlayerTeam(player, entry) }}</span>
+                  <span class="expanded-player-name" :class="{ 'player-eliminated': isEntryPlayerEliminated(player, entry) }">{{ player }}</span>
+                  <span class="expanded-player-team">
+                    <span v-if="getEntryPlayerTeam(player, entry)" class="team-badge" :style="getTeamBadgeStyle(getEntryPlayerTeam(player, entry), isEntryPlayerEliminated(player, entry))">{{ getEntryPlayerTeam(player, entry) }}</span>
+                  </span>
+                  <span class="expanded-player-hot">
+                    <span v-if="isHotStreak(player)" class="hot-streak">🔥</span>
+                  </span>
+                  <div class="expanded-bar-wrap">
+                    <div class="expanded-bar" :style="{ width: getExpandedPlayerPct(player) + '%' }"></div>
+                  </div>
                   <span class="expanded-player-pts">{{ getEntryPlayerPoints(player) }}</span>
                 </div>
               </div>
@@ -308,6 +316,32 @@ export default {
       return 0
     }
 
+    const maxPlayerPoints = computed(() => {
+      let max = 0
+      for (const event of scoresStore.scoringEvents) {
+        if (event.points > max) max = event.points
+      }
+      return max
+    })
+
+    const getExpandedPlayerPct = (playerName) => {
+      const max = maxPlayerPoints.value
+      if (max <= 0) return 0
+      return Math.round((getEntryPlayerPoints(playerName) / max) * 100)
+    }
+
+    const topScorerNames = computed(() => {
+      const events = scoresStore.scoringEvents.filter(e => e.playerName && e.points > 0)
+      if (events.length === 0) return new Set()
+      const sorted = [...events].sort((a, b) => b.points - a.points)
+      const topScore = sorted[0].points
+      return new Set(sorted.filter(e => e.points >= topScore - 1).map(e => e.playerName.toLowerCase()))
+    })
+
+    const isHotStreak = (playerName) => {
+      return topScorerNames.value.has(String(playerName).toLowerCase())
+    }
+
     const lastUpdated = computed(() => {
       if (scoresStore.scoringEvents.length === 0) return null
       const dates = scoresStore.scoringEvents
@@ -411,6 +445,8 @@ export default {
       getEntryPlayerTeam,
       isEntryPlayerEliminated,
       getEntryPlayerPoints,
+      getExpandedPlayerPct,
+      isHotStreak,
       getTeamBadgeStyle,
       showConfetti,
       showPopularity,
@@ -444,13 +480,25 @@ export default {
 .prize-cell { color: var(--success-color); font-weight: 600; }
 
 /* Expandable roster */
-.expand-cell { cursor: pointer; width: 24px; text-align: center; padding: 8px 4px !important; }
+.expand-cell { cursor: pointer; width: 32px; text-align: center; padding: 8px 4px !important; }
+.expand-cell .collapse-arrow { font-size: 1.1em; color: var(--text-heading); background: var(--bg-highlight); padding: 4px 8px; border-radius: 4px; transition: transform 0.2s, background 0.2s; }
+.expand-cell:hover .collapse-arrow { background: var(--text-heading); color: var(--bg-card); }
 .expanded-roster-row { background: var(--bg-highlight) !important; }
 .expanded-roster-cell { padding: 8px 16px !important; }
-.expanded-roster { display: flex; flex-wrap: wrap; gap: 4px 16px; }
-.expanded-player { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; padding: 2px 0; min-width: 200px; }
-.expanded-player-num { color: var(--text-secondary); font-weight: 600; min-width: 20px; text-align: right; }
-.expanded-player-pts { font-weight: 700; color: var(--text-primary); margin-left: auto; background: var(--bg-card); padding: 1px 6px; border-radius: 2px; font-size: 0.75rem; }
+.expanded-roster { display: flex; flex-direction: column; gap: 2px; }
+.expanded-player { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; padding: 2px 0; }
+.expanded-player-num { color: var(--text-secondary); font-weight: 600; min-width: 20px; width: 20px; text-align: right; flex-shrink: 0; }
+.expanded-player-name { min-width: 140px; width: 140px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.expanded-player-team { min-width: 48px; width: 48px; text-align: center; flex-shrink: 0; }
+.expanded-player-hot { min-width: 24px; width: 24px; text-align: center; flex-shrink: 0; }
+.expanded-player-pts { font-weight: 700; color: var(--text-primary); background: var(--bg-card); padding: 1px 6px; border-radius: 2px; font-size: 0.75rem; min-width: 24px; text-align: right; flex-shrink: 0; }
+.expanded-bar-wrap { flex: 1; height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden; min-width: 60px; }
+.expanded-bar { height: 100%; background: var(--text-heading); border-radius: 4px; transition: width 0.3s ease; }
+.hot-streak { display: inline-block; animation: pulse-fire 1.5s ease-in-out infinite; flex-shrink: 0; }
+@keyframes pulse-fire {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.15); }
+}
 .standings-table tbody tr:hover { background: var(--bg-row-hover) !important; }
 .standings-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
 
