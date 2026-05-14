@@ -226,7 +226,7 @@
               <span v-if="isHotStreak(player)" class="hot-streak">🔥</span>
             </span>
             <div class="player-bar-wrap">
-              <div class="player-bar" :style="{ width: getPlayerPct(player, entry.calculatedScore) + '%' }"></div>
+              <div class="player-bar" :style="{ width: getPlayerPct(player) + '%' }"></div>
             </div>
             <span class="player-pts">{{ getPlayerPoints(player) }}</span>
           </div>
@@ -298,10 +298,19 @@ export default {
       return playerPointsMap.value.get(String(playerName).toLowerCase()) || 0
     }
 
-    const getPlayerPct = (playerName, teamTotal) => {
-      if (!teamTotal || teamTotal <= 0) return 0
+    const maxPlayerPoints = computed(() => {
+      let max = 0
+      for (const [, pts] of playerPointsMap.value) {
+        if (pts > max) max = pts
+      }
+      return max
+    })
+
+    const getPlayerPct = (playerName) => {
+      const max = maxPlayerPoints.value
+      if (max <= 0) return 0
       const pts = getPlayerPoints(playerName)
-      return Math.round((pts / teamTotal) * 100)
+      return Math.round((pts / max) * 100)
     }
 
     const sortedEntries = computed(() => {
