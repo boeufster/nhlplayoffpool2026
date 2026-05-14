@@ -492,8 +492,8 @@ export default {
 .expanded-player-team { min-width: 48px; width: 48px; text-align: center; flex-shrink: 0; }
 .expanded-player-hot { min-width: 24px; width: 24px; text-align: center; flex-shrink: 0; }
 .expanded-player-pts { font-weight: 700; color: var(--text-primary); background: var(--bg-card); padding: 1px 6px; border-radius: 2px; font-size: 0.75rem; min-width: 24px; text-align: right; flex-shrink: 0; }
-.expanded-bar-wrap { flex: 1; height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden; min-width: 60px; }
-.expanded-bar { height: 100%; background: var(--text-heading); border-radius: 4px; transition: width 0.3s ease; }
+.expanded-bar-wrap { flex: 1; height: 6px; background: var(--border-light); border-radius: 3px; overflow: hidden; min-width: 60px; }
+.expanded-bar { height: 100%; background: var(--text-heading); border-radius: 3px; transition: width 0.3s ease; }
 .hot-streak { display: inline-block; animation: pulse-fire 1.5s ease-in-out infinite; flex-shrink: 0; }
 @keyframes pulse-fire {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -601,7 +601,7 @@ export default {
   .picked-full { display: none; }
   .picked-short { display: inline; }
   .expanded-player-name { min-width: 90px; width: 90px; }
-  .expanded-bar-wrap { min-width: 40px; }
+  .expanded-bar-wrap { min-width: 40px; max-width: 80px; }
   .expanded-player-team { min-width: 36px; width: 36px; }
   .expanded-roster-cell { padding: 6px 8px !important; }
 }
