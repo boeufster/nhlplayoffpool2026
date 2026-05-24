@@ -48,11 +48,11 @@
           <tr v-if="expandedEntries.has(entry.id)" class="expanded-roster-row">
             <td :colspan="7" class="expanded-roster-cell">
               <div class="expanded-roster">
-                <div v-for="(player, idx) in (entry.playerNames || [])" :key="idx" class="expanded-player">
+                <div v-for="(player, idx) in getActivePlayers(entry)" :key="idx" class="expanded-player">
                   <span class="expanded-player-num">{{ idx + 1 }}.</span>
-                  <span class="expanded-player-name" :class="{ 'player-eliminated': isEntryPlayerEliminated(player, entry) }">{{ player }}</span>
+                  <span class="expanded-player-name">{{ player }}</span>
                   <span class="expanded-player-team">
-                    <span v-if="getEntryPlayerTeam(player, entry)" class="team-badge" :style="getTeamBadgeStyle(getEntryPlayerTeam(player, entry), isEntryPlayerEliminated(player, entry))">{{ getEntryPlayerTeam(player, entry) }}</span>
+                    <span v-if="getEntryPlayerTeam(player, entry)" class="team-badge" :style="getTeamBadgeStyle(getEntryPlayerTeam(player, entry), false)">{{ getEntryPlayerTeam(player, entry) }}</span>
                   </span>
                   <span class="expanded-player-hot">
                     <span v-if="isHotStreak(player)" class="hot-streak">🔥</span>
@@ -61,6 +61,14 @@
                     <div class="expanded-bar" :style="{ width: getExpandedPlayerPct(player) + '%' }"></div>
                   </div>
                   <span class="expanded-player-pts">{{ getEntryPlayerPoints(player) }}</span>
+                </div>
+                <div v-if="getEliminatedTotal(entry).count > 0" class="expanded-player eliminated-summary">
+                  <span class="expanded-player-num"></span>
+                  <span class="expanded-player-name player-eliminated">Eliminated ({{ getEliminatedTotal(entry).count }})</span>
+                  <span class="expanded-player-team"></span>
+                  <span class="expanded-player-hot"></span>
+                  <div class="expanded-bar-wrap"></div>
+                  <span class="expanded-player-pts">{{ getEliminatedTotal(entry).points }}</span>
                 </div>
               </div>
             </td>
@@ -306,6 +314,24 @@ export default {
       return eliminatedTeamsStore.isTeamEliminated(teamCode)
     }
 
+    const getActivePlayers = (entry) => {
+      const players = entry.playerNames || []
+      return players.filter(p => !isEntryPlayerEliminated(p, entry))
+    }
+
+    const getEliminatedTotal = (entry) => {
+      const players = entry.playerNames || []
+      let points = 0
+      let count = 0
+      for (const p of players) {
+        if (isEntryPlayerEliminated(p, entry)) {
+          count++
+          points += getEntryPlayerPoints(p)
+        }
+      }
+      return { count, points }
+    }
+
     const getEntryPlayerPoints = (playerName) => {
       const key = String(playerName).toLowerCase()
       for (const event of scoresStore.scoringEvents) {
@@ -446,6 +472,8 @@ export default {
       isEntryPlayerEliminated,
       getEntryPlayerPoints,
       getExpandedPlayerPct,
+      getActivePlayers,
+      getEliminatedTotal,
       isHotStreak,
       getTeamBadgeStyle,
       showConfetti,
@@ -551,6 +579,7 @@ export default {
 
 /* Eliminated Player Styles */
 .player-eliminated { text-decoration: line-through; opacity: 0.5; color: var(--text-secondary); }
+.eliminated-summary { border-top: 1px dashed var(--border-color); margin-top: 4px; padding-top: 4px; }
 .team-badge { font-size: 0.85rem; padding: 3px 8px; border-radius: 3px; font-weight: 700; letter-spacing: 0.5px; margin-left: 6px; }
 
 /* Standings Transition Animations */
