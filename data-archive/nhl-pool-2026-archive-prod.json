@@ -1,0 +1,4648 @@
+{
+  "season": "2026",
+  "exportedAt": "2026-06-17T02:28:47.603Z",
+  "participants": [
+    {
+      "email": "cc",
+      "name": "Courtenay ",
+      "entryFee": "20.00",
+      "createdAt": "2026-04-19T18:22:51.389Z"
+    },
+    {
+      "email": "dd",
+      "name": "Derek ",
+      "entryFee": "20.00",
+      "createdAt": "2026-04-19T18:23:08.299Z"
+    },
+    {
+      "email": "gg",
+      "name": "Gordie",
+      "entryFee": "20.00",
+      "createdAt": "2026-04-19T18:23:20.718Z"
+    },
+    {
+      "email": "hh",
+      "name": " Herbie ",
+      "entryFee": "20.00",
+      "createdAt": "2026-04-19T18:23:33.938Z"
+    },
+    {
+      "email": "rr",
+      "name": " The Revesz Boys ",
+      "entryFee": "20.00",
+      "createdAt": "2026-04-19T18:25:06.769Z"
+    },
+    {
+      "email": "tt",
+      "name": "Tyler",
+      "entryFee": "20.00",
+      "createdAt": "2026-04-19T18:25:18.566Z"
+    },
+    {
+      "email": "ww",
+      "name": "Weldon",
+      "entryFee": "20.00",
+      "createdAt": "2026-04-19T18:25:27.510Z"
+    }
+  ],
+  "entries": [
+    {
+      "id": "entry-1776623138249-eywzbjrfm",
+      "email": "cc",
+      "participantName": "Courtenay ",
+      "totalScore": 141,
+      "createdAt": "2026-04-19T18:25:38.355Z",
+      "submittedAt": "2026-04-19T18:28:01.573Z",
+      "playerNames": [
+        "Nikolaj Ehlers",
+        "Andrei Svechnikov",
+        "Sebastian Aho",
+        "Seth Jarvis",
+        "Brayden Point",
+        "Jake Guentzel",
+        "Nikita Kucherov",
+        "Brock Nelson",
+        "Cale Makar",
+        "Martin Necas",
+        "Nathan MacKinnon",
+        "Kirill Kaprizov",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid"
+      ],
+      "playerIds": [
+        "Nikolaj Ehlers",
+        "Andrei Svechnikov",
+        "Sebastian Aho",
+        "Seth Jarvis",
+        "Brayden Point",
+        "Jake Guentzel",
+        "Nikita Kucherov",
+        "Brock Nelson",
+        "Cale Makar",
+        "Martin Necas",
+        "Nathan MacKinnon",
+        "Kirill Kaprizov",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid"
+      ],
+      "playerTeams": {
+        "nikolaj ehlers": "CAR",
+        "andrei svechnikov": "CAR",
+        "sebastian aho": "CAR",
+        "seth jarvis": "CAR",
+        "brayden point": "TBL",
+        "jake guentzel": "TBL",
+        "nikita kucherov": "TBL",
+        "brock nelson": "COL",
+        "cale makar": "COL",
+        "martin necas": "COL",
+        "nathan mackinnon": "COL",
+        "kirill kaprizov": "MIN",
+        "evan bouchard": "EDM",
+        "leon draisaitl": "EDM",
+        "connor mcdavid": "EDM"
+      }
+    },
+    {
+      "id": "entry-1776623141676-n957mtb6m",
+      "email": "dd",
+      "participantName": "Derek ",
+      "totalScore": 111,
+      "createdAt": "2026-04-19T18:25:41.679Z",
+      "submittedAt": "2026-04-19T18:30:42.326Z",
+      "playerNames": [
+        "Nikolaj Ehlers",
+        "Sebastian Aho",
+        "Andrei Svechnikov",
+        "Martin Necas",
+        "Nathan MacKinnon",
+        "Connor Ingram",
+        "Jack Roslovic",
+        "Matt Savoie",
+        "Vasily Podkolzin",
+        "Mattias Ekholm",
+        "Zach Hyman",
+        "Ryan Nugent-Hopkins",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid"
+      ],
+      "playerIds": [
+        "Nikolaj Ehlers",
+        "Sebastian Aho",
+        "Andrei Svechnikov",
+        "Martin Necas",
+        "Nathan MacKinnon",
+        "Connor Ingram",
+        "Jack Roslovic",
+        "Matt Savoie",
+        "Vasily Podkolzin",
+        "Mattias Ekholm",
+        "Zach Hyman",
+        "Ryan Nugent-Hopkins",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid"
+      ],
+      "playerTeams": {
+        "nikolaj ehlers": "CAR",
+        "sebastian aho": "CAR",
+        "andrei svechnikov": "CAR",
+        "martin necas": "COL",
+        "nathan mackinnon": "COL",
+        "connor ingram": "EDM",
+        "jack roslovic": "EDM",
+        "matt savoie": "EDM",
+        "vasily podkolzin": "EDM",
+        "mattias ekholm": "EDM",
+        "zach hyman": "EDM",
+        "ryan nugent-hopkins": "EDM",
+        "evan bouchard": "EDM",
+        "leon draisaitl": "EDM",
+        "connor mcdavid": "EDM"
+      }
+    },
+    {
+      "id": "entry-1776623146455-3143v6b3m",
+      "email": "gg",
+      "participantName": "Gordie",
+      "totalScore": 121,
+      "createdAt": "2026-04-19T18:25:46.465Z",
+      "submittedAt": "2026-04-19T18:28:18.499Z",
+      "playerNames": [
+        "Mark Stone",
+        "Miro Heiskanen",
+        "Brandon Hagel",
+        "Andrei Vasilevskiy",
+        "Rasmus Dahlin",
+        "Cale Makar",
+        "Jason Robertson",
+        "Artturi Lehkonen",
+        "Alex Tuch",
+        "Tage Thompson",
+        "Brayden Point",
+        "Nikita Kucherov",
+        "Mikko Rantanen",
+        "Nathan MacKinnon",
+        "Connor McDavid"
+      ],
+      "playerIds": [
+        "Mark Stone",
+        "Miro Heiskanen",
+        "Brandon Hagel",
+        "Andrei Vasilevskiy",
+        "Rasmus Dahlin",
+        "Cale Makar",
+        "Jason Robertson",
+        "Artturi Lehkonen",
+        "Alex Tuch",
+        "Tage Thompson",
+        "Brayden Point",
+        "Nikita Kucherov",
+        "Mikko Rantanen",
+        "Nathan MacKinnon",
+        "Connor McDavid"
+      ],
+      "playerTeams": {
+        "mark stone": "VGK",
+        "miro heiskanen": "DAL",
+        "brandon hagel": "TBL",
+        "andrei vasilevskiy": "TBL",
+        "rasmus dahlin": "BUF",
+        "cale makar": "COL",
+        "jason robertson": "DAL",
+        "artturi lehkonen": "COL",
+        "alex tuch": "BUF",
+        "tage thompson": "BUF",
+        "brayden point": "TBL",
+        "nikita kucherov": "TBL",
+        "mikko rantanen": "DAL",
+        "nathan mackinnon": "COL",
+        "connor mcdavid": "EDM"
+      }
+    },
+    {
+      "id": "entry-1776623149498-lwfubhm9s",
+      "email": "hh",
+      "participantName": "Herbie ",
+      "totalScore": 157,
+      "createdAt": "2026-04-19T18:25:49.502Z",
+      "submittedAt": "2026-04-19T18:28:35.519Z",
+      "playerNames": [
+        "Jake Guentzel",
+        "Cole Caufield",
+        "Jack Eichel",
+        "Nick Suzuki",
+        "Brandon Hagel",
+        "Sebastian Aho",
+        "Evan Bouchard",
+        "Brandon Bussi",
+        "Andrei Vasilevskiy",
+        "Seth Jarvis",
+        "Martin Necas",
+        "Nikita Kucherov",
+        "Leon Draisaitl",
+        "Nathan MacKinnon",
+        "Connor McDavid"
+      ],
+      "playerIds": [
+        "Jake Guentzel",
+        "Cole Caufield",
+        "Jack Eichel",
+        "Nick Suzuki",
+        "Brandon Hagel",
+        "Sebastian Aho",
+        "Evan Bouchard",
+        "Brandon Bussi",
+        "Andrei Vasilevskiy",
+        "Seth Jarvis",
+        "Martin Necas",
+        "Nikita Kucherov",
+        "Leon Draisaitl",
+        "Nathan MacKinnon",
+        "Connor McDavid"
+      ],
+      "playerTeams": {
+        "jake guentzel": "TBL",
+        "cole caufield": "MTL",
+        "jack eichel": "VGK",
+        "nick suzuki": "MTL",
+        "brandon hagel": "TBL",
+        "sebastian aho": "CAR",
+        "evan bouchard": "EDM",
+        "brandon bussi": "CAR",
+        "andrei vasilevskiy": "TBL",
+        "seth jarvis": "CAR",
+        "martin necas": "COL",
+        "nikita kucherov": "TBL",
+        "leon draisaitl": "EDM",
+        "nathan mackinnon": "COL",
+        "connor mcdavid": "EDM"
+      }
+    },
+    {
+      "id": "entry-1776623152534-fsvnjnbk3",
+      "email": "rr",
+      "participantName": "The Revesz Boys ",
+      "totalScore": 123,
+      "createdAt": "2026-04-19T18:25:52.537Z",
+      "submittedAt": "2026-04-19T18:28:50.583Z",
+      "playerNames": [
+        "Jake Oettinger",
+        "Andrei Vasilevskiy",
+        "Martin Necas",
+        "Quinn Hughes",
+        "Jason Robertson",
+        "Seth Jarvis",
+        "Sebastian Aho",
+        "Nikita Kucherov",
+        "Brayden Point",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid",
+        "Cale Makar",
+        "Mikko Rantanen",
+        "Nathan MacKinnon"
+      ],
+      "playerIds": [
+        "Jake Oettinger",
+        "Andrei Vasilevskiy",
+        "Martin Necas",
+        "Quinn Hughes",
+        "Jason Robertson",
+        "Seth Jarvis",
+        "Sebastian Aho",
+        "Nikita Kucherov",
+        "Brayden Point",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid",
+        "Cale Makar",
+        "Mikko Rantanen",
+        "Nathan MacKinnon"
+      ],
+      "playerTeams": {
+        "jake oettinger": "DAL",
+        "andrei vasilevskiy": "TBL",
+        "martin necas": "COL",
+        "quinn hughes": "MIN",
+        "jason robertson": "DAL",
+        "seth jarvis": "CAR",
+        "sebastian aho": "CAR",
+        "nikita kucherov": "TBL",
+        "brayden point": "TBL",
+        "evan bouchard": "EDM",
+        "leon draisaitl": "EDM",
+        "connor mcdavid": "EDM",
+        "cale makar": "COL",
+        "mikko rantanen": "DAL",
+        "nathan mackinnon": "COL"
+      }
+    },
+    {
+      "id": "entry-1776623155520-t70g4fp6k",
+      "email": "tt",
+      "participantName": "Tyler",
+      "totalScore": 167,
+      "createdAt": "2026-04-19T18:25:55.523Z",
+      "submittedAt": "2026-04-19T18:29:05.735Z",
+      "playerNames": [
+        "Mark Stone",
+        "Andrei Vasilevskiy",
+        "Jack Eichel",
+        "Brayden Point",
+        "Leon Draisaitl",
+        "Mitch Marner",
+        "Nikolaj Ehlers",
+        "Andrei Svechnikov",
+        "Sebastian Aho",
+        "Darren Raddysh",
+        "Connor McDavid",
+        "Cale Makar",
+        "Martin Necas",
+        "Nikita Kucherov",
+        "Nathan MacKinnon"
+      ],
+      "playerIds": [
+        "Mark Stone",
+        "Andrei Vasilevskiy",
+        "Jack Eichel",
+        "Brayden Point",
+        "Leon Draisaitl",
+        "Mitch Marner",
+        "Nikolaj Ehlers",
+        "Andrei Svechnikov",
+        "Sebastian Aho",
+        "Darren Raddysh",
+        "Connor McDavid",
+        "Cale Makar",
+        "Martin Necas",
+        "Nikita Kucherov",
+        "Nathan MacKinnon"
+      ],
+      "playerTeams": {
+        "mark stone": "VGK",
+        "andrei vasilevskiy": "TBL",
+        "jack eichel": "VGK",
+        "brayden point": "TBL",
+        "leon draisaitl": "EDM",
+        "mitch marner": "VGK",
+        "nikolaj ehlers": "CAR",
+        "andrei svechnikov": "CAR",
+        "sebastian aho": "CAR",
+        "darren raddysh": "TBL",
+        "connor mcdavid": "EDM",
+        "cale makar": "COL",
+        "martin necas": "COL",
+        "nikita kucherov": "TBL",
+        "nathan mackinnon": "COL"
+      }
+    },
+    {
+      "id": "entry-1776623159599-9sjzc2lwm",
+      "email": "ww",
+      "participantName": "Weldon",
+      "totalScore": 115,
+      "createdAt": "2026-04-19T18:25:59.610Z",
+      "submittedAt": "2026-04-19T18:29:21.570Z",
+      "playerNames": [
+        "Mats Zuccarello",
+        "Jesper Wallstedt",
+        "Quinn Hughes",
+        "Matt Boldy",
+        "Kirill Kaprizov",
+        "Sidney Crosby",
+        "Evan Bouchard",
+        "Zach Hyman",
+        "Leon Draisaitl",
+        "Connor McDavid",
+        "Andrei Vasilevskiy",
+        "Brandon Hagel",
+        "Jake Guentzel",
+        "Nikita Kucherov",
+        "Brayden Point"
+      ],
+      "playerIds": [
+        "Mats Zuccarello",
+        "Jesper Wallstedt",
+        "Quinn Hughes",
+        "Matt Boldy",
+        "Kirill Kaprizov",
+        "Sidney Crosby",
+        "Evan Bouchard",
+        "Zach Hyman",
+        "Leon Draisaitl",
+        "Connor McDavid",
+        "Andrei Vasilevskiy",
+        "Brandon Hagel",
+        "Jake Guentzel",
+        "Nikita Kucherov",
+        "Brayden Point"
+      ],
+      "playerTeams": {
+        "mats zuccarello": "MIN",
+        "jesper wallstedt": "MIN",
+        "quinn hughes": "MIN",
+        "matt boldy": "MIN",
+        "kirill kaprizov": "MIN",
+        "sidney crosby": "PIT",
+        "evan bouchard": "EDM",
+        "zach hyman": "EDM",
+        "leon draisaitl": "EDM",
+        "connor mcdavid": "EDM",
+        "andrei vasilevskiy": "TBL",
+        "brandon hagel": "TBL",
+        "jake guentzel": "TBL",
+        "nikita kucherov": "TBL",
+        "brayden point": "TBL"
+      }
+    }
+  ],
+  "scoringEvents": [
+    {
+      "id": "score-1781542103826-vddyalkv0",
+      "playerName": "Joel Edmundson",
+      "points": 1,
+      "team": "LAK",
+      "createdAt": "2026-06-15T16:48:23.834Z"
+    },
+    {
+      "id": "score-1781542103793-87yqlg42f",
+      "playerName": "Nick Seeler",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:23.806Z"
+    },
+    {
+      "id": "score-1781542103766-aurowutky",
+      "playerName": "Brendan Gallagher",
+      "points": 1,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:48:23.772Z"
+    },
+    {
+      "id": "score-1781542103733-ld7iwx4ck",
+      "playerName": "Olen Zellweger",
+      "points": 2,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:48:23.741Z"
+    },
+    {
+      "id": "score-1781542103710-e4713afeo",
+      "playerName": "Cam York",
+      "points": 2,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:23.716Z"
+    },
+    {
+      "id": "score-1781542103682-q5ybo7cgs",
+      "playerName": "Owen Tippett",
+      "points": 2,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:23.691Z"
+    },
+    {
+      "id": "score-1781542103658-fyw74zjrl",
+      "playerName": "Trevor Moore",
+      "points": 2,
+      "team": "LAK",
+      "createdAt": "2026-06-15T16:48:23.665Z"
+    },
+    {
+      "id": "score-1781542103623-h0gn1oxvl",
+      "playerName": "Darren Raddysh",
+      "points": 2,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:48:23.631Z"
+    },
+    {
+      "id": "score-1781542103589-c79bn18my",
+      "playerName": "Adrian Kempe",
+      "points": 2,
+      "team": "LAK",
+      "createdAt": "2026-06-15T16:48:23.601Z"
+    },
+    {
+      "id": "score-1781542103565-xwbmouwqa",
+      "playerName": "Garnet Hathaway",
+      "points": 2,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:23.571Z"
+    },
+    {
+      "id": "score-1781542103544-vgveqa1dx",
+      "playerName": "Sean Kuraly",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:23.550Z"
+    },
+    {
+      "id": "score-1781542103493-ze8oa9rqt",
+      "playerName": "Bryan Rust",
+      "points": 2,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:23.501Z"
+    },
+    {
+      "id": "score-1781542103471-gmkot2btb",
+      "playerName": "Konsta Helenius",
+      "points": 2,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:48:23.477Z"
+    },
+    {
+      "id": "score-1781542103435-5et8y4jra",
+      "playerName": "Arber Xhekaj",
+      "points": 2,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:48:23.447Z"
+    },
+    {
+      "id": "score-1781542103407-lu44r3lf4",
+      "playerName": "Alex Bump",
+      "points": 2,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:23.413Z"
+    },
+    {
+      "id": "score-1781542103355-ep9h6esw6",
+      "playerName": "Dylan Cozens",
+      "points": 2,
+      "team": "OTT",
+      "createdAt": "2026-06-15T16:48:23.362Z"
+    },
+    {
+      "id": "score-1781542103334-hzpy7i23h",
+      "playerName": "Connor Dewar",
+      "points": 2,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:23.340Z"
+    },
+    {
+      "id": "score-1781542103303-kw098e4gx",
+      "playerName": "Michael Carcone",
+      "points": 2,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:48:23.310Z"
+    },
+    {
+      "id": "score-1781542103279-mnp4d61m1",
+      "playerName": "Viktor Arvidsson",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:23.285Z"
+    },
+    {
+      "id": "score-1781542103250-lgsiwj9ef",
+      "playerName": "Elias Lindholm",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:23.257Z"
+    },
+    {
+      "id": "score-1781542103205-nbdvzqbwg",
+      "playerName": "Zach Hyman",
+      "points": 2,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:48:23.211Z"
+    },
+    {
+      "id": "score-1781542103180-ewhr7ajjl",
+      "playerName": "Kris Letang",
+      "points": 2,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:23.186Z"
+    },
+    {
+      "id": "score-1781542103156-zibvc404p",
+      "playerName": "Ian Cole",
+      "points": 2,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:48:23.163Z"
+    },
+    {
+      "id": "score-1781542103127-e2tvd2pbq",
+      "playerName": "Noah Ostlund",
+      "points": 2,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:48:23.134Z"
+    },
+    {
+      "id": "score-1781542103093-vgqordbqu",
+      "playerName": "Logan O'Connor",
+      "points": 2,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:48:23.106Z"
+    },
+    {
+      "id": "score-1781542103067-ls2djpbc8",
+      "playerName": "Josh Samanski",
+      "points": 2,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:48:23.078Z"
+    },
+    {
+      "id": "score-1781542103045-21yyh3eyr",
+      "playerName": "Carter Yakemchuk",
+      "points": 2,
+      "team": "OTT",
+      "createdAt": "2026-06-15T16:48:23.053Z"
+    },
+    {
+      "id": "score-1781542103020-ygf3ppu7w",
+      "playerName": "Quinton Byfield",
+      "points": 2,
+      "team": "LAK",
+      "createdAt": "2026-06-15T16:48:23.027Z"
+    },
+    {
+      "id": "score-1781542102978-4zu8ljeri",
+      "playerName": "Jake Sanderson",
+      "points": 2,
+      "team": "OTT",
+      "createdAt": "2026-06-15T16:48:23.002Z"
+    },
+    {
+      "id": "score-1781542102953-7e5v434ao",
+      "playerName": "Blake Lizotte",
+      "points": 2,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:22.961Z"
+    },
+    {
+      "id": "score-1781542102931-zfv9i6utn",
+      "playerName": "Jonathan Aspirot",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:22.937Z"
+    },
+    {
+      "id": "score-1781542102909-43vccpueb",
+      "playerName": "Denver Barkey",
+      "points": 2,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:22.916Z"
+    },
+    {
+      "id": "score-1781542102886-qqat41rug",
+      "playerName": "Sean Durzi",
+      "points": 2,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:48:22.893Z"
+    },
+    {
+      "id": "score-1781542102863-xqb88i25q",
+      "playerName": "Casey Mittelstadt",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:22.870Z"
+    },
+    {
+      "id": "score-1781542102824-089mo71yi",
+      "playerName": "Conor Timmins",
+      "points": 2,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:48:22.846Z"
+    },
+    {
+      "id": "score-1781542102791-b3r2gbhyv",
+      "playerName": "Charlie McAvoy",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:22.799Z"
+    },
+    {
+      "id": "score-1781542102756-0m66n6koo",
+      "playerName": "Nils Lundkvist",
+      "points": 2,
+      "team": "DAL",
+      "createdAt": "2026-06-15T16:48:22.765Z"
+    },
+    {
+      "id": "score-1781542102712-5zxt0wqog",
+      "playerName": "Yakov Trenin",
+      "points": 2,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:48:22.722Z"
+    },
+    {
+      "id": "score-1781542102680-wdlzlcmiy",
+      "playerName": "Noah Juulsen",
+      "points": 2,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:22.687Z"
+    },
+    {
+      "id": "score-1781542102648-c5rvelfxo",
+      "playerName": "Thomas Novak",
+      "points": 2,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:22.654Z"
+    },
+    {
+      "id": "score-1781542102611-ma79mixfc",
+      "playerName": "Hampus Lindholm",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:22.619Z"
+    },
+    {
+      "id": "score-1781542102589-zcer50gtk",
+      "playerName": "Brandon Saad",
+      "points": 2,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:48:22.596Z"
+    },
+    {
+      "id": "score-1781542102550-4r1onznib",
+      "playerName": "Mike Reilly",
+      "points": 2,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:48:22.559Z"
+    },
+    {
+      "id": "score-1781542102511-8kejeoqxj",
+      "playerName": "Mattias Ekholm",
+      "points": 2,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:48:22.519Z"
+    },
+    {
+      "id": "score-1781542102488-qrfo7hmtk",
+      "playerName": "Reilly Smith",
+      "points": 2,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:48:22.495Z"
+    },
+    {
+      "id": "score-1781542102464-uw31fjpuf",
+      "playerName": "Anthony Cirelli",
+      "points": 2,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:48:22.473Z"
+    },
+    {
+      "id": "score-1781542102438-377yk6vjg",
+      "playerName": "Artemi Panarin",
+      "points": 3,
+      "team": "LAK",
+      "createdAt": "2026-06-15T16:48:22.445Z"
+    },
+    {
+      "id": "score-1781542102404-fccjwi2q2",
+      "playerName": "Jordan Greenway",
+      "points": 3,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:48:22.411Z"
+    },
+    {
+      "id": "score-1781542102376-jx8hcxt1j",
+      "playerName": "Travis Sanheim",
+      "points": 3,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:22.382Z"
+    },
+    {
+      "id": "score-1781542102355-ljnm4ckmk",
+      "playerName": "Jason Dickinson",
+      "points": 3,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:48:22.361Z"
+    },
+    {
+      "id": "score-1781542102331-d2gonwuwc",
+      "playerName": "Evgeni Malkin",
+      "points": 3,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:22.336Z"
+    },
+    {
+      "id": "score-1781542102297-vndjg9lb4",
+      "playerName": "Brock Nelson",
+      "points": 3,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:48:22.304Z"
+    },
+    {
+      "id": "score-1781542102272-51ct3bsid",
+      "playerName": "Marcus Foligno",
+      "points": 3,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:48:22.278Z"
+    },
+    {
+      "id": "score-1781542102248-n0c59i5bf",
+      "playerName": "Nick Foligno",
+      "points": 3,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:48:22.255Z"
+    },
+    {
+      "id": "score-1781542102227-d47qg9qsk",
+      "playerName": "Logan Cooley",
+      "points": 3,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:48:22.234Z"
+    },
+    {
+      "id": "score-1781542102197-qmmobbhvs",
+      "playerName": "Connor Murphy",
+      "points": 3,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:48:22.204Z"
+    },
+    {
+      "id": "score-1781542102172-uvxizkgos",
+      "playerName": "Dominic James",
+      "points": 3,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:48:22.178Z"
+    },
+    {
+      "id": "score-1781542102149-kmp131rdn",
+      "playerName": "Sam Malinski",
+      "points": 3,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:48:22.157Z"
+    },
+    {
+      "id": "score-1781542102127-573na76y8",
+      "playerName": "Pavel Zacha",
+      "points": 3,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:22.134Z"
+    },
+    {
+      "id": "score-1781542102099-fi6w5t2u1",
+      "playerName": "Sean Walker",
+      "points": 3,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:48:22.107Z"
+    },
+    {
+      "id": "score-1781542102078-chxx3mia1",
+      "playerName": "Josh Manson",
+      "points": 3,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:48:22.085Z"
+    },
+    {
+      "id": "score-1781542102055-ov58yelku",
+      "playerName": "Danila Yurov",
+      "points": 3,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:48:22.063Z"
+    },
+    {
+      "id": "score-1781542102018-tdivb8rsd",
+      "playerName": "J.J. Moser",
+      "points": 3,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:48:22.025Z"
+    },
+    {
+      "id": "score-1781542101983-yz0ch4i7s",
+      "playerName": "Kaedan Korczak",
+      "points": 3,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:48:21.990Z"
+    },
+    {
+      "id": "score-1781542101955-rsz5m3oly",
+      "playerName": "Josh Norris",
+      "points": 3,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:48:21.961Z"
+    },
+    {
+      "id": "score-1781542101903-ot4j9o2nv",
+      "playerName": "Dylan Coghlan",
+      "points": 3,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:48:21.910Z"
+    },
+    {
+      "id": "score-1781542101872-13nqqw5us",
+      "playerName": "Beck Malenstyn",
+      "points": 3,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:48:21.880Z"
+    },
+    {
+      "id": "score-1781542101834-wntw08qnu",
+      "playerName": "Gage Goncalves",
+      "points": 3,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:48:21.843Z"
+    },
+    {
+      "id": "score-1781542101804-mtacc1ihm",
+      "playerName": "Erik Karlsson",
+      "points": 3,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:21.810Z"
+    },
+    {
+      "id": "score-1781542101780-u0o8at38r",
+      "playerName": "Marcus Johansson",
+      "points": 4,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:48:21.787Z"
+    },
+    {
+      "id": "score-1781542101754-6e9j1o5us",
+      "playerName": "Parker Kelly",
+      "points": 4,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:48:21.763Z"
+    },
+    {
+      "id": "score-1781542101730-60jfafzhq",
+      "playerName": "Nic Dowd",
+      "points": 4,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:48:21.737Z"
+    },
+    {
+      "id": "score-1781542101705-u1vgp4ye8",
+      "playerName": "Drake Batherson",
+      "points": 4,
+      "team": "OTT",
+      "createdAt": "2026-06-15T16:48:21.711Z"
+    },
+    {
+      "id": "score-1781542101673-so1mo85e6",
+      "playerName": "Jason Zucker",
+      "points": 4,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:48:21.681Z"
+    },
+    {
+      "id": "score-1781542101636-z8tgcvhb3",
+      "playerName": "Mike Matheson",
+      "points": 4,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:48:21.644Z"
+    },
+    {
+      "id": "score-1781542101612-a9freyn21",
+      "playerName": "Michael McCarron",
+      "points": 4,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:48:21.620Z"
+    },
+    {
+      "id": "score-1781542101589-ta5sjos1e",
+      "playerName": "Valeri Nichushkin",
+      "points": 4,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:48:21.596Z"
+    },
+    {
+      "id": "score-1781542101558-h7fp0g4am",
+      "playerName": "Jeffrey Viel",
+      "points": 4,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:48:21.566Z"
+    },
+    {
+      "id": "score-1781542101533-52un9bwb0",
+      "playerName": "Morgan Geekie",
+      "points": 4,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:48:21.541Z"
+    },
+    {
+      "id": "score-1781542101503-cn0ynknew",
+      "playerName": "Jamie Drysdale",
+      "points": 4,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:21.510Z"
+    },
+    {
+      "id": "score-1781542101476-8vah2o0jc",
+      "playerName": "Rickard Rakell",
+      "points": 4,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:21.487Z"
+    },
+    {
+      "id": "score-1781542101452-lb4oy151p",
+      "playerName": "Nick Schmaltz",
+      "points": 4,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:48:21.459Z"
+    },
+    {
+      "id": "score-1781542101426-mj4glznj7",
+      "playerName": "Noah Cates",
+      "points": 4,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:21.435Z"
+    },
+    {
+      "id": "score-1781542101386-e13a5eq93",
+      "playerName": "Brent Burns",
+      "points": 4,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:48:21.394Z"
+    },
+    {
+      "id": "score-1781542101360-ujkqcnhxi",
+      "playerName": "William Carrier",
+      "points": 4,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:48:21.368Z"
+    },
+    {
+      "id": "score-1781542101316-9rq1nnqde",
+      "playerName": "Christian Dvorak",
+      "points": 4,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:21.326Z"
+    },
+    {
+      "id": "score-1781542101292-0gr3z7yru",
+      "playerName": "Jake Walman",
+      "points": 4,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:48:21.300Z"
+    },
+    {
+      "id": "score-1781542101263-4rgtn076d",
+      "playerName": "Alex Laferriere",
+      "points": 4,
+      "team": "LAK",
+      "createdAt": "2026-06-15T16:48:21.270Z"
+    },
+    {
+      "id": "score-1781542101236-qww7znco1",
+      "playerName": "Sean Couturier",
+      "points": 4,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:21.241Z"
+    },
+    {
+      "id": "score-1781542101213-y7izf14jx",
+      "playerName": "Brett Kulak",
+      "points": 5,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:48:21.220Z"
+    },
+    {
+      "id": "score-1781542101187-gdz04o9hl",
+      "playerName": "Rasmus Ristolainen",
+      "points": 5,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:21.193Z"
+    },
+    {
+      "id": "score-1781542101161-g12oiiu4x",
+      "playerName": "Travis Konecny",
+      "points": 5,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:48:21.169Z"
+    },
+    {
+      "id": "score-1781542101131-d8r02owk0",
+      "playerName": "Clayton Keller",
+      "points": 5,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:48:21.139Z"
+    },
+    {
+      "id": "score-1781542101099-8xt1wyk6g",
+      "playerName": "Mikhail Sergachev",
+      "points": 5,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:48:21.107Z"
+    },
+    {
+      "id": "score-1781542101069-f9has22ro",
+      "playerName": "Ryan McLeod",
+      "points": 5,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:48:21.077Z"
+    },
+    {
+      "id": "score-1781542101028-4qoksfry3",
+      "playerName": "Nico Sturm",
+      "points": 5,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:48:21.042Z"
+    },
+    {
+      "id": "score-1781542101004-vxeo1kfql",
+      "playerName": "Jaccob Slavin",
+      "points": 5,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:48:21.010Z"
+    },
+    {
+      "id": "score-1781542100975-kt8pxwv2h",
+      "playerName": "Mark Jankowski",
+      "points": 5,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:48:20.983Z"
+    },
+    {
+      "id": "score-1781542100950-xe2k9bw63",
+      "playerName": "Kailer Yamamoto",
+      "points": 5,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:48:20.957Z"
+    },
+    {
+      "id": "score-1781542100856-mumyx1icr",
+      "playerName": "Sidney Crosby",
+      "points": 5,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:48:20.915Z"
+    },
+    {
+      "id": "score-1781542061768-b63kf13e6",
+      "playerName": "Porter Martone",
+      "points": 5,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:47:41.776Z"
+    },
+    {
+      "id": "score-1781542061747-x4djdi2yi",
+      "playerName": "Ryan Poehling",
+      "points": 5,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:41.753Z"
+    },
+    {
+      "id": "score-1781542061664-q6hle04qg",
+      "playerName": "Cale Makar",
+      "points": 5,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:41.671Z"
+    },
+    {
+      "id": "score-1781542061642-8g7fg2i2s",
+      "playerName": "Kirby Dach",
+      "points": 5,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:41.649Z"
+    },
+    {
+      "id": "score-1781542061615-jan5ljuy6",
+      "playerName": "Joel Eriksson Ek",
+      "points": 5,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:47:41.622Z"
+    },
+    {
+      "id": "score-1781542061593-alulxcqcc",
+      "playerName": "Jack Drury",
+      "points": 5,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:41.599Z"
+    },
+    {
+      "id": "score-1781542061571-2pv1na9zl",
+      "playerName": "Lawson Crouse",
+      "points": 5,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:47:41.578Z"
+    },
+    {
+      "id": "score-1781542061550-q4seugcdq",
+      "playerName": "Vladimir Tarasenko",
+      "points": 5,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:47:41.558Z"
+    },
+    {
+      "id": "score-1781542061515-y6pnmdihf",
+      "playerName": "Ryan Nugent-Hopkins",
+      "points": 5,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:47:41.523Z"
+    },
+    {
+      "id": "score-1781542061493-w128uip9n",
+      "playerName": "Jordan Martinook",
+      "points": 5,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:41.500Z"
+    },
+    {
+      "id": "score-1781542061468-y147b6us0",
+      "playerName": "MacKenzie Weegar",
+      "points": 5,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:47:41.475Z"
+    },
+    {
+      "id": "score-1781542061445-oetc204in",
+      "playerName": "Ross Colton",
+      "points": 5,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:41.451Z"
+    },
+    {
+      "id": "score-1781542061422-012oke9sb",
+      "playerName": "Dylan Guenther",
+      "points": 5,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:47:41.429Z"
+    },
+    {
+      "id": "score-1781542061392-xdc423rls",
+      "playerName": "Vasily Podkolzin",
+      "points": 6,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:47:41.398Z"
+    },
+    {
+      "id": "score-1781542061370-xy920296m",
+      "playerName": "Beckett Sennecke",
+      "points": 6,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:41.376Z"
+    },
+    {
+      "id": "score-1781542061349-12r4w3ag7",
+      "playerName": "Kasperi Kapanen",
+      "points": 6,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:47:41.355Z"
+    },
+    {
+      "id": "score-1781542061326-56yk5uqz1",
+      "playerName": "Wyatt Johnston",
+      "points": 6,
+      "team": "DAL",
+      "createdAt": "2026-06-15T16:47:41.334Z"
+    },
+    {
+      "id": "score-1781542061294-k2k3vlbxx",
+      "playerName": "Artturi Lehkonen",
+      "points": 6,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:41.299Z"
+    },
+    {
+      "id": "score-1781542061273-kje004xlk",
+      "playerName": "Nicolas Roy",
+      "points": 6,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:41.280Z"
+    },
+    {
+      "id": "score-1781542061242-6kamych1a",
+      "playerName": "Miro Heiskanen",
+      "points": 6,
+      "team": "DAL",
+      "createdAt": "2026-06-15T16:47:41.249Z"
+    },
+    {
+      "id": "score-1781542061220-t3ded1sxl",
+      "playerName": "Cole Smith",
+      "points": 6,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:41.227Z"
+    },
+    {
+      "id": "score-1781542061200-ync2fgcug",
+      "playerName": "Trevor Zegras",
+      "points": 6,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:47:41.205Z"
+    },
+    {
+      "id": "score-1781542061122-d5dz5fyep",
+      "playerName": "Nikita Kucherov",
+      "points": 6,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:47:41.130Z"
+    },
+    {
+      "id": "score-1781542061037-0tq5zy6zk",
+      "playerName": "Connor McDavid",
+      "points": 6,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:47:41.044Z"
+    },
+    {
+      "id": "score-1781542061011-1bzomikd0",
+      "playerName": "Mason McTavish",
+      "points": 6,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:41.019Z"
+    },
+    {
+      "id": "score-1781542060988-chsqe6soz",
+      "playerName": "John Carlson",
+      "points": 6,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:40.995Z"
+    },
+    {
+      "id": "score-1781542060962-mu0anhn4j",
+      "playerName": "Rasmus Andersson",
+      "points": 6,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:40.971Z"
+    },
+    {
+      "id": "score-1781542060931-gpndeepab",
+      "playerName": "Owen Power",
+      "points": 6,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:40.945Z"
+    },
+    {
+      "id": "score-1781542060907-hnvbv3570",
+      "playerName": "Peyton Krebs",
+      "points": 6,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:40.914Z"
+    },
+    {
+      "id": "score-1781542060887-ml033y2tv",
+      "playerName": "Josh Anderson",
+      "points": 7,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:40.893Z"
+    },
+    {
+      "id": "score-1781542060846-n9hgsui05",
+      "playerName": "Alex Tuch",
+      "points": 7,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:40.853Z"
+    },
+    {
+      "id": "score-1781542060827-4lf046c4b",
+      "playerName": "Bowen Byram",
+      "points": 7,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:40.833Z"
+    },
+    {
+      "id": "score-1781542060807-j1shvi44x",
+      "playerName": "Ryan Hartman",
+      "points": 7,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:47:40.813Z"
+    },
+    {
+      "id": "score-1781542060789-44cq7xthv",
+      "playerName": "David Pastrnak",
+      "points": 7,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:47:40.794Z"
+    },
+    {
+      "id": "score-1781542060770-f7o97bhp8",
+      "playerName": "Mattias Samuelsson",
+      "points": 7,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:40.776Z"
+    },
+    {
+      "id": "score-1781542060732-izsrkhe2a",
+      "playerName": "Mikko Rantanen",
+      "points": 7,
+      "team": "DAL",
+      "createdAt": "2026-06-15T16:47:40.739Z"
+    },
+    {
+      "id": "score-1781542060712-k9bwhq5gr",
+      "playerName": "Chris Kreider",
+      "points": 7,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:40.717Z"
+    },
+    {
+      "id": "score-1781542060692-tkizzmwls",
+      "playerName": "Jack Quinn",
+      "points": 7,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:40.698Z"
+    },
+    {
+      "id": "score-1781542060645-l4cj1dg9i",
+      "playerName": "Alexandre Carrier",
+      "points": 7,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:40.667Z"
+    },
+    {
+      "id": "score-1781542060581-ps3szntmf",
+      "playerName": "Evan Bouchard",
+      "points": 7,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:47:40.588Z"
+    },
+    {
+      "id": "score-1781542060557-u3x6y1ogv",
+      "playerName": "Noah Hanifin",
+      "points": 7,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:40.565Z"
+    },
+    {
+      "id": "score-1781542060535-22963n5fj",
+      "playerName": "Zachary Bolduc",
+      "points": 7,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:40.541Z"
+    },
+    {
+      "id": "score-1781542060516-txfxezg0w",
+      "playerName": "Alexandre Texier",
+      "points": 8,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:40.522Z"
+    },
+    {
+      "id": "score-1781542060479-fxrfutn1c",
+      "playerName": "Jason Robertson",
+      "points": 8,
+      "team": "DAL",
+      "createdAt": "2026-06-15T16:47:40.485Z"
+    },
+    {
+      "id": "score-1781542060457-uiv4x6g5d",
+      "playerName": "Eric Robinson",
+      "points": 8,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:40.464Z"
+    },
+    {
+      "id": "score-1781542060388-om7llwg6q",
+      "playerName": "Brandon Hagel",
+      "points": 8,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:47:40.408Z"
+    },
+    {
+      "id": "score-1781542060332-ce6seootl",
+      "playerName": "Jake Guentzel",
+      "points": 8,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:47:40.339Z"
+    },
+    {
+      "id": "score-1781542060311-yv96czt8b",
+      "playerName": "Jalen Chatfield",
+      "points": 8,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:40.317Z"
+    },
+    {
+      "id": "score-1781542060286-6m0k07hau",
+      "playerName": "Kaiden Guhle",
+      "points": 8,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:40.294Z"
+    },
+    {
+      "id": "score-1781542060264-1lye6yjg9",
+      "playerName": "Colton Sissons",
+      "points": 8,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:40.270Z"
+    },
+    {
+      "id": "score-1781542060243-j0piocrup",
+      "playerName": "Alex Killorn",
+      "points": 9,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:40.250Z"
+    },
+    {
+      "id": "score-1781542060220-7nw7j8i9y",
+      "playerName": "Nazem Kadri",
+      "points": 9,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:40.227Z"
+    },
+    {
+      "id": "score-1781542060196-vfkmb2sh5",
+      "playerName": "William Karlsson",
+      "points": 9,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:40.204Z"
+    },
+    {
+      "id": "score-1781542060158-tk706iv1s",
+      "playerName": "Zach Benson",
+      "points": 9,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:40.180Z"
+    },
+    {
+      "id": "score-1781542060135-3yks2ekmh",
+      "playerName": "Matt Duchene",
+      "points": 9,
+      "team": "DAL",
+      "createdAt": "2026-06-15T16:47:40.142Z"
+    },
+    {
+      "id": "score-1781542060104-nt3ofj75e",
+      "playerName": "Mats Zuccarello",
+      "points": 9,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:47:40.110Z"
+    },
+    {
+      "id": "score-1781542060075-36c5ez2sy",
+      "playerName": "K'Andre Miller",
+      "points": 9,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:40.089Z"
+    },
+    {
+      "id": "score-1781542060056-0em0a2g6z",
+      "playerName": "Ivan Demidov",
+      "points": 9,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:40.061Z"
+    },
+    {
+      "id": "score-1781542060034-0r4ecq6ce",
+      "playerName": "Jackson LaCombe",
+      "points": 10,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:40.041Z"
+    },
+    {
+      "id": "score-1781542060015-u8spzk6hl",
+      "playerName": "Brayden McNabb",
+      "points": 10,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:40.021Z"
+    },
+    {
+      "id": "score-1781542059994-cct6xncuf",
+      "playerName": "Jake Evans",
+      "points": 10,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:40.000Z"
+    },
+    {
+      "id": "score-1781542059969-zhs9tgkaa",
+      "playerName": "Phillip Danault",
+      "points": 10,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:39.977Z"
+    },
+    {
+      "id": "score-1781542059947-3j70jxkh6",
+      "playerName": "Josh Doan",
+      "points": 10,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:39.953Z"
+    },
+    {
+      "id": "score-1781542059861-ov641uy2k",
+      "playerName": "Leon Draisaitl",
+      "points": 10,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:47:39.868Z"
+    },
+    {
+      "id": "score-1781542059838-6e7xe5c78",
+      "playerName": "Brock Faber",
+      "points": 10,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:47:39.846Z"
+    },
+    {
+      "id": "score-1781542059812-b6d8z9ssw",
+      "playerName": "Mikael Granlund",
+      "points": 10,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:39.824Z"
+    },
+    {
+      "id": "score-1781542059791-h8p5hw1pn",
+      "playerName": "Alex Newhook",
+      "points": 10,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:39.797Z"
+    },
+    {
+      "id": "score-1781542059742-ypm6yfjnn",
+      "playerName": "Andrei Svechnikov",
+      "points": 11,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:39.748Z"
+    },
+    {
+      "id": "score-1781542059686-ifohci0eh",
+      "playerName": "Seth Jarvis",
+      "points": 11,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:39.693Z"
+    },
+    {
+      "id": "score-1781542059662-zhnxswng1",
+      "playerName": "Gabriel Landeskog",
+      "points": 11,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:39.671Z"
+    },
+    {
+      "id": "score-1781542059635-a1vdx1kye",
+      "playerName": "Troy Terry",
+      "points": 11,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:39.646Z"
+    },
+    {
+      "id": "score-1781542059611-ovnsb7i2d",
+      "playerName": "Devon Toews",
+      "points": 11,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:39.618Z"
+    },
+    {
+      "id": "score-1781542059588-agweblb7j",
+      "playerName": "Leo Carlsson",
+      "points": 11,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:39.596Z"
+    },
+    {
+      "id": "score-1781542059569-kadtl3vbz",
+      "playerName": "Shayne Gostisbehere",
+      "points": 12,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:39.574Z"
+    },
+    {
+      "id": "score-1781542059546-x3805t8wq",
+      "playerName": "Cutter Gauthier",
+      "points": 12,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:47:39.553Z"
+    },
+    {
+      "id": "score-1781542059467-rb3g3i6nu",
+      "playerName": "Sebastian Aho",
+      "points": 12,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:39.482Z"
+    },
+    {
+      "id": "score-1781542059443-5y6ignst4",
+      "playerName": "Juraj Slafkovsky",
+      "points": 12,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:39.450Z"
+    },
+    {
+      "id": "score-1781542059404-v8mor16pe",
+      "playerName": "Mark Stone",
+      "points": 12,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:39.410Z"
+    },
+    {
+      "id": "score-1781542059381-ol0ojvujo",
+      "playerName": "Jordan Staal",
+      "points": 12,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:39.388Z"
+    },
+    {
+      "id": "score-1781542059312-r2172ucqk",
+      "playerName": "Martin Necas",
+      "points": 13,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:39.318Z"
+    },
+    {
+      "id": "score-1781542059282-qz0bcy6xi",
+      "playerName": "Cole Caufield",
+      "points": 13,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:39.290Z"
+    },
+    {
+      "id": "score-1781542059254-smqjrnyk5",
+      "playerName": "Matt Boldy",
+      "points": 13,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:47:39.260Z"
+    },
+    {
+      "id": "score-1781542059232-rfrbbfnzn",
+      "playerName": "Tomas Hertl",
+      "points": 14,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:39.239Z"
+    },
+    {
+      "id": "score-1781542059210-hxz6u5rj6",
+      "playerName": "Ivan Barbashev",
+      "points": 14,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:39.217Z"
+    },
+    {
+      "id": "score-1781542059174-b2ux0ozr1",
+      "playerName": "Rasmus Dahlin",
+      "points": 14,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:39.182Z"
+    },
+    {
+      "id": "score-1781542059136-nxzq7syay",
+      "playerName": "Quinn Hughes",
+      "points": 15,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:47:39.142Z"
+    },
+    {
+      "id": "score-1781542059096-v84yd0lr3",
+      "playerName": "Kirill Kaprizov",
+      "points": 15,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:47:39.103Z"
+    },
+    {
+      "id": "score-1781542059066-0x8t3mg1a",
+      "playerName": "Tage Thompson",
+      "points": 15,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:47:39.072Z"
+    },
+    {
+      "id": "score-1781542058991-hov78mrmw",
+      "playerName": "Nathan MacKinnon",
+      "points": 15,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:47:38.998Z"
+    },
+    {
+      "id": "score-1781542058968-p3t3ax7us",
+      "playerName": "Lane Hutson",
+      "points": 16,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:38.975Z"
+    },
+    {
+      "id": "score-1781542058937-ni5c0e3bn",
+      "playerName": "Nick Suzuki",
+      "points": 16,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:47:38.944Z"
+    },
+    {
+      "id": "score-1781542058916-z3h724aom",
+      "playerName": "Logan Stankoven",
+      "points": 16,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:38.923Z"
+    },
+    {
+      "id": "score-1781542058896-0i58z1dmh",
+      "playerName": "Pavel Dorofeyev",
+      "points": 16,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:38.902Z"
+    },
+    {
+      "id": "score-1781542058876-5dxeynp8q",
+      "playerName": "Shea Theodore",
+      "points": 18,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:38.882Z"
+    },
+    {
+      "id": "score-1781542058829-iznnvofn5",
+      "playerName": "Nikolaj Ehlers",
+      "points": 18,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:38.836Z"
+    },
+    {
+      "id": "score-1781542058809-va4117jre",
+      "playerName": "Brett Howden",
+      "points": 18,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:38.815Z"
+    },
+    {
+      "id": "score-1781542058785-75z4c3zkf",
+      "playerName": "Taylor Hall",
+      "points": 19,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:38.792Z"
+    },
+    {
+      "id": "score-1781542058764-laj07idh1",
+      "playerName": "Jackson Blake",
+      "points": 20,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:47:38.770Z"
+    },
+    {
+      "id": "score-1781542058724-4xzkjifxc",
+      "playerName": "Jack Eichel",
+      "points": 22,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:38.730Z"
+    },
+    {
+      "id": "score-1781542058650-b32826j0i",
+      "playerName": "Mitch Marner",
+      "points": 29,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:47:38.700Z"
+    },
+    {
+      "id": "score-1781542000145-rilmv74nj",
+      "playerName": "Jacob Fowler",
+      "points": 0,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:46:40.152Z"
+    },
+    {
+      "id": "score-1781542000120-rit1p51hm",
+      "playerName": "Filip Gustavsson",
+      "points": 0,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:46:40.127Z"
+    },
+    {
+      "id": "score-1781542000096-5dc3xb4n8",
+      "playerName": "Stuart Skinner",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:46:40.103Z"
+    },
+    {
+      "id": "score-1781542000070-mw6tnqbpq",
+      "playerName": "Tristan Jarry",
+      "points": 0,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:46:40.077Z"
+    },
+    {
+      "id": "score-1781542000045-pt92d4n02",
+      "playerName": "Ville Husso",
+      "points": 0,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:46:40.053Z"
+    },
+    {
+      "id": "score-1781542000021-nn51e7ax5",
+      "playerName": "Anton Forsberg",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-06-15T16:46:40.028Z"
+    },
+    {
+      "id": "score-1781541999989-1a7s2kvro",
+      "playerName": "Linus Ullmark",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-06-15T16:46:40.003Z"
+    },
+    {
+      "id": "score-1781541999966-4bsfm1i37",
+      "playerName": "Joonas Korpisalo",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:46:39.973Z"
+    },
+    {
+      "id": "score-1781541999940-n7t09myba",
+      "playerName": "Mackenzie Blackwood",
+      "points": 1,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:46:39.947Z"
+    },
+    {
+      "id": "score-1781541999905-rq5m0j7w6",
+      "playerName": "Connor Ingram",
+      "points": 2,
+      "team": "EDM",
+      "createdAt": "2026-06-15T16:46:39.913Z"
+    },
+    {
+      "id": "score-1781541999881-l0n7limre",
+      "playerName": "Karel Vejmelka",
+      "points": 2,
+      "team": "UTA",
+      "createdAt": "2026-06-15T16:46:39.888Z"
+    },
+    {
+      "id": "score-1781541999845-jk0ze2ios",
+      "playerName": "Jake Oettinger",
+      "points": 2,
+      "team": "DAL",
+      "createdAt": "2026-06-15T16:46:39.853Z"
+    },
+    {
+      "id": "score-1781541999822-iwiof89fj",
+      "playerName": "Jeremy Swayman",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-06-15T16:46:39.829Z"
+    },
+    {
+      "id": "score-1781541999797-tg3p9d2aq",
+      "playerName": "Arturs Silovs",
+      "points": 2,
+      "team": "PIT",
+      "createdAt": "2026-06-15T16:46:39.804Z"
+    },
+    {
+      "id": "score-1781541999774-at8ypntt6",
+      "playerName": "Ukko-Pekka Luukkonen",
+      "points": 3,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:46:39.781Z"
+    },
+    {
+      "id": "score-1781541999695-3zh3b1c27",
+      "playerName": "Andrei Vasilevskiy",
+      "points": 5,
+      "team": "TBL",
+      "createdAt": "2026-06-15T16:46:39.703Z"
+    },
+    {
+      "id": "score-1781541999660-s0uqfkudb",
+      "playerName": "Brandon Bussi",
+      "points": 5,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:46:39.669Z"
+    },
+    {
+      "id": "score-1781541999635-y73ulocl2",
+      "playerName": "Alex Lyon",
+      "points": 4,
+      "team": "BUF",
+      "createdAt": "2026-06-15T16:46:39.642Z"
+    },
+    {
+      "id": "score-1781541999609-56s9irhjm",
+      "playerName": "Dan Vladar",
+      "points": 8,
+      "team": "PHI",
+      "createdAt": "2026-06-15T16:46:39.617Z"
+    },
+    {
+      "id": "score-1781541999561-dfvvp1bxe",
+      "playerName": "Jesper Wallstedt",
+      "points": 5,
+      "team": "MIN",
+      "createdAt": "2026-06-15T16:46:39.569Z"
+    },
+    {
+      "id": "score-1781541999536-aq2l28uq9",
+      "playerName": "Lukas Dostal",
+      "points": 6,
+      "team": "ANA",
+      "createdAt": "2026-06-15T16:46:39.544Z"
+    },
+    {
+      "id": "score-1781541999507-j7vbco8om",
+      "playerName": "Scott Wedgewood",
+      "points": 7,
+      "team": "COL",
+      "createdAt": "2026-06-15T16:46:39.515Z"
+    },
+    {
+      "id": "score-1781541999474-lnh9nixfz",
+      "playerName": "Jakub Dobes",
+      "points": 9,
+      "team": "MTL",
+      "createdAt": "2026-06-15T16:46:39.489Z"
+    },
+    {
+      "id": "score-1781541999429-0fxlt14il",
+      "playerName": "Frederik Andersen",
+      "points": 19,
+      "team": "CAR",
+      "createdAt": "2026-06-15T16:46:39.439Z"
+    },
+    {
+      "id": "score-1781541999184-1a5bnahl9",
+      "playerName": "Carter Hart",
+      "points": 14,
+      "team": "VGK",
+      "createdAt": "2026-06-15T16:46:39.363Z"
+    },
+    {
+      "id": "score-1779920014324-bcrh7ruqm",
+      "playerName": "Mikey Anderson",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:34.330Z"
+    },
+    {
+      "id": "score-1779920014305-fsof0iukc",
+      "playerName": "Zemgus Girgensons",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:34.310Z"
+    },
+    {
+      "id": "score-1779920014286-diq6ac2qf",
+      "playerName": "Scott Laughton",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:34.292Z"
+    },
+    {
+      "id": "score-1779920014267-bqi8hyi77",
+      "playerName": "Joel Armia",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:34.274Z"
+    },
+    {
+      "id": "score-1779920014243-9xjeyqn0q",
+      "playerName": "Colin Blackwell",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:34.249Z"
+    },
+    {
+      "id": "score-1779920014225-n1xn6w9dg",
+      "playerName": "Sam Carrick",
+      "points": 0,
+      "team": "BUF",
+      "createdAt": "2026-05-27T22:13:34.231Z"
+    },
+    {
+      "id": "score-1779920014206-8lithda4r",
+      "playerName": "Alexander Petrovic",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:34.213Z"
+    },
+    {
+      "id": "score-1779920014185-10mcyc2yf",
+      "playerName": "Radko Gudas",
+      "points": 0,
+      "team": "ANA",
+      "createdAt": "2026-05-27T22:13:34.191Z"
+    },
+    {
+      "id": "score-1779920014168-3q1n8fcld",
+      "playerName": "Nicolas Deslauriers",
+      "points": 0,
+      "team": "CAR",
+      "createdAt": "2026-05-27T22:13:34.173Z"
+    },
+    {
+      "id": "score-1779920014149-qvo6dawzw",
+      "playerName": "Brian Dumoulin",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:34.156Z"
+    },
+    {
+      "id": "score-1779920014127-4ry9cpjyc",
+      "playerName": "Adam Henrique",
+      "points": 0,
+      "team": "EDM",
+      "createdAt": "2026-05-27T22:13:34.135Z"
+    },
+    {
+      "id": "score-1779920014105-dgp9kq77x",
+      "playerName": "Tyler Myers",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:34.113Z"
+    },
+    {
+      "id": "score-1779920014068-0zvhm79n7",
+      "playerName": "Zach Bogosian",
+      "points": 0,
+      "team": "MIN",
+      "createdAt": "2026-05-27T22:13:34.074Z"
+    },
+    {
+      "id": "score-1779920014049-s14yw9894",
+      "playerName": "Drew Doughty",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:34.055Z"
+    },
+    {
+      "id": "score-1779920014029-vmtczg9yy",
+      "playerName": "Lars Eller",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:34.036Z"
+    },
+    {
+      "id": "score-1779920014009-klogap8ay",
+      "playerName": "Jamie Benn",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:34.015Z"
+    },
+    {
+      "id": "score-1779920013988-qx0f5s6c1",
+      "playerName": "Claude Giroux",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:33.995Z"
+    },
+    {
+      "id": "score-1779920013969-son6glita",
+      "playerName": "Jeff Petry",
+      "points": 0,
+      "team": "MIN",
+      "createdAt": "2026-05-27T22:13:33.976Z"
+    },
+    {
+      "id": "score-1779920013947-1xlba7itm",
+      "playerName": "Anze Kopitar",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:33.954Z"
+    },
+    {
+      "id": "score-1779920013928-28z4yhix7",
+      "playerName": "Corey Perry",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:33.933Z"
+    },
+    {
+      "id": "score-1779920013908-8htgql4nz",
+      "playerName": "Cody Ceci",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:33.914Z"
+    },
+    {
+      "id": "score-1779920013888-kyc9jaizj",
+      "playerName": "Radek Faksa",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:33.894Z"
+    },
+    {
+      "id": "score-1779920013870-r6uxwsbbv",
+      "playerName": "Luke Schenn",
+      "points": 0,
+      "team": "BUF",
+      "createdAt": "2026-05-27T22:13:33.876Z"
+    },
+    {
+      "id": "score-1779920013851-o9bs2h05b",
+      "playerName": "Connor Clifton",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-05-27T22:13:33.857Z"
+    },
+    {
+      "id": "score-1779920013833-ee4tboftb",
+      "playerName": "Scott Sabourin",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:33.838Z"
+    },
+    {
+      "id": "score-1779920013812-ujkkquj6r",
+      "playerName": "Justin Brazeau",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-05-27T22:13:33.819Z"
+    },
+    {
+      "id": "score-1779920013792-umdq9cv5p",
+      "playerName": "Michael Eyssimont",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-27T22:13:33.797Z"
+    },
+    {
+      "id": "score-1779920013772-hoift6vuy",
+      "playerName": "Samuel Girard",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-05-27T22:13:33.779Z"
+    },
+    {
+      "id": "score-1779920013750-ugznoq077",
+      "playerName": "Logan Stanley",
+      "points": 0,
+      "team": "BUF",
+      "createdAt": "2026-05-27T22:13:33.757Z"
+    },
+    {
+      "id": "score-1779920013730-exvu0u6yx",
+      "playerName": "Sam Steel",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:33.737Z"
+    },
+    {
+      "id": "score-1779920013709-nrwfalfnk",
+      "playerName": "Brandon Tanev",
+      "points": 0,
+      "team": "UTA",
+      "createdAt": "2026-05-27T22:13:33.715Z"
+    },
+    {
+      "id": "score-1779920013688-u0l5fsu8m",
+      "playerName": "Dennis Gilbert",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:33.694Z"
+    },
+    {
+      "id": "score-1779920013668-n23goa47g",
+      "playerName": "Mathieu Joseph",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:33.675Z"
+    },
+    {
+      "id": "score-1779920013649-ol6tyx4ev",
+      "playerName": "Trent Frederic",
+      "points": 0,
+      "team": "EDM",
+      "createdAt": "2026-05-27T22:13:33.655Z"
+    },
+    {
+      "id": "score-1779920013628-hp01ft3b8",
+      "playerName": "Jeremy Lauzon",
+      "points": 0,
+      "team": "VGK",
+      "createdAt": "2026-05-27T22:13:33.635Z"
+    },
+    {
+      "id": "score-1779920013609-64jo0qdce",
+      "playerName": "Michael Amadio",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:33.616Z"
+    },
+    {
+      "id": "score-1779920013589-yu8hvggqs",
+      "playerName": "Warren Foegele",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:33.595Z"
+    },
+    {
+      "id": "score-1779920013569-ppqbmn1qb",
+      "playerName": "Ross Johnston",
+      "points": 0,
+      "team": "ANA",
+      "createdAt": "2026-05-27T22:13:33.576Z"
+    },
+    {
+      "id": "score-1779920013548-s74e7pemh",
+      "playerName": "Curtis Lazar",
+      "points": 0,
+      "team": "EDM",
+      "createdAt": "2026-05-27T22:13:33.554Z"
+    },
+    {
+      "id": "score-1779920013529-u8xnvef88",
+      "playerName": "Darnell Nurse",
+      "points": 0,
+      "team": "EDM",
+      "createdAt": "2026-05-27T22:13:33.536Z"
+    },
+    {
+      "id": "score-1779920013511-qdp6lvkcy",
+      "playerName": "Adam Erne",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:33.517Z"
+    },
+    {
+      "id": "score-1779920013491-8m7e3xlmz",
+      "playerName": "Nick Paul",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:33.498Z"
+    },
+    {
+      "id": "score-1779920013473-wlpoycfdz",
+      "playerName": "Thomas Chabot",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:33.478Z"
+    },
+    {
+      "id": "score-1779920013454-7sirww1aa",
+      "playerName": "Oliver Bjorkstrand",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:33.460Z"
+    },
+    {
+      "id": "score-1779920013435-2baozfehv",
+      "playerName": "Jonas Brodin",
+      "points": 1,
+      "team": "MIN",
+      "createdAt": "2026-05-27T22:13:33.441Z"
+    },
+    {
+      "id": "score-1779920013415-fmjuh9wz0",
+      "playerName": "Yanni Gourde",
+      "points": 1,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:33.422Z"
+    },
+    {
+      "id": "score-1779920013396-rhja0yo4z",
+      "playerName": "Esa Lindell",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:33.403Z"
+    },
+    {
+      "id": "score-1779920013376-ds38qr6xl",
+      "playerName": "Ben Hutton",
+      "points": 1,
+      "team": "VGK",
+      "createdAt": "2026-05-27T22:13:33.382Z"
+    },
+    {
+      "id": "score-1779920013355-d106n7cez",
+      "playerName": "Alexander Kerfoot",
+      "points": 1,
+      "team": "UTA",
+      "createdAt": "2026-05-27T22:13:33.360Z"
+    },
+    {
+      "id": "score-1779920013335-gkgpbtkcd",
+      "playerName": "Anthony Mantha",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-27T22:13:33.341Z"
+    },
+    {
+      "id": "score-1779920013316-qzs2f4gri",
+      "playerName": "Nate Schmidt",
+      "points": 1,
+      "team": "UTA",
+      "createdAt": "2026-05-27T22:13:33.323Z"
+    },
+    {
+      "id": "score-1779920013297-1b5mbzzx6",
+      "playerName": "Nikita Zadorov",
+      "points": 1,
+      "team": "BOS",
+      "createdAt": "2026-05-27T22:13:33.303Z"
+    },
+    {
+      "id": "score-1779920013277-qax458fgf",
+      "playerName": "Nick Cousins",
+      "points": 1,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:33.284Z"
+    },
+    {
+      "id": "score-1779920013259-3ki9eqb18",
+      "playerName": "Michael Bunting",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:33.265Z"
+    },
+    {
+      "id": "score-1779920013240-d8yrg3ifw",
+      "playerName": "Liam O'Brien",
+      "points": 1,
+      "team": "UTA",
+      "createdAt": "2026-05-27T22:13:33.246Z"
+    },
+    {
+      "id": "score-1779920013222-62iigv5ql",
+      "playerName": "Jared Spurgeon",
+      "points": 1,
+      "team": "MIN",
+      "createdAt": "2026-05-27T22:13:33.228Z"
+    },
+    {
+      "id": "score-1779920013203-3ggzjx273",
+      "playerName": "Keegan Kolesar",
+      "points": 1,
+      "team": "VGK",
+      "createdAt": "2026-05-27T22:13:33.209Z"
+    },
+    {
+      "id": "score-1779920013179-9c2sq3o27",
+      "playerName": "Zach Metsa",
+      "points": 1,
+      "team": "BUF",
+      "createdAt": "2026-05-27T22:13:33.186Z"
+    },
+    {
+      "id": "score-1779920013161-cjwgqgpgw",
+      "playerName": "Nick Blankenburg",
+      "points": 1,
+      "team": "COL",
+      "createdAt": "2026-05-27T22:13:33.167Z"
+    },
+    {
+      "id": "score-1779920013143-7byivdykz",
+      "playerName": "Ian Moore",
+      "points": 1,
+      "team": "ANA",
+      "createdAt": "2026-05-27T22:13:33.149Z"
+    },
+    {
+      "id": "score-1779920013126-qm0fpcstz",
+      "playerName": "Tyson Foerster",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-27T22:13:33.132Z"
+    },
+    {
+      "id": "score-1779920013108-48o6y4slk",
+      "playerName": "Mavrik Bourque",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:33.114Z"
+    },
+    {
+      "id": "score-1779920013090-3np50tun5",
+      "playerName": "Elmer Soderblom",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-27T22:13:33.096Z"
+    },
+    {
+      "id": "score-1779920013073-zrov1ajg4",
+      "playerName": "Tanner Jeannot",
+      "points": 1,
+      "team": "BOS",
+      "createdAt": "2026-05-27T22:13:33.079Z"
+    },
+    {
+      "id": "score-1779920013046-inkpf4ia1",
+      "playerName": "Kevin Stenlund",
+      "points": 1,
+      "team": "UTA",
+      "createdAt": "2026-05-27T22:13:33.053Z"
+    },
+    {
+      "id": "score-1779920013021-5fg5xnrrm",
+      "playerName": "John Marino",
+      "points": 1,
+      "team": "UTA",
+      "createdAt": "2026-05-27T22:13:33.027Z"
+    },
+    {
+      "id": "score-1779920013004-fw383wbj6",
+      "playerName": "Jansen Harkins",
+      "points": 1,
+      "team": "ANA",
+      "createdAt": "2026-05-27T22:13:33.009Z"
+    },
+    {
+      "id": "score-1779920012948-6nt3w2d2m",
+      "playerName": "Brayden Point",
+      "points": 1,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:32.954Z"
+    },
+    {
+      "id": "score-1779920012927-lix9ec1vb",
+      "playerName": "Jake Middleton",
+      "points": 1,
+      "team": "MIN",
+      "createdAt": "2026-05-27T22:13:32.933Z"
+    },
+    {
+      "id": "score-1779920012910-l9gu1l12w",
+      "playerName": "Ryan McDonagh",
+      "points": 1,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:32.915Z"
+    },
+    {
+      "id": "score-1779920012890-zf7gvaz9y",
+      "playerName": "Erik Cernak",
+      "points": 1,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:32.896Z"
+    },
+    {
+      "id": "score-1779920012871-mqzog1o2h",
+      "playerName": "Tyson Hinds",
+      "points": 1,
+      "team": "ANA",
+      "createdAt": "2026-05-27T22:13:32.877Z"
+    },
+    {
+      "id": "score-1779920012843-19gucl1hv",
+      "playerName": "Jack Roslovic",
+      "points": 1,
+      "team": "EDM",
+      "createdAt": "2026-05-27T22:13:32.849Z"
+    },
+    {
+      "id": "score-1779920012824-uxwvc9syo",
+      "playerName": "Tim Washe",
+      "points": 1,
+      "team": "ANA",
+      "createdAt": "2026-05-27T22:13:32.831Z"
+    },
+    {
+      "id": "score-1779920012806-o6yea4uve",
+      "playerName": "Justin Hryckowian",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:32.812Z"
+    },
+    {
+      "id": "score-1779920012788-ywg14wi65",
+      "playerName": "Matvei Michkov",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-27T22:13:32.794Z"
+    },
+    {
+      "id": "score-1779920012763-fnol370gs",
+      "playerName": "Matt Savoie",
+      "points": 1,
+      "team": "EDM",
+      "createdAt": "2026-05-27T22:13:32.769Z"
+    },
+    {
+      "id": "score-1779920012745-dy79a83i6",
+      "playerName": "Tyson Kozak",
+      "points": 1,
+      "team": "BUF",
+      "createdAt": "2026-05-27T22:13:32.751Z"
+    },
+    {
+      "id": "score-1779920012724-9n26wl8xm",
+      "playerName": "Jacob Trouba",
+      "points": 1,
+      "team": "ANA",
+      "createdAt": "2026-05-27T22:13:32.730Z"
+    },
+    {
+      "id": "score-1779920012705-e6swv7t6o",
+      "playerName": "Brandt Clarke",
+      "points": 1,
+      "team": "LAK",
+      "createdAt": "2026-05-27T22:13:32.711Z"
+    },
+    {
+      "id": "score-1779920012686-wmda4c6ma",
+      "playerName": "Colton Dach",
+      "points": 1,
+      "team": "EDM",
+      "createdAt": "2026-05-27T22:13:32.693Z"
+    },
+    {
+      "id": "score-1779920012668-89g8pe1vr",
+      "playerName": "Emil Andrae",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-27T22:13:32.673Z"
+    },
+    {
+      "id": "score-1779920012647-vushf73ju",
+      "playerName": "Tim Stutzle",
+      "points": 1,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:32.654Z"
+    },
+    {
+      "id": "score-1779920012628-fftpdqrqu",
+      "playerName": "Daemon Hunt",
+      "points": 1,
+      "team": "MIN",
+      "createdAt": "2026-05-27T22:13:32.634Z"
+    },
+    {
+      "id": "score-1779920012608-jvq90vuo7",
+      "playerName": "Ridly Greig",
+      "points": 1,
+      "team": "OTT",
+      "createdAt": "2026-05-27T22:13:32.615Z"
+    },
+    {
+      "id": "score-1779920012591-n3328bru5",
+      "playerName": "Drew Helleson",
+      "points": 1,
+      "team": "ANA",
+      "createdAt": "2026-05-27T22:13:32.596Z"
+    },
+    {
+      "id": "score-1779920012573-g3hb0953p",
+      "playerName": "Bobby Brink",
+      "points": 1,
+      "team": "MIN",
+      "createdAt": "2026-05-27T22:13:32.579Z"
+    },
+    {
+      "id": "score-1779920012554-jez2618um",
+      "playerName": "Ilya Lyubushkin",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:32.561Z"
+    },
+    {
+      "id": "score-1779920012536-kwsvjv8tn",
+      "playerName": "Noah Dobson",
+      "points": 1,
+      "team": "MTL",
+      "createdAt": "2026-05-27T22:13:32.541Z"
+    },
+    {
+      "id": "score-1779920012517-sqq596gw9",
+      "playerName": "Oskar Back",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-27T22:13:32.522Z"
+    },
+    {
+      "id": "score-1779920012498-q9o48ba8e",
+      "playerName": "Ty Emberson",
+      "points": 1,
+      "team": "EDM",
+      "createdAt": "2026-05-27T22:13:32.504Z"
+    },
+    {
+      "id": "score-1779920012479-g792ahenm",
+      "playerName": "Joseph Veleno",
+      "points": 1,
+      "team": "MTL",
+      "createdAt": "2026-05-27T22:13:32.486Z"
+    },
+    {
+      "id": "score-1779920012459-0kf5f1hi5",
+      "playerName": "Charle-Edouard D'Astous",
+      "points": 1,
+      "team": "TBL",
+      "createdAt": "2026-05-27T22:13:32.466Z"
+    },
+    {
+      "id": "score-1779920012440-004sp1m6y",
+      "playerName": "Mark Kastelic",
+      "points": 1,
+      "team": "BOS",
+      "createdAt": "2026-05-27T22:13:32.446Z"
+    },
+    {
+      "id": "score-1779920012422-fawlu0kpt",
+      "playerName": "Andrew Peeke",
+      "points": 1,
+      "team": "BOS",
+      "createdAt": "2026-05-27T22:13:32.428Z"
+    },
+    {
+      "id": "score-1779920012404-6u0w4dklr",
+      "playerName": "Carl Grundstrom",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-27T22:13:32.409Z"
+    },
+    {
+      "id": "score-1779920012386-fs6pylafj",
+      "playerName": "Ryan Shea",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-27T22:13:32.392Z"
+    },
+    {
+      "id": "score-1779920012368-xlzrlrsaa",
+      "playerName": "Noel Acciari",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-27T22:13:32.374Z"
+    },
+    {
+      "id": "score-1779920012349-8dvgly0kq",
+      "playerName": "Parker Wotherspoon",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-27T22:13:32.355Z"
+    },
+    {
+      "id": "score-1779920012310-hrepvtbpy",
+      "playerName": "Luke Glendening",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-27T22:13:32.334Z"
+    },
+    {
+      "id": "score-1779028902625-yh5i2zq99",
+      "playerName": "Zack MacEwen",
+      "points": 1,
+      "team": "OTT",
+      "createdAt": "2026-05-17T14:41:42.631Z"
+    },
+    {
+      "id": "score-1779028902565-lj0ldwyif",
+      "playerName": "Jordan Eberle",
+      "points": 1,
+      "team": "SEA",
+      "createdAt": "2026-05-17T14:41:42.570Z"
+    },
+    {
+      "id": "score-1779028902476-iztan0ud2",
+      "playerName": "Philipp Kurashev",
+      "points": 1,
+      "team": "CHI",
+      "createdAt": "2026-05-17T14:41:42.483Z"
+    },
+    {
+      "id": "score-1779028902454-k7syclk66",
+      "playerName": "Frank Nazar",
+      "points": 1,
+      "team": "CHI",
+      "createdAt": "2026-05-17T14:41:42.460Z"
+    },
+    {
+      "id": "score-1779028902433-clvutvl00",
+      "playerName": "Artyom Levshunov",
+      "points": 1,
+      "team": "CHI",
+      "createdAt": "2026-05-17T14:41:42.440Z"
+    },
+    {
+      "id": "score-1779028902413-ci9zzbyhh",
+      "playerName": "Eemil Viro",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:42.420Z"
+    },
+    {
+      "id": "score-1779028902377-phbapusis",
+      "playerName": "Juho Lammikko",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:42.398Z"
+    },
+    {
+      "id": "score-1779028902352-wjuwinxuq",
+      "playerName": "Toru Iizuka",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:42.359Z"
+    },
+    {
+      "id": "score-1779028902287-b5mo2mu1g",
+      "playerName": "Craig Smith",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-17T14:41:42.293Z"
+    },
+    {
+      "id": "score-1779028902246-7pea9vsph",
+      "playerName": "Thomas Harley",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-17T14:41:42.252Z"
+    },
+    {
+      "id": "score-1779028902161-7iwgcy8ae",
+      "playerName": "Anthony Beauvillier",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:42.168Z"
+    },
+    {
+      "id": "score-1779028902141-2gih55j4v",
+      "playerName": "Jesse Puljujarvi",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:42.147Z"
+    },
+    {
+      "id": "score-1779028902115-4visup6az",
+      "playerName": "Drew O'Connor",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:42.126Z"
+    },
+    {
+      "id": "score-1779028902095-tgqowi4cs",
+      "playerName": "Jonathan Gruden",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:42.101Z"
+    },
+    {
+      "id": "score-1779028902053-2wvsnjpl0",
+      "playerName": "Walker Duehr",
+      "points": 1,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:42.059Z"
+    },
+    {
+      "id": "score-1779028902033-yql09durj",
+      "playerName": "Martin Pospisil",
+      "points": 1,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:42.039Z"
+    },
+    {
+      "id": "score-1779028902012-ydzs4dtd2",
+      "playerName": "Matt Coronato",
+      "points": 1,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:42.018Z"
+    },
+    {
+      "id": "score-1779028901993-84aaajc8n",
+      "playerName": "Samuel Honzek",
+      "points": 1,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:41.999Z"
+    },
+    {
+      "id": "score-1779028901972-3tjzy7s0g",
+      "playerName": "Ryan McAllister",
+      "points": 1,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:41.979Z"
+    },
+    {
+      "id": "score-1779028901952-p6a7tgqn7",
+      "playerName": "Kole Lind",
+      "points": 1,
+      "team": "UTA",
+      "createdAt": "2026-05-17T14:41:41.958Z"
+    },
+    {
+      "id": "score-1779028901931-f4g90rxiz",
+      "playerName": "Kirill Marchenko",
+      "points": 1,
+      "team": "CBJ",
+      "createdAt": "2026-05-17T14:41:41.938Z"
+    },
+    {
+      "id": "score-1779028901889-mxwi7y1re",
+      "playerName": "Oliver Kapanen",
+      "points": 1,
+      "team": "MTL",
+      "createdAt": "2026-05-17T14:41:41.896Z"
+    },
+    {
+      "id": "score-1779028901786-wox4z8x4o",
+      "playerName": "Max Domi",
+      "points": 1,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:41.792Z"
+    },
+    {
+      "id": "score-1779028901744-7oq1vwpst",
+      "playerName": "Tom Wilson",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-17T14:41:41.750Z"
+    },
+    {
+      "id": "score-1779028901724-58ma623z8",
+      "playerName": "Dylan Strome",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-17T14:41:41.730Z"
+    },
+    {
+      "id": "score-1779028901658-89usdwrgs",
+      "playerName": "Bo Horvat",
+      "points": 1,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:41.664Z"
+    },
+    {
+      "id": "score-1779028901637-0zo1ipu13",
+      "playerName": "Isac Lundestrom",
+      "points": 1,
+      "team": "ANA",
+      "createdAt": "2026-05-17T14:41:41.643Z"
+    },
+    {
+      "id": "score-1779028901594-68o9cur0o",
+      "playerName": "Anthony Duclair",
+      "points": 1,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:41.601Z"
+    },
+    {
+      "id": "score-1779028901569-cfwhieh03",
+      "playerName": "Adam Lowry",
+      "points": 1,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:41.576Z"
+    },
+    {
+      "id": "score-1779028901548-zxe2nm3bw",
+      "playerName": "Jean-Gabriel Pageau",
+      "points": 2,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:41.554Z"
+    },
+    {
+      "id": "score-1779028901527-acw46u7ng",
+      "playerName": "Morgan Frost",
+      "points": 2,
+      "team": "PHI",
+      "createdAt": "2026-05-17T14:41:41.533Z"
+    },
+    {
+      "id": "score-1779028901505-qrq0zpq1l",
+      "playerName": "Anders Lee",
+      "points": 2,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:41.511Z"
+    },
+    {
+      "id": "score-1779028901485-zbrqknyjv",
+      "playerName": "William Cuylle",
+      "points": 2,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:41.491Z"
+    },
+    {
+      "id": "score-1779028901462-g5tybspg4",
+      "playerName": "Charlie Coyle",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:41.469Z"
+    },
+    {
+      "id": "score-1779028901401-n1k8llul3",
+      "playerName": "Torey Krug",
+      "points": 2,
+      "team": "STL",
+      "createdAt": "2026-05-17T14:41:41.407Z"
+    },
+    {
+      "id": "score-1779028901308-p07w3k78q",
+      "playerName": "Liam Foudy",
+      "points": 2,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:41.314Z"
+    },
+    {
+      "id": "score-1779028901241-foc7adn2m",
+      "playerName": "Pius Suter",
+      "points": 2,
+      "team": "LAK",
+      "createdAt": "2026-05-17T14:41:41.247Z"
+    },
+    {
+      "id": "score-1779028901199-z2szzxumv",
+      "playerName": "Jake McCabe",
+      "points": 2,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:41.206Z"
+    },
+    {
+      "id": "score-1779028901178-5rbpbz9nm",
+      "playerName": "Ryan Reaves",
+      "points": 2,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:41.184Z"
+    },
+    {
+      "id": "score-1779028901157-7yholth1a",
+      "playerName": "Paul Cotter",
+      "points": 2,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:41.163Z"
+    },
+    {
+      "id": "score-1779028901137-myakpwgrb",
+      "playerName": "Andrew Mangiapane",
+      "points": 2,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:41.143Z"
+    },
+    {
+      "id": "score-1779028901115-x0tbyx14k",
+      "playerName": "Tyson Barrie",
+      "points": 2,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:41.121Z"
+    },
+    {
+      "id": "score-1779028901093-afng443ue",
+      "playerName": "Tyler Seguin",
+      "points": 2,
+      "team": "DAL",
+      "createdAt": "2026-05-17T14:41:41.100Z"
+    },
+    {
+      "id": "score-1779028901072-6li0bbhjg",
+      "playerName": "Mason Marchment",
+      "points": 2,
+      "team": "DAL",
+      "createdAt": "2026-05-17T14:41:41.079Z"
+    },
+    {
+      "id": "score-1779028901051-wku0tal15",
+      "playerName": "Evgenii Dadonov",
+      "points": 2,
+      "team": "DAL",
+      "createdAt": "2026-05-17T14:41:41.058Z"
+    },
+    {
+      "id": "score-1779028900989-pzu7c7ylf",
+      "playerName": "Ryan Lomberg",
+      "points": 2,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:40.995Z"
+    },
+    {
+      "id": "score-1779028900968-k89n6w0vq",
+      "playerName": "Adam Larsson",
+      "points": 2,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:40.975Z"
+    },
+    {
+      "id": "score-1779028900945-20kno9pba",
+      "playerName": "Dylan Holloway",
+      "points": 2,
+      "team": "EDM",
+      "createdAt": "2026-05-17T14:41:40.951Z"
+    },
+    {
+      "id": "score-1779028900924-9gfvxbm0u",
+      "playerName": "Juuso Parssinen",
+      "points": 2,
+      "team": "VGK",
+      "createdAt": "2026-05-17T14:41:40.930Z"
+    },
+    {
+      "id": "score-1779028900902-dwq93h44b",
+      "playerName": "Philip Tomasino",
+      "points": 2,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:40.908Z"
+    },
+    {
+      "id": "score-1779028900879-tb3kak9ji",
+      "playerName": "Jonatan Berggren",
+      "points": 2,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:40.886Z"
+    },
+    {
+      "id": "score-1779028900805-mcknhtvpy",
+      "playerName": "Colton Parayko",
+      "points": 2,
+      "team": "STL",
+      "createdAt": "2026-05-17T14:41:40.819Z"
+    },
+    {
+      "id": "score-1779028900782-4iaqlkmee",
+      "playerName": "Jake Neighbours",
+      "points": 2,
+      "team": "STL",
+      "createdAt": "2026-05-17T14:41:40.789Z"
+    },
+    {
+      "id": "score-1779028900761-jog5ys9kp",
+      "playerName": "Christian Fischer",
+      "points": 2,
+      "team": "UTA",
+      "createdAt": "2026-05-17T14:41:40.767Z"
+    },
+    {
+      "id": "score-1779028900686-8zutxvz3e",
+      "playerName": "Ryan Johansen",
+      "points": 2,
+      "team": "PHI",
+      "createdAt": "2026-05-17T14:41:40.693Z"
+    },
+    {
+      "id": "score-1779028900637-pl2ddk2he",
+      "playerName": "Danil Yurov",
+      "points": 2,
+      "team": "MIN",
+      "createdAt": "2026-05-17T14:41:40.645Z"
+    },
+    {
+      "id": "score-1779028900610-sb1iety4y",
+      "playerName": "Will Smith",
+      "points": 2,
+      "team": "SJS",
+      "createdAt": "2026-05-17T14:41:40.619Z"
+    },
+    {
+      "id": "score-1779028900578-bjgqt71qb",
+      "playerName": "Macklin Celebrini",
+      "points": 2,
+      "team": "SJS",
+      "createdAt": "2026-05-17T14:41:40.585Z"
+    },
+    {
+      "id": "score-1779028900556-fz9sbtlkj",
+      "playerName": "Jordan Dumais",
+      "points": 2,
+      "team": "CBJ",
+      "createdAt": "2026-05-17T14:41:40.563Z"
+    },
+    {
+      "id": "score-1779028900534-8tayqcnns",
+      "playerName": "Jimmy Snuggered",
+      "points": 2,
+      "team": "STL",
+      "createdAt": "2026-05-17T14:41:40.540Z"
+    },
+    {
+      "id": "score-1779028900511-fm3v8xrs8",
+      "playerName": "Lassi Thomson",
+      "points": 2,
+      "team": "OTT",
+      "createdAt": "2026-05-17T14:41:40.518Z"
+    },
+    {
+      "id": "score-1779028900490-g6dkdi7mt",
+      "playerName": "Cole McWard",
+      "points": 2,
+      "team": "LAK",
+      "createdAt": "2026-05-17T14:41:40.496Z"
+    },
+    {
+      "id": "score-1779028900468-bnx9gpnur",
+      "playerName": "Ryan Donato",
+      "points": 2,
+      "team": "CHI",
+      "createdAt": "2026-05-17T14:41:40.474Z"
+    },
+    {
+      "id": "score-1779028900448-4ry74j8n4",
+      "playerName": "David Perron",
+      "points": 2,
+      "team": "OTT",
+      "createdAt": "2026-05-17T14:41:40.454Z"
+    },
+    {
+      "id": "score-1779028900427-sgfsej6qr",
+      "playerName": "Gavin Brindley",
+      "points": 2,
+      "team": "CBJ",
+      "createdAt": "2026-05-17T14:41:40.434Z"
+    },
+    {
+      "id": "score-1779028900406-35733cr4f",
+      "playerName": "Yegor Chinakhov",
+      "points": 2,
+      "team": "CBJ",
+      "createdAt": "2026-05-17T14:41:40.412Z"
+    },
+    {
+      "id": "score-1779028900385-c7jcvqkez",
+      "playerName": "Sam Colangelo",
+      "points": 2,
+      "team": "ANA",
+      "createdAt": "2026-05-17T14:41:40.391Z"
+    },
+    {
+      "id": "score-1779028900261-s05rwt2x5",
+      "playerName": "Barrett Hayton",
+      "points": 3,
+      "team": "UTA",
+      "createdAt": "2026-05-17T14:41:40.267Z"
+    },
+    {
+      "id": "score-1779028900239-zcpwkpwl4",
+      "playerName": "Anton Lundell",
+      "points": 3,
+      "team": "CAR",
+      "createdAt": "2026-05-17T14:41:40.245Z"
+    },
+    {
+      "id": "score-1779028900217-kllffjjak",
+      "playerName": "Matthew Poitras",
+      "points": 3,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:40.224Z"
+    },
+    {
+      "id": "score-1779028900176-ansbqzsik",
+      "playerName": "Jesper Bratt",
+      "points": 3,
+      "team": "PHI",
+      "createdAt": "2026-05-17T14:41:40.182Z"
+    },
+    {
+      "id": "score-1779028900155-vc2s1dtdp",
+      "playerName": "Nils Hoglander",
+      "points": 3,
+      "team": "LAK",
+      "createdAt": "2026-05-17T14:41:40.161Z"
+    },
+    {
+      "id": "score-1779028900121-ln7q29xcv",
+      "playerName": "Liam Ohgren",
+      "points": 3,
+      "team": "MIN",
+      "createdAt": "2026-05-17T14:41:40.127Z"
+    },
+    {
+      "id": "score-1779028900098-139ji75dr",
+      "playerName": "Brayden Pachal",
+      "points": 3,
+      "team": "VGK",
+      "createdAt": "2026-05-17T14:41:40.104Z"
+    },
+    {
+      "id": "score-1779028900057-ya1odwvgb",
+      "playerName": "Dmitry Orlov",
+      "points": 3,
+      "team": "CAR",
+      "createdAt": "2026-05-17T14:41:40.063Z"
+    },
+    {
+      "id": "score-1779028900037-3rgfxihix",
+      "playerName": "Jonathan Huberdeau",
+      "points": 3,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:40.043Z"
+    },
+    {
+      "id": "score-1779028900017-u5rihjkth",
+      "playerName": "Connor Zary",
+      "points": 3,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:40.023Z"
+    },
+    {
+      "id": "score-1779028899996-xl71xyp9c",
+      "playerName": "Mikael Backlund",
+      "points": 3,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:40.002Z"
+    },
+    {
+      "id": "score-1779028899974-36za74sza",
+      "playerName": "Eeli Tolvanen",
+      "points": 3,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:39.980Z"
+    },
+    {
+      "id": "score-1779028899912-jn6hq2o8w",
+      "playerName": "Adam Fantilli",
+      "points": 3,
+      "team": "CBJ",
+      "createdAt": "2026-05-17T14:41:39.918Z"
+    },
+    {
+      "id": "score-1779028899892-vgnsacdln",
+      "playerName": "Alexander Romanov",
+      "points": 3,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:39.898Z"
+    },
+    {
+      "id": "score-1779028899870-a0atpcedi",
+      "playerName": "Sam Bennett",
+      "points": 3,
+      "team": "CAR",
+      "createdAt": "2026-05-17T14:41:39.877Z"
+    },
+    {
+      "id": "score-1779028899850-bshe7u281",
+      "playerName": "Roope Hintz",
+      "points": 3,
+      "team": "DAL",
+      "createdAt": "2026-05-17T14:41:39.856Z"
+    },
+    {
+      "id": "score-1779028899810-gjd55t54m",
+      "playerName": "Maxim Tsyplakov",
+      "points": 4,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:39.816Z"
+    },
+    {
+      "id": "score-1779028899789-umxaf0std",
+      "playerName": "Evgeny Kuznetsov",
+      "points": 4,
+      "team": "COL",
+      "createdAt": "2026-05-17T14:41:39.795Z"
+    },
+    {
+      "id": "score-1779028899713-31s8j4lk0",
+      "playerName": "Brad Marchand",
+      "points": 4,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:39.719Z"
+    },
+    {
+      "id": "score-1779028899664-isvgmus3y",
+      "playerName": "Jack Hughes",
+      "points": 4,
+      "team": "PHI",
+      "createdAt": "2026-05-17T14:41:39.670Z"
+    },
+    {
+      "id": "score-1779028899644-r1mka1sem",
+      "playerName": "Pierre-Luc Dubois",
+      "points": 4,
+      "team": "VGK",
+      "createdAt": "2026-05-17T14:41:39.650Z"
+    },
+    {
+      "id": "score-1779028899584-dnpy679kp",
+      "playerName": "Shane Pinto",
+      "points": 4,
+      "team": "OTT",
+      "createdAt": "2026-05-17T14:41:39.590Z"
+    },
+    {
+      "id": "score-1779028899562-21h9lb0kd",
+      "playerName": "Lias Andersson",
+      "points": 4,
+      "team": "MTL",
+      "createdAt": "2026-05-17T14:41:39.569Z"
+    },
+    {
+      "id": "score-1779028899513-70aiwdksd",
+      "playerName": "Philip Broberg",
+      "points": 4,
+      "team": "STL",
+      "createdAt": "2026-05-17T14:41:39.519Z"
+    },
+    {
+      "id": "score-1779028899494-iop2h4u3o",
+      "playerName": "Josh Morrissey",
+      "points": 4,
+      "team": "EDM",
+      "createdAt": "2026-05-17T14:41:39.500Z"
+    },
+    {
+      "id": "score-1779028899473-o3t6c0uw2",
+      "playerName": "Alexandar Georgiev",
+      "points": 4,
+      "team": "COL",
+      "createdAt": "2026-05-17T14:41:39.479Z"
+    },
+    {
+      "id": "score-1779028899453-zhn0wldyn",
+      "playerName": "Nick Bjugstad",
+      "points": 4,
+      "team": "UTA",
+      "createdAt": "2026-05-17T14:41:39.459Z"
+    },
+    {
+      "id": "score-1779028899432-ufgut09rv",
+      "playerName": "Justin Faulk",
+      "points": 4,
+      "team": "STL",
+      "createdAt": "2026-05-17T14:41:39.438Z"
+    },
+    {
+      "id": "score-1779028899411-wnxzc50hv",
+      "playerName": "Ryan Suter",
+      "points": 4,
+      "team": "STL",
+      "createdAt": "2026-05-17T14:41:39.417Z"
+    },
+    {
+      "id": "score-1779028899389-0dkzhgqye",
+      "playerName": "Jared McCann",
+      "points": 4,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:39.395Z"
+    },
+    {
+      "id": "score-1779028899368-yrfbwxyab",
+      "playerName": "Zeev Buium",
+      "points": 4,
+      "team": "MIN",
+      "createdAt": "2026-05-17T14:41:39.374Z"
+    },
+    {
+      "id": "score-1779028899347-l8j7fku4h",
+      "playerName": "Bradly Nadeau",
+      "points": 4,
+      "team": "CAR",
+      "createdAt": "2026-05-17T14:41:39.354Z"
+    },
+    {
+      "id": "score-1779028899326-tzeazd0dw",
+      "playerName": "Sam Dickinson",
+      "points": 4,
+      "team": "CBJ",
+      "createdAt": "2026-05-17T14:41:39.332Z"
+    },
+    {
+      "id": "score-1779028899303-5jjmi3e6t",
+      "playerName": "David Jiricek",
+      "points": 4,
+      "team": "CBJ",
+      "createdAt": "2026-05-17T14:41:39.309Z"
+    },
+    {
+      "id": "score-1779028899278-aq26blfld",
+      "playerName": "Pavel Mintyukov",
+      "points": 4,
+      "team": "ANA",
+      "createdAt": "2026-05-17T14:41:39.284Z"
+    },
+    {
+      "id": "score-1779028899257-du5wpbrob",
+      "playerName": "Cam Fowler",
+      "points": 4,
+      "team": "ANA",
+      "createdAt": "2026-05-17T14:41:39.263Z"
+    },
+    {
+      "id": "score-1779028899237-9bzhdt5oh",
+      "playerName": "Frank Vatrano",
+      "points": 4,
+      "team": "ANA",
+      "createdAt": "2026-05-17T14:41:39.243Z"
+    },
+    {
+      "id": "score-1779028899217-b6prlh7f7",
+      "playerName": "Danton Heinen",
+      "points": 4,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:39.223Z"
+    },
+    {
+      "id": "score-1779028899063-vm1i2nfnf",
+      "playerName": "Josh Giddey",
+      "points": 4,
+      "team": "CHI",
+      "createdAt": "2026-05-17T14:41:39.069Z"
+    },
+    {
+      "id": "score-1779028899043-h4et2bxjg",
+      "playerName": "Zack Bolduc",
+      "points": 4,
+      "team": "STL",
+      "createdAt": "2026-05-17T14:41:39.050Z"
+    },
+    {
+      "id": "score-1779028899022-ps3xgefpu",
+      "playerName": "Zack Ostapchuk",
+      "points": 4,
+      "team": "OTT",
+      "createdAt": "2026-05-17T14:41:39.029Z"
+    },
+    {
+      "id": "score-1779028898898-f610xnc9o",
+      "playerName": "Alex Cotton",
+      "points": 5,
+      "team": "DAL",
+      "createdAt": "2026-05-17T14:41:38.904Z"
+    },
+    {
+      "id": "score-1779028898875-jyok97aar",
+      "playerName": "Victor Hedman",
+      "points": 5,
+      "team": "LAK",
+      "createdAt": "2026-05-17T14:41:38.882Z"
+    },
+    {
+      "id": "score-1779028898685-clxjkd7is",
+      "playerName": "Gabe Perreault",
+      "points": 5,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:38.691Z"
+    },
+    {
+      "id": "score-1779028898597-d6z2ao7ac",
+      "playerName": "Calum Ritchie",
+      "points": 5,
+      "team": "COL",
+      "createdAt": "2026-05-17T14:41:38.604Z"
+    },
+    {
+      "id": "score-1779028898521-7bop0t7sd",
+      "playerName": "Alexander Holtz",
+      "points": 5,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:38.528Z"
+    },
+    {
+      "id": "score-1779028898497-t2o9wbjul",
+      "playerName": "Jonathan Marchessault",
+      "points": 5,
+      "team": "VGK",
+      "createdAt": "2026-05-17T14:41:38.504Z"
+    },
+    {
+      "id": "score-1779028898472-uj7co8sxn",
+      "playerName": "Sam Rinzel",
+      "points": 5,
+      "team": "CHI",
+      "createdAt": "2026-05-17T14:41:38.479Z"
+    },
+    {
+      "id": "score-1779028898449-3njf5mkhx",
+      "playerName": "Simon Edvinsson",
+      "points": 5,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:38.456Z"
+    },
+    {
+      "id": "score-1779028898386-ggxmkgdrw",
+      "playerName": "Morgan Rielly",
+      "points": 5,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:38.392Z"
+    },
+    {
+      "id": "score-1779028898365-kma9cewy3",
+      "playerName": "Zayne Parekh",
+      "points": 5,
+      "team": "CGY",
+      "createdAt": "2026-05-17T14:41:38.372Z"
+    },
+    {
+      "id": "score-1779028898323-cvr9vymm1",
+      "playerName": "William Eklund",
+      "points": 5,
+      "team": "VGK",
+      "createdAt": "2026-05-17T14:41:38.329Z"
+    },
+    {
+      "id": "score-1779028898237-d0zco3lps",
+      "playerName": "Dylan Larkin",
+      "points": 6,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:38.243Z"
+    },
+    {
+      "id": "score-1779028898211-ctc6pdcjp",
+      "playerName": "Lucas Raymond",
+      "points": 6,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:38.222Z"
+    },
+    {
+      "id": "score-1779028898150-43scjgyr1",
+      "playerName": "Elias Pettersson",
+      "points": 6,
+      "team": "LAK",
+      "createdAt": "2026-05-17T14:41:38.157Z"
+    },
+    {
+      "id": "score-1779028898108-vljeqw61u",
+      "playerName": "Matthew Boldy",
+      "points": 6,
+      "team": "MIN",
+      "createdAt": "2026-05-17T14:41:38.114Z"
+    },
+    {
+      "id": "score-1779028898084-yafz9pmvg",
+      "playerName": "Shane Wright",
+      "points": 6,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:38.092Z"
+    },
+    {
+      "id": "score-1779028898001-vk5vgp8s3",
+      "playerName": "Adam Fox",
+      "points": 6,
+      "team": "PHI",
+      "createdAt": "2026-05-17T14:41:38.007Z"
+    },
+    {
+      "id": "score-1779028897919-0ot2p1xhb",
+      "playerName": "Ryan Leonard",
+      "points": 6,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:37.925Z"
+    },
+    {
+      "id": "score-1779028897898-bxlp24r3f",
+      "playerName": "Cole Eiserman",
+      "points": 6,
+      "team": "NYI",
+      "createdAt": "2026-05-17T14:41:37.904Z"
+    },
+    {
+      "id": "score-1779028897878-nn8j26011",
+      "playerName": "Jake DeBrusk",
+      "points": 6,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:37.884Z"
+    },
+    {
+      "id": "score-1779028897750-rl5vndbez",
+      "playerName": "Matthew Tkachuk",
+      "points": 7,
+      "team": "CAR",
+      "createdAt": "2026-05-17T14:41:37.757Z"
+    },
+    {
+      "id": "score-1779028897618-6kknl3jt3",
+      "playerName": "Yegor Sharangovich",
+      "points": 7,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:37.624Z"
+    },
+    {
+      "id": "score-1779028897596-bezg9aq5i",
+      "playerName": "John Tavares",
+      "points": 7,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:37.603Z"
+    },
+    {
+      "id": "score-1779028897575-nxcieaups",
+      "playerName": "Connor Bedard",
+      "points": 7,
+      "team": "CHI",
+      "createdAt": "2026-05-17T14:41:37.582Z"
+    },
+    {
+      "id": "score-1779028897553-nyxagd3gg",
+      "playerName": "Jordan Kyrou",
+      "points": 7,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:37.561Z"
+    },
+    {
+      "id": "score-1779028897531-n57cgrquu",
+      "playerName": "John Farinacci",
+      "points": 7,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:37.538Z"
+    },
+    {
+      "id": "score-1779028897506-fjg4thpio",
+      "playerName": "Oliver Moore",
+      "points": 7,
+      "team": "CHI",
+      "createdAt": "2026-05-17T14:41:37.517Z"
+    },
+    {
+      "id": "score-1779028897483-osjzvas16",
+      "playerName": "Lukas Reichel",
+      "points": 7,
+      "team": "BUF",
+      "createdAt": "2026-05-17T14:41:37.488Z"
+    },
+    {
+      "id": "score-1779028897413-aiheyv69w",
+      "playerName": "Luke Hughes",
+      "points": 7,
+      "team": "PHI",
+      "createdAt": "2026-05-17T14:41:37.420Z"
+    },
+    {
+      "id": "score-1779028897393-koh8oiqx1",
+      "playerName": "Seth Jones",
+      "points": 7,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:37.399Z"
+    },
+    {
+      "id": "score-1779028897373-prqyalahu",
+      "playerName": "Michael Rasmussen",
+      "points": 8,
+      "team": "BOS",
+      "createdAt": "2026-05-17T14:41:37.379Z"
+    },
+    {
+      "id": "score-1779028897332-qd3g3wglb",
+      "playerName": "Matias Maccelli",
+      "points": 8,
+      "team": "UTA",
+      "createdAt": "2026-05-17T14:41:37.338Z"
+    },
+    {
+      "id": "score-1779028897312-66uh2jnzj",
+      "playerName": "Matthew Knies",
+      "points": 8,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:37.318Z"
+    },
+    {
+      "id": "score-1779028897259-6b0fmf18d",
+      "playerName": "Matty Beniers",
+      "points": 8,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:37.265Z"
+    },
+    {
+      "id": "score-1779028897238-qy4ks80li",
+      "playerName": "Kyle Connor",
+      "points": 8,
+      "team": "CAR",
+      "createdAt": "2026-05-17T14:41:37.244Z"
+    },
+    {
+      "id": "score-1779028897163-l792ji9f5",
+      "playerName": "Alex DeBrincat",
+      "points": 9,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:37.169Z"
+    },
+    {
+      "id": "score-1779028897143-4quy6qti8",
+      "playerName": "Brock Boeser",
+      "points": 9,
+      "team": "LAK",
+      "createdAt": "2026-05-17T14:41:37.149Z"
+    },
+    {
+      "id": "score-1779028897085-72mj6j5oi",
+      "playerName": "John Jason Peterka",
+      "points": 9,
+      "team": "BUF",
+      "createdAt": "2026-05-17T14:41:37.092Z"
+    },
+    {
+      "id": "score-1779028897029-i3fo7jq8c",
+      "playerName": "William Nylander",
+      "points": 9,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:37.035Z"
+    },
+    {
+      "id": "score-1779028897002-bbg6a3rko",
+      "playerName": "Alex Ovechkin",
+      "points": 9,
+      "team": "PIT",
+      "createdAt": "2026-05-17T14:41:37.015Z"
+    },
+    {
+      "id": "score-1779028896958-2iaga6erz",
+      "playerName": "Marco Rossi",
+      "points": 10,
+      "team": "MIN",
+      "createdAt": "2026-05-17T14:41:36.966Z"
+    },
+    {
+      "id": "score-1779028896936-1knekcp97",
+      "playerName": "Robert Thomas",
+      "points": 10,
+      "team": "TOR",
+      "createdAt": "2026-05-17T14:41:36.943Z"
+    },
+    {
+      "id": "score-1779028896915-jbf33lx3t",
+      "playerName": "JJ Peterka",
+      "points": 10,
+      "team": "BUF",
+      "createdAt": "2026-05-17T14:41:36.921Z"
+    },
+    {
+      "id": "score-1778895701381-5r6zqrwuf",
+      "playerName": "Henri Jokiharju",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-16T01:41:41.385Z"
+    },
+    {
+      "id": "score-1778712201102-berravf7c",
+      "playerName": "Alex Kerfoot",
+      "points": 2,
+      "team": "UTA",
+      "createdAt": "2026-05-13T22:43:21.108Z"
+    },
+    {
+      "id": "score-1778712201074-mdfm91q9x",
+      "playerName": "Braden Schneider",
+      "points": 2,
+      "team": "NYR",
+      "createdAt": "2026-05-13T22:43:21.081Z"
+    },
+    {
+      "id": "score-1778712201048-s9i2s34j7",
+      "playerName": "David Savard",
+      "points": 2,
+      "team": "MTL",
+      "createdAt": "2026-05-13T22:43:21.054Z"
+    },
+    {
+      "id": "score-1778712201018-u8c0p2c1n",
+      "playerName": "Tommy Novak",
+      "points": 4,
+      "team": "NSH",
+      "createdAt": "2026-05-13T22:43:21.032Z"
+    },
+    {
+      "id": "score-1778712200986-nmivwpwgl",
+      "playerName": "Mathias Ekholm",
+      "points": 5,
+      "team": "EDM",
+      "createdAt": "2026-05-13T22:43:20.994Z"
+    },
+    {
+      "id": "score-1778712200832-f0ljzwr8u",
+      "playerName": "Jani Hakanpaa",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-13T22:43:20.967Z"
+    },
+    {
+      "id": "score-1778711837437-1hca42bn5",
+      "playerName": "Tyler Kleven",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-13T22:37:17.444Z"
+    },
+    {
+      "id": "score-1778711837355-80qcufo7k",
+      "playerName": "Taylor Ward",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-13T22:37:17.360Z"
+    },
+    {
+      "id": "score-1778711837265-xffpob9xa",
+      "playerName": "Samuel Helenius",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-13T22:37:17.270Z"
+    },
+    {
+      "id": "score-1778711837087-w74u67xhf",
+      "playerName": "Oliver Bonk",
+      "points": 0,
+      "team": "PHI",
+      "createdAt": "2026-05-13T22:37:17.091Z"
+    },
+    {
+      "id": "score-1778711837051-gglt6pchw",
+      "playerName": "Nikolas Matinpalo",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-13T22:37:17.056Z"
+    },
+    {
+      "id": "score-1778711836974-l3dw6k00k",
+      "playerName": "Michael Kesselring",
+      "points": 0,
+      "team": "BUF",
+      "createdAt": "2026-05-13T22:37:16.980Z"
+    },
+    {
+      "id": "score-1778711836906-uf3movoib",
+      "playerName": "Max Crozier",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-13T22:37:16.912Z"
+    },
+    {
+      "id": "score-1778711836866-fsvnpv6jo",
+      "playerName": "Mason Lohrei",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-13T22:37:16.872Z"
+    },
+    {
+      "id": "score-1778711836843-xwks28kpy",
+      "playerName": "Marat Khusnutdinov",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-13T22:37:16.848Z"
+    },
+    {
+      "id": "score-1778711836760-0m4vrrpdr",
+      "playerName": "Lian Bichsel",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-13T22:37:16.765Z"
+    },
+    {
+      "id": "score-1778711836642-7oproa6t1",
+      "playerName": "Josh Dunne",
+      "points": 0,
+      "team": "BUF",
+      "createdAt": "2026-05-13T22:37:16.647Z"
+    },
+    {
+      "id": "score-1778711836622-c7h31vccb",
+      "playerName": "Jordan Spence",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-13T22:37:16.628Z"
+    },
+    {
+      "id": "score-1778711836602-jfn0mo61o",
+      "playerName": "Jordan Harris",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-13T22:37:16.608Z"
+    },
+    {
+      "id": "score-1778711836583-1ytraep3v",
+      "playerName": "Joel Kiviranta",
+      "points": 0,
+      "team": "COL",
+      "createdAt": "2026-05-13T22:37:16.588Z"
+    },
+    {
+      "id": "score-1778711836545-r7ehnuxp2",
+      "playerName": "Jett Luchanko",
+      "points": 0,
+      "team": "PHI",
+      "createdAt": "2026-05-13T22:37:16.550Z"
+    },
+    {
+      "id": "score-1778711836489-zs3ropszr",
+      "playerName": "Jeff Malott",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-13T22:37:16.495Z"
+    },
+    {
+      "id": "score-1778711836470-4u7cl60gm",
+      "playerName": "Jayden Struble",
+      "points": 0,
+      "team": "MTL",
+      "createdAt": "2026-05-13T22:37:16.475Z"
+    },
+    {
+      "id": "score-1778711836451-cuvme65g3",
+      "playerName": "Jared Wright",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-13T22:37:16.456Z"
+    },
+    {
+      "id": "score-1778711836407-uj54xzvv0",
+      "playerName": "James Hagens",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-13T22:37:16.411Z"
+    },
+    {
+      "id": "score-1778711836388-ugmx3sgwz",
+      "playerName": "Jack McBain",
+      "points": 0,
+      "team": "UTA",
+      "createdAt": "2026-05-13T22:37:16.393Z"
+    },
+    {
+      "id": "score-1778711836370-bfdbw9cme",
+      "playerName": "Jack Ahcan",
+      "points": 0,
+      "team": "COL",
+      "createdAt": "2026-05-13T22:37:16.374Z"
+    },
+    {
+      "id": "score-1778711836326-6szyf8rtf",
+      "playerName": "Ilya Solovyov",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-05-13T22:37:16.332Z"
+    },
+    {
+      "id": "score-1778711836287-seifrpo5p",
+      "playerName": "Fraser Minten",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-13T22:37:16.292Z"
+    },
+    {
+      "id": "score-1778711836267-gjr4v043e",
+      "playerName": "Fabian Zetterlund",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-13T22:37:16.273Z"
+    },
+    {
+      "id": "score-1778711836247-o7g16yn2b",
+      "playerName": "Emil Lilleberg",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-13T22:37:16.253Z"
+    },
+    {
+      "id": "score-1778711836227-u6vcdkivu",
+      "playerName": "Egor Chinakhov",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-05-13T22:37:16.232Z"
+    },
+    {
+      "id": "score-1778711836146-7d2mkkkd3",
+      "playerName": "Declan Carlile",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-13T22:37:16.152Z"
+    },
+    {
+      "id": "score-1778711836063-yg5mhzr08",
+      "playerName": "Conor Geekie",
+      "points": 0,
+      "team": "TBL",
+      "createdAt": "2026-05-13T22:37:16.069Z"
+    },
+    {
+      "id": "score-1778711835890-qgw7a8elu",
+      "playerName": "Cameron Crotty",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-13T22:37:15.896Z"
+    },
+    {
+      "id": "score-1778711835830-w5evug4kk",
+      "playerName": "Brady Tkachuk",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-13T22:37:15.835Z"
+    },
+    {
+      "id": "score-1778711835811-i9uf07fmc",
+      "playerName": "Ben Kindel",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-05-13T22:37:15.816Z"
+    },
+    {
+      "id": "score-1778711835752-b11wj3w4l",
+      "playerName": "Arttu Hyry",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-13T22:37:15.757Z"
+    },
+    {
+      "id": "score-1778711835731-3ty2wig90",
+      "playerName": "Artem Zub",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-13T22:37:15.737Z"
+    },
+    {
+      "id": "score-1778711835690-ch12d5j2j",
+      "playerName": "Andrei Kuzmenko",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-13T22:37:15.695Z"
+    },
+    {
+      "id": "score-1778711835650-e7lm1l7dm",
+      "playerName": "Alexander Nikishin",
+      "points": 0,
+      "team": "CAR",
+      "createdAt": "2026-05-13T22:37:15.656Z"
+    },
+    {
+      "id": "score-1778711835631-ba5v66541",
+      "playerName": "Alex Turcotte",
+      "points": 0,
+      "team": "LAK",
+      "createdAt": "2026-05-13T22:37:15.636Z"
+    },
+    {
+      "id": "score-1778711835611-hej6ijuhg",
+      "playerName": "Alex Steeves",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-13T22:37:15.616Z"
+    },
+    {
+      "id": "score-1778626607493-l3q455bz2",
+      "playerName": "Juraj Slafkovský",
+      "points": 5,
+      "team": "MTL",
+      "createdAt": "2026-05-12T22:56:47.499Z"
+    },
+    {
+      "id": "score-1778626602081-qlm1rt69p",
+      "playerName": "Tim Stützle",
+      "points": 1,
+      "team": "OTT",
+      "createdAt": "2026-05-12T22:56:42.088Z"
+    },
+    {
+      "id": "score-1778626601884-ysm46plhm",
+      "playerName": "Oskar Bäck",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-12T22:56:41.892Z"
+    },
+    {
+      "id": "score-1778303827293-boc2ghm0s",
+      "playerName": "Kevin Labanc",
+      "points": 0,
+      "team": "BUF",
+      "createdAt": "2026-05-09T05:17:07.299Z"
+    },
+    {
+      "id": "score-1778303827269-r3dtqxdlp",
+      "playerName": "Miloš Kelemen",
+      "points": 0,
+      "team": "UTA",
+      "createdAt": "2026-05-09T05:17:07.276Z"
+    },
+    {
+      "id": "score-1778303827246-ico8toval",
+      "playerName": "Valtteri Puustinen",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-05-09T05:17:07.253Z"
+    },
+    {
+      "id": "score-1778303827214-lj1b1erh3",
+      "playerName": "Emil Bemström",
+      "points": 0,
+      "team": "PIT",
+      "createdAt": "2026-05-09T05:17:07.220Z"
+    },
+    {
+      "id": "score-1778303827191-v4xmioe7i",
+      "playerName": "Cole Guttman",
+      "points": 0,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:17:07.197Z"
+    },
+    {
+      "id": "score-1778303827169-v7qz9t9x3",
+      "playerName": "Anthony Richard",
+      "points": 0,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:17:07.175Z"
+    },
+    {
+      "id": "score-1778303827147-tlkpt4ang",
+      "playerName": "Cole Schwindt",
+      "points": 0,
+      "team": "VGK",
+      "createdAt": "2026-05-09T05:17:07.153Z"
+    },
+    {
+      "id": "score-1778303827120-q77kjxlg1",
+      "playerName": "Tye Kartye",
+      "points": 0,
+      "team": "ANA",
+      "createdAt": "2026-05-09T05:17:07.127Z"
+    },
+    {
+      "id": "score-1778303827024-cxn0e0ins",
+      "playerName": "Adiso Volo",
+      "points": 0,
+      "team": "CAR",
+      "createdAt": "2026-05-09T05:17:07.036Z"
+    },
+    {
+      "id": "score-1778303826675-ypr4iq9vf",
+      "playerName": "Cole Perfetti",
+      "points": 0,
+      "team": "DAL",
+      "createdAt": "2026-05-09T05:17:06.682Z"
+    },
+    {
+      "id": "score-1778303826581-yl74d2ujr",
+      "playerName": "Matthew Beniers",
+      "points": 0,
+      "team": "UTA",
+      "createdAt": "2026-05-09T05:17:06.588Z"
+    },
+    {
+      "id": "score-1778303826265-luth2ynrs",
+      "playerName": "Jeff Skinner",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-09T05:17:06.272Z"
+    },
+    {
+      "id": "score-1778303825622-81gifzuq0",
+      "playerName": "Jaden Schwartz",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-09T05:17:05.629Z"
+    },
+    {
+      "id": "score-1778303825466-k9q2xalkc",
+      "playerName": "Jesperi Kotkaniemi",
+      "points": 0,
+      "team": "CAR",
+      "createdAt": "2026-05-09T05:17:05.472Z"
+    },
+    {
+      "id": "score-1778303824919-x603l5wnj",
+      "playerName": "Casey Cizikas",
+      "points": 0,
+      "team": "OTT",
+      "createdAt": "2026-05-09T05:17:04.926Z"
+    },
+    {
+      "id": "score-1778303824720-0elzj2dd2",
+      "playerName": "Alexander Wennberg",
+      "points": 0,
+      "team": "BOS",
+      "createdAt": "2026-05-09T05:17:04.726Z"
+    },
+    {
+      "id": "score-1778303824543-pmwztypvf",
+      "playerName": "Brenden Dillon",
+      "points": 0,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:17:04.550Z"
+    },
+    {
+      "id": "score-1778303824379-vf5j1fu2j",
+      "playerName": "Jamie Oleksiak",
+      "points": 0,
+      "team": "UTA",
+      "createdAt": "2026-05-09T05:17:04.385Z"
+    },
+    {
+      "id": "score-1778303824124-fx2bejylf",
+      "playerName": "Dakota Joshua",
+      "points": 0,
+      "team": "BUF",
+      "createdAt": "2026-05-09T05:17:04.130Z"
+    },
+    {
+      "id": "score-1778303823964-3oyzqshrj",
+      "playerName": "A.J. Greer",
+      "points": 0,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:17:03.970Z"
+    },
+    {
+      "id": "score-1778303823944-75ylgeios",
+      "playerName": "Matt Rempe",
+      "points": 0,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:17:03.950Z"
+    },
+    {
+      "id": "score-1778303817124-uckpk49j9",
+      "playerName": "Owen Pickering",
+      "points": 1,
+      "team": "PIT",
+      "createdAt": "2026-05-09T05:16:57.130Z"
+    },
+    {
+      "id": "score-1778303817001-nqqhrn5pb",
+      "playerName": "Cale Fleury",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:16:57.006Z"
+    },
+    {
+      "id": "score-1778303816959-zf6eoc8r6",
+      "playerName": "Dante Fabbro",
+      "points": 1,
+      "team": "EDM",
+      "createdAt": "2026-05-09T05:16:56.966Z"
+    },
+    {
+      "id": "score-1778303816920-50qw8fhy2",
+      "playerName": "Juuso Valimaki",
+      "points": 1,
+      "team": "UTA",
+      "createdAt": "2026-05-09T05:16:56.926Z"
+    },
+    {
+      "id": "score-1778303816900-j84m6tza7",
+      "playerName": "Dylan DeMelo",
+      "points": 1,
+      "team": "VGK",
+      "createdAt": "2026-05-09T05:16:56.906Z"
+    },
+    {
+      "id": "score-1778303816737-diiiwmfwt",
+      "playerName": "Anton Silayev",
+      "points": 1,
+      "team": "UTA",
+      "createdAt": "2026-05-09T05:16:56.743Z"
+    },
+    {
+      "id": "score-1778303816715-wvdvxt76u",
+      "playerName": "Erik Brannstrom",
+      "points": 1,
+      "team": "EDM",
+      "createdAt": "2026-05-09T05:16:56.722Z"
+    },
+    {
+      "id": "score-1778303816508-0tg0ul44e",
+      "playerName": "Kiefer Sherwood",
+      "points": 1,
+      "team": "VGK",
+      "createdAt": "2026-05-09T05:16:56.513Z"
+    },
+    {
+      "id": "score-1778303816468-zf1hjpl7o",
+      "playerName": "Dylan Gambrell",
+      "points": 1,
+      "team": "DAL",
+      "createdAt": "2026-05-09T05:16:56.473Z"
+    },
+    {
+      "id": "score-1778303815983-1ugi2edw3",
+      "playerName": "Nick Leddy",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:16:55.990Z"
+    },
+    {
+      "id": "score-1778303815943-ojncoym9f",
+      "playerName": "Matt Roy",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:16:55.949Z"
+    },
+    {
+      "id": "score-1778303815883-ilbuo7cnc",
+      "playerName": "Radim Šimek",
+      "points": 1,
+      "team": "ANA",
+      "createdAt": "2026-05-09T05:16:55.889Z"
+    },
+    {
+      "id": "score-1778303815864-iay80rpvw",
+      "playerName": "Jani Hakanpää",
+      "points": 1,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:16:55.870Z"
+    },
+    {
+      "id": "score-1778303814207-rrxe77sxf",
+      "playerName": "Joel Farabee",
+      "points": 3,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:16:54.213Z"
+    },
+    {
+      "id": "score-1778303814116-h7vm8q81o",
+      "playerName": "Matteo Giellietto",
+      "points": 3,
+      "team": "VGK",
+      "createdAt": "2026-05-09T05:16:54.123Z"
+    },
+    {
+      "id": "score-1778303814016-goh14cydx",
+      "playerName": "Ryan Lindgren",
+      "points": 3,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:16:54.022Z"
+    },
+    {
+      "id": "score-1778303813958-sdw7ltaca",
+      "playerName": "Urho Vaakanainen",
+      "points": 3,
+      "team": "ANA",
+      "createdAt": "2026-05-09T05:16:53.963Z"
+    },
+    {
+      "id": "score-1778303813938-vpy9ermyp",
+      "playerName": "Egor Zamula",
+      "points": 3,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:16:53.944Z"
+    },
+    {
+      "id": "score-1778303813669-ze3ck13o8",
+      "playerName": "Egor Afanasyev",
+      "points": 3,
+      "team": "PHI",
+      "createdAt": "2026-05-09T05:16:53.675Z"
+    },
+    {
+      "id": "score-1778303812513-8rqs8j3pz",
+      "playerName": "Filip Hronek",
+      "points": 5,
+      "team": "CAR",
+      "createdAt": "2026-05-09T05:16:52.519Z"
+    },
+    {
+      "id": "score-1778303812176-lt9z7lmy2",
+      "playerName": "Sami Niku",
+      "points": 6,
+      "team": "MTL",
+      "createdAt": "2026-05-09T05:16:52.183Z"
+    },
+    {
+      "id": "score-1778303811925-ehz14r9d7",
+      "playerName": "Wyatt Kaiser",
+      "points": 7,
+      "team": "ANA",
+      "createdAt": "2026-05-09T05:16:51.931Z"
+    },
+    {
+      "id": "score-1778027578821-twkui329t",
+      "playerName": "Charle-Edouard DAstous",
+      "points": 1,
+      "team": "TBL",
+      "createdAt": "2026-05-06T00:32:58.827Z"
+    },
+    {
+      "id": "score-1776789057638-x4q3xsk7a",
+      "playerName": "Jaxon LaDue",
+      "points": 1,
+      "team": null,
+      "createdAt": "2026-04-21T16:30:57.694Z"
+    },
+    {
+      "id": "score-1776789057120-hm7j4zv96",
+      "playerName": "Nicolas Meloche",
+      "points": 1,
+      "team": null,
+      "createdAt": "2026-04-21T16:30:57.219Z"
+    },
+    {
+      "id": "score-1776789056811-m862459vc",
+      "playerName": "Ryan Spooner",
+      "points": 1,
+      "team": null,
+      "createdAt": "2026-04-21T16:30:56.935Z"
+    },
+    {
+      "id": "score-1776789056549-j1texej15",
+      "playerName": "Luc Goddard",
+      "points": 2,
+      "team": null,
+      "createdAt": "2026-04-21T16:30:56.695Z"
+    },
+    {
+      "id": "score-1776789056530-n257ib3a5",
+      "playerName": "Lane Varada",
+      "points": 2,
+      "team": null,
+      "createdAt": "2026-04-21T16:30:56.678Z"
+    }
+  ],
+  "eliminatedTeams": [
+    "LAK",
+    "OTT",
+    "PIT",
+    "DAL",
+    "EDM",
+    "BOS",
+    "UTA",
+    "TBL",
+    "PHI",
+    "MIN",
+    "ANA",
+    "BUF",
+    "COL",
+    "MTL"
+  ],
+  "finalStandings": [
+    {
+      "rank": 1,
+      "participantName": "Tyler",
+      "totalScore": 167,
+      "playerNames": [
+        "Mark Stone",
+        "Andrei Vasilevskiy",
+        "Jack Eichel",
+        "Brayden Point",
+        "Leon Draisaitl",
+        "Mitch Marner",
+        "Nikolaj Ehlers",
+        "Andrei Svechnikov",
+        "Sebastian Aho",
+        "Darren Raddysh",
+        "Connor McDavid",
+        "Cale Makar",
+        "Martin Necas",
+        "Nikita Kucherov",
+        "Nathan MacKinnon"
+      ],
+      "prize": "$85"
+    },
+    {
+      "rank": 2,
+      "participantName": "Herbie ",
+      "totalScore": 157,
+      "playerNames": [
+        "Jake Guentzel",
+        "Cole Caufield",
+        "Jack Eichel",
+        "Nick Suzuki",
+        "Brandon Hagel",
+        "Sebastian Aho",
+        "Evan Bouchard",
+        "Brandon Bussi",
+        "Andrei Vasilevskiy",
+        "Seth Jarvis",
+        "Martin Necas",
+        "Nikita Kucherov",
+        "Leon Draisaitl",
+        "Nathan MacKinnon",
+        "Connor McDavid"
+      ],
+      "prize": "$40"
+    },
+    {
+      "rank": 3,
+      "participantName": "Courtenay ",
+      "totalScore": 141,
+      "playerNames": [
+        "Nikolaj Ehlers",
+        "Andrei Svechnikov",
+        "Sebastian Aho",
+        "Seth Jarvis",
+        "Brayden Point",
+        "Jake Guentzel",
+        "Nikita Kucherov",
+        "Brock Nelson",
+        "Cale Makar",
+        "Martin Necas",
+        "Nathan MacKinnon",
+        "Kirill Kaprizov",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid"
+      ],
+      "prize": "$15"
+    },
+    {
+      "rank": 4,
+      "participantName": "The Revesz Boys ",
+      "totalScore": 123,
+      "playerNames": [
+        "Jake Oettinger",
+        "Andrei Vasilevskiy",
+        "Martin Necas",
+        "Quinn Hughes",
+        "Jason Robertson",
+        "Seth Jarvis",
+        "Sebastian Aho",
+        "Nikita Kucherov",
+        "Brayden Point",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid",
+        "Cale Makar",
+        "Mikko Rantanen",
+        "Nathan MacKinnon"
+      ],
+      "prize": null
+    },
+    {
+      "rank": 5,
+      "participantName": "Gordie",
+      "totalScore": 121,
+      "playerNames": [
+        "Mark Stone",
+        "Miro Heiskanen",
+        "Brandon Hagel",
+        "Andrei Vasilevskiy",
+        "Rasmus Dahlin",
+        "Cale Makar",
+        "Jason Robertson",
+        "Artturi Lehkonen",
+        "Alex Tuch",
+        "Tage Thompson",
+        "Brayden Point",
+        "Nikita Kucherov",
+        "Mikko Rantanen",
+        "Nathan MacKinnon",
+        "Connor McDavid"
+      ],
+      "prize": null
+    },
+    {
+      "rank": 6,
+      "participantName": "Weldon",
+      "totalScore": 115,
+      "playerNames": [
+        "Mats Zuccarello",
+        "Jesper Wallstedt",
+        "Quinn Hughes",
+        "Matt Boldy",
+        "Kirill Kaprizov",
+        "Sidney Crosby",
+        "Evan Bouchard",
+        "Zach Hyman",
+        "Leon Draisaitl",
+        "Connor McDavid",
+        "Andrei Vasilevskiy",
+        "Brandon Hagel",
+        "Jake Guentzel",
+        "Nikita Kucherov",
+        "Brayden Point"
+      ],
+      "prize": null
+    },
+    {
+      "rank": 7,
+      "participantName": "Derek ",
+      "totalScore": 111,
+      "playerNames": [
+        "Nikolaj Ehlers",
+        "Sebastian Aho",
+        "Andrei Svechnikov",
+        "Martin Necas",
+        "Nathan MacKinnon",
+        "Connor Ingram",
+        "Jack Roslovic",
+        "Matt Savoie",
+        "Vasily Podkolzin",
+        "Mattias Ekholm",
+        "Zach Hyman",
+        "Ryan Nugent-Hopkins",
+        "Evan Bouchard",
+        "Leon Draisaitl",
+        "Connor McDavid"
+      ],
+      "prize": null
+    }
+  ]
+}
