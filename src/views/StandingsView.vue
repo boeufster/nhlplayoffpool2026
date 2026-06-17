@@ -1,22 +1,29 @@
 <template>
   <div class="standings-view">
-    <!-- Confetti overlay -->
-    <div v-if="showConfetti" class="confetti-container">
-      <div
-        v-for="i in 30"
-        :key="i"
-        class="confetti-piece"
-        :style="{
-          left: Math.random() * 100 + '%',
-          backgroundColor: confettiColors[i % confettiColors.length],
-          animationDelay: Math.random() * 2 + 's',
-          animationDuration: (2 + Math.random() * 2) + 's'
-        }"
-      ></div>
+    <!-- Champion Banner -->
+    <div v-if="sortedEntries.length > 0" class="champion-banner">
+      <div class="champion-trophy">🏆</div>
+      <div class="champion-info">
+        <div class="champion-label">2026 Playoff Pool Champion</div>
+        <div class="champion-name">{{ sortedEntries[0].participantName }}</div>
+        <div class="champion-score">{{ sortedEntries[0].calculatedScore }} points</div>
+      </div>
+      <div class="podium">
+        <div v-if="sortedEntries[1]" class="podium-entry silver">
+          <span class="podium-medal">🥈</span>
+          <span class="podium-name">{{ sortedEntries[1].participantName }}</span>
+          <span class="podium-pts">{{ sortedEntries[1].calculatedScore }} pts</span>
+        </div>
+        <div v-if="sortedEntries[2]" class="podium-entry bronze">
+          <span class="podium-medal">🥉</span>
+          <span class="podium-name">{{ sortedEntries[2].participantName }}</span>
+          <span class="podium-pts">{{ sortedEntries[2].calculatedScore }} pts</span>
+        </div>
+      </div>
     </div>
 
-    <h2>Standings</h2>
-    <p v-if="lastUpdated" class="last-updated">Stats updated: {{ lastUpdated }}</p>
+    <h2>Final Standings</h2>
+    <p v-if="lastUpdated" class="last-updated">Season complete · Stats final as of {{ lastUpdated }}</p>
     <div v-if="entries.length === 0" class="empty-state">
       <p>No entries yet</p>
     </div>
@@ -34,7 +41,7 @@
       </thead>
       <tbody>
         <template v-for="(entry, index) in sortedEntries" :key="entry.id">
-          <tr class="standings-row" :style="{ animationDelay: index * 0.15 + 's' }">
+          <tr class="standings-row" :class="{ 'rank-gold': index === 0, 'rank-silver': index === 1, 'rank-bronze': index === 2 }" :style="{ animationDelay: index * 0.15 + 's' }">
             <td class="expand-cell" @click="toggleExpand(entry.id)">
               <span class="collapse-arrow" :class="{ open: expandedEntries.has(entry.id) }">▶</span>
             </td>
@@ -76,6 +83,9 @@
         </template>
       </tbody>
     </table>
+
+    <!-- Final Four Bracket -->
+    <FinalFourBracket />
 
     <!-- MVP Player Card -->
     <div v-if="mvpPlayer" class="mvp-card">
@@ -182,15 +192,17 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useEntriesStore } from '../stores/entries'
 import { useScoresStore } from '../stores/scores'
 import { useEliminatedTeamsStore } from '../stores/eliminatedTeams'
 import { getTeamBadgeStyle } from '../utils/teamColors'
 import { usePlayerPopularity } from '../composables/usePlayerPopularity'
+import FinalFourBracket from '../components/FinalFourBracket.vue'
 
 export default {
   name: 'StandingsView',
+  components: { FinalFourBracket },
   setup() {
     const entriesStore = useEntriesStore()
     const scoresStore = useScoresStore()
@@ -198,11 +210,9 @@ export default {
 
     const { popularityRows, totalEntries } = usePlayerPopularity()
 
-    const showConfetti = ref(false)
     const showPopularity = ref(false)
     const showPlayerStats = ref(false)
     const expandedEntries = ref(new Set())
-    const confettiColors = ['#c8102e', '#ffffff', '#003087', '#ffd700']
 
     const entries = computed(() => entriesStore.entries)
 
@@ -379,21 +389,6 @@ export default {
       return latest.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
     })
 
-    onMounted(() => {
-      if (entries.value.length > 0) {
-        showConfetti.value = true
-        setTimeout(() => { showConfetti.value = false }, 3000)
-      }
-    })
-
-    // Also trigger if entries load after mount
-    watch(entries, (val) => {
-      if (val.length > 0 && !showConfetti.value) {
-        showConfetti.value = true
-        setTimeout(() => { showConfetti.value = false }, 3000)
-      }
-    }, { once: true })
-
     const darkHorse = computed(() => {
       if (scoresStore.scoringEvents.length === 0 || entries.value.length === 0) return null
       const playerEntryCount = new Map()
@@ -476,10 +471,8 @@ export default {
       getEliminatedTotal,
       isHotStreak,
       getTeamBadgeStyle,
-      showConfetti,
       showPopularity,
       showPlayerStats,
-      confettiColors,
       getStatPlayerTeam,
       isStatPlayerEliminated,
       statTeamBadgeStyle,
@@ -506,6 +499,11 @@ export default {
 .active-cell { text-align: center; font-weight: 600; font-size: 0.85rem; color: var(--text-primary); }
 .active-header { text-align: center !important; }
 .prize-cell { color: var(--success-color); font-weight: 600; }
+
+/* Podium row highlights */
+.rank-gold { background: rgba(255, 215, 0, 0.12) !important; border-left: 3px solid #ffd700; }
+.rank-silver { background: rgba(192, 192, 192, 0.10) !important; border-left: 3px solid #c0c0c0; }
+.rank-bronze { background: rgba(205, 127, 50, 0.10) !important; border-left: 3px solid #cd7f32; }
 
 /* Expandable roster */
 .expand-cell { cursor: pointer; width: 32px; text-align: center; padding: 8px 4px !important; }
@@ -536,13 +534,18 @@ export default {
 .mvp-name { font-size: 1.4rem; font-weight: 700; color: var(--text-heading); }
 .mvp-points { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-top: 4px; }
 
-/* Confetti */
-.confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; overflow: hidden; }
-.confetti-piece { position: absolute; top: -10px; width: 10px; height: 10px; opacity: 0.85; animation: confetti-fall linear forwards; }
-@keyframes confetti-fall {
-  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-}
+/* Champion Banner */
+.champion-banner { padding: 24px; background: var(--bg-card); border: 2px solid var(--text-heading); border-radius: 6px; text-align: center; margin-bottom: 24px; }
+.champion-trophy { font-size: 3rem; margin-bottom: 8px; }
+.champion-info { margin-bottom: 12px; }
+.champion-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; }
+.champion-name { font-size: 1.8rem; font-weight: 700; color: var(--text-heading); margin: 4px 0; }
+.champion-score { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+.podium { display: flex; justify-content: center; gap: 24px; margin-top: 12px; }
+.podium-entry { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; }
+.podium-medal { font-size: 1.2rem; }
+.podium-name { font-weight: 600; color: var(--text-primary); }
+.podium-pts { color: var(--text-secondary); font-size: 0.8rem; }
 
 /* Player Popularity Section */
 .player-popularity-section { margin-top: 40px; padding: 0; border: none; background: none; }
@@ -617,6 +620,10 @@ export default {
   .hide-mobile { display: none; }
   .points-cell { font-size: 0.9rem; }
   .standings-view h2 { font-size: 1.4rem; }
+  .champion-banner { padding: 16px; }
+  .champion-name { font-size: 1.4rem; }
+  .champion-trophy { font-size: 2.4rem; }
+  .podium { flex-direction: column; gap: 8px; align-items: center; }
   .player-stats-section h3 { font-size: 1.1rem; }
   .player-stats-table th, .player-stats-table td { padding: 8px 6px; font-size: 0.8rem; }
   .mvp-card { padding: 14px; }

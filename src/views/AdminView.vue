@@ -175,10 +175,13 @@
         </div>
       </section>
 
-      <!-- Export Section -->
+      <!-- Export & Archive Section -->
       <section class="admin-section">
-        <h3>Export Data</h3>
-        <button @click="exportToCSV" class="btn-primary">Export Standings to CSV</button>
+        <h3>Export & Archive</h3>
+        <div class="form-group">
+          <button @click="exportToCSV" class="btn-primary">Export Standings to CSV</button>
+          <button @click="exportFullArchive" class="btn-secondary">📦 Download Full Archive (JSON)</button>
+        </div>
         <p v-if="exportMessage" class="success">{{ exportMessage }}</p>
       </section>
 
@@ -188,6 +191,9 @@
         <div class="form-group">
           <input v-model="newTickerMessage" placeholder="Enter trash talk message" @keyup.enter="addTickerMessage" />
           <button @click="addTickerMessage" class="btn-primary">Add Message</button>
+        </div>
+        <div class="form-group">
+          <button @click="generateDailyRecap" class="btn-secondary" :disabled="recapGenerating">{{ recapGenerating ? 'Generating...' : '📊 Generate Daily Recap' }}</button>
         </div>
         <p v-if="tickerError" class="error">{{ tickerError }}</p>
         <p v-if="tickerSuccess" class="success">{{ tickerSuccess }}</p>
@@ -288,6 +294,7 @@ export default {
     const tickerMessages = ref([])
     const tickerError = ref('')
     const tickerSuccess = ref('')
+    const recapGenerating = ref(false)
     const participants = computed(() => participantsStore.participants)
     const entries = computed(() => entriesStore.entries)
 
@@ -641,6 +648,73 @@ export default {
       }
     }
 
+    const generateDailyRecap = async () => {
+      tickerError.value = ''
+      tickerSuccess.value = ''
+      recapGenerating.value = true
+
+      try {
+        // Build a points map from scoring events
+        const playerPointsMap = new Map()
+        for (const event of scoresStore.scoringEvents) {
+          if (event.playerName) {
+            playerPointsMap.set(event.playerName.toLowerCase(), event.points)
+          }
+        }
+
+        // Calculate current standings
+        const standings = entries.value.map(entry => {
+          let score = 0
+          const players = entry.playerNames || entry.playerIds || []
+          for (const p of players) {
+            score += playerPointsMap.get(String(p).toLowerCase()) || 0
+          }
+          return { name: entry.participantName, score }
+        }).sort((a, b) => b.score - a.score)
+
+        if (standings.length === 0) {
+          tickerError.value = 'No entries to generate recap from'
+          recapGenerating.value = false
+          return
+        }
+
+        // Find the leader and gap info
+        const leader = standings[0]
+        const second = standings[1]
+        const gap = second ? leader.score - second.score : 0
+
+        // Find top scorer (MVP)
+        let topPlayer = null
+        for (const event of scoresStore.scoringEvents) {
+          if (!topPlayer || event.points > topPlayer.points) {
+            topPlayer = event
+          }
+        }
+
+        // Build recap message
+        let recap = `📊 Daily Recap: ${leader.name} leads with ${leader.score} pts`
+        if (gap > 0 && second) {
+          recap += ` (+${gap} over ${second.name})`
+        } else if (second) {
+          recap += ` (tied with ${second.name})`
+        }
+        if (topPlayer) {
+          recap += ` | Top scorer: ${topPlayer.playerName} (${topPlayer.points} pts)`
+        }
+
+        // Post it
+        await apiService.postTickerMessage(recap)
+        await loadTickerMessages()
+        if (window.__refreshTicker) window.__refreshTicker()
+        tickerSuccess.value = 'Daily recap posted!'
+        setTimeout(() => { tickerSuccess.value = '' }, 3000)
+      } catch (error) {
+        tickerError.value = error.message
+      } finally {
+        recapGenerating.value = false
+      }
+    }
+
     const exportToCSV = () => {
       exportMessage.value = ''
       try {
@@ -668,6 +742,43 @@ export default {
       }
     }
 
+    const exportFullArchive = async () => {
+      exportMessage.value = ''
+      try {
+        const data = await apiService.fetchPoolData()
+        const archive = {
+          season: '2026',
+          exportedAt: new Date().toISOString(),
+          participants: data.participants,
+          entries: data.entries,
+          scoringEvents: data.scoringEvents,
+          eliminatedTeams: data.eliminatedTeams,
+          finalStandings: [...data.entries].sort((a, b) => {
+            if ((b.totalScore || 0) !== (a.totalScore || 0)) return (b.totalScore || 0) - (a.totalScore || 0)
+            return new Date(a.createdAt) - new Date(b.createdAt)
+          }).map((entry, idx) => ({
+            rank: idx + 1,
+            participantName: entry.participantName,
+            totalScore: entry.totalScore || 0,
+            playerNames: entry.playerNames || [],
+            prize: idx === 0 ? '$85' : idx === 1 ? '$40' : idx === 2 ? '$15' : null
+          }))
+        }
+        const blob = new Blob([JSON.stringify(archive, null, 2)], { type: 'application/json' })
+        const link = document.createElement('a')
+        link.setAttribute('href', URL.createObjectURL(blob))
+        link.setAttribute('download', `nhl-pool-2026-archive.json`)
+        link.style.visibility = 'hidden'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        exportMessage.value = 'Full archive exported!'
+        setTimeout(() => { exportMessage.value = '' }, 3000)
+      } catch (error) {
+        exportMessage.value = `Archive export failed: ${error.message}`
+      }
+    }
+
     return {
       isAuthenticated, password, authError, apiError,
       newParticipant, participantError,
@@ -684,8 +795,8 @@ export default {
       createEntry, removeEntry,
       assignPlayers, processPlayerStats, processGoalieStats,
       addEliminatedTeam, removeEliminatedTeam,
-      addTickerMessage, removeTickerMessage,
-      exportToCSV
+      addTickerMessage, removeTickerMessage, generateDailyRecap, recapGenerating,
+      exportToCSV, exportFullArchive
     }
   }
 }
@@ -713,6 +824,9 @@ export default {
 .form-group select { flex: 1.5; }
 .btn-primary { padding: 8px 18px; background: var(--btn-bg); color: var(--btn-text); border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 600; white-space: nowrap; }
 .btn-primary:hover { background: var(--btn-hover); }
+.btn-secondary { padding: 8px 18px; background: var(--bg-highlight); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 600; white-space: nowrap; }
+.btn-secondary:hover { background: var(--border-color); }
+.btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-danger { padding: 6px 14px; background: var(--btn-danger-bg); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
 .btn-danger:hover { background: var(--btn-danger-hover); }
 .participant-list, .entries-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
